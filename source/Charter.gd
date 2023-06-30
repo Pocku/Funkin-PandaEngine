@@ -2,7 +2,7 @@ extends Node2D
 
 onready var inst=$Inst;
 onready var timeLabel=$UI/TimeLabel;
-onready var timeScroll=$UI/TimeScroll;
+onready var timeScroll=$UI/Tabs/TimeScroll;
 onready var voices=$Voices;
 onready var cam=$Cam;
 
@@ -201,9 +201,9 @@ func _process(dt):
 	var sectStart=getSectionStart(curSection);
 	var sectLenInSecs=chart.notes[curSection].sectionBeats*Conductor.crochet;
 	strumTime=fmod(Conductor.time-sectStart,sectLenInSecs);
-	strumlineY=getStrumY(strumTime if autoScroll else Conductor.time-sectStart);
+	strumlineY=getStrumY(Conductor.time-sectStart);
 	cam.position.y=strumlineY;
-	
+
 	noteTab.root.visible=curNote!=-1;
 	eventTab.root.visible=curEvent!=-1;
 	
@@ -273,7 +273,6 @@ func drawEvents():
 		
 		var txSize=font.get_string_size(str(len(e[1])));
 		draw_string(font,pos+Vector2((gridSize/2.0)-txSize.x/2.0,gridSize-txSize.y/2.0),str(len(e[1])),Color.white);
-		
 		
 func drawGrid(colors):
 	for x in range(-1,8): for y in range(-16 if curSection>0 else 0,32):
@@ -489,7 +488,7 @@ func getSectionStart(index):
 	for i in range(0,index):
 		if (chart.notes[i].changeBPM if chart.notes[i].has("changeBPM") else false):
 			bpm=chart.notes[i].bpm
-		var sectLen=chart.notes[i].lengthInSteps*((60.0/bpm)/4.0)
+		var sectLen=chart.notes[i].sectionBeats*(60.0/bpm);
 		time+=sectLen;
 	return time;
 
