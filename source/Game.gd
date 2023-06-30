@@ -10,11 +10,14 @@ var stagesList=[
 	"stage"
 ]
 var noteTypes=[
-	"","Hurt"
+	"","Hurt","Alt"
 ]
 var eventType=[
-	"camZoom","camMove"
+	"","camZoom","camMove"
 ]
+
+var curSong="black-sun";
+var curMode="hard";
 
 func getCharacterList():
 	var list=getFilesInFolder("source/characters/");
