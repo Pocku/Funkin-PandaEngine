@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Inst.ogg-c0280fa02dbb1684ddef681e3afa4e86.oggstr"
+
+[deps]
+
+source_file="res://assets/songs/black-sun/Inst.ogg"
+dest_files=[ "res://.import/Inst.ogg-c0280fa02dbb1684ddef681e3afa4e86.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
