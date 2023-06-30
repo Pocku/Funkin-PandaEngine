@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://source/Charter.gd" type="Script" id=1]
+[ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 21
+font_data = ExtResource( 2 )
 
 [node name="Charter" type="Node2D"]
 script = ExtResource( 1 )
@@ -275,26 +280,34 @@ margin_right = 282.0
 margin_bottom = 45.0
 text = "+"
 
-[node name="Add2" type="Button" parent="UI/Tabs/Event"]
-margin_left = 262.0
-margin_top = 111.0
-margin_right = 282.0
-margin_bottom = 131.0
-text = ">"
-
-[node name="Add3" type="Button" parent="UI/Tabs/Event"]
-margin_left = 238.0
-margin_top = 111.0
-margin_right = 258.0
-margin_bottom = 131.0
-text = "<"
-
 [node name="Sub" type="Button" parent="UI/Tabs/Event"]
 margin_left = 238.0
 margin_top = 25.0
 margin_right = 258.0
 margin_bottom = 45.0
 text = "-"
+
+[node name="Next" type="Button" parent="UI/Tabs/Event"]
+margin_left = 262.0
+margin_top = 111.0
+margin_right = 282.0
+margin_bottom = 131.0
+text = ">"
+
+[node name="Prev" type="Button" parent="UI/Tabs/Event"]
+margin_left = 238.0
+margin_top = 111.0
+margin_right = 258.0
+margin_bottom = 131.0
+text = "<"
+
+[node name="PageLabel" type="Label" parent="UI/Tabs/Event"]
+margin_left = 12.0
+margin_top = 115.0
+margin_right = 231.0
+margin_bottom = 131.0
+text = "Page 0/0"
+valign = 1
 
 [node name="Section" type="Panel" parent="UI/Tabs"]
 margin_top = 548.0
@@ -367,6 +380,21 @@ margin_bottom = 150.0
 value = 4.0
 allow_greater = true
 align = 2
+
+[node name="TimeLabel" type="Label" parent="UI"]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 295.0
+margin_bottom = 720.0
+custom_fonts/font = SubResource( 1 )
+
+[node name="TimeScroll" type="HScrollBar" parent="UI"]
+margin_left = 11.0
+margin_top = 698.0
+margin_right = 388.0
+margin_bottom = 710.0
+max_value = 1.0
+step = 0.001
 
 [node name="Inst" type="AudioStreamPlayer" parent="."]
 

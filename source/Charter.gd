@@ -1,6 +1,8 @@
 extends Node2D
 
 onready var inst=$Inst;
+onready var timeLabel=$UI/TimeLabel;
+onready var timeScroll=$UI/TimeScroll;
 onready var voices=$Voices;
 onready var cam=$Cam;
 
@@ -35,9 +37,15 @@ onready var eventTab={
 	"root":$UI/Tabs/Event,
 	"type":$UI/Tabs/Event/Type,
 	"arg1":$UI/Tabs/Event/Args/Arg1,
-	"arg2":$UI/Tabs/Event/Args/Arg2
+	"arg2":$UI/Tabs/Event/Args/Arg2,
+	"add":$UI/Tabs/Event/Add,
+	"sub":$UI/Tabs/Event/Sub,
+	"next":$UI/Tabs/Event/Next,
+	"prev":$UI/Tabs/Event/Prev,
+	"pageLabel":$UI/Tabs/Event/PageLabel
 }
 var eventIcon=preload("res://assets/images/event-icon.png");
+var font=DynamicFont.new();
 
 var chart={};
 var noteAtlas=[];
@@ -63,6 +71,13 @@ func _ready():
 	Conductor.connect("bpmChanged",self,"onBpmChanged");
 	Conductor.reset();
 	
+	font.font_data=preload("res://assets/fonts/vcr.ttf");
+	font.outline_color=Color.black;
+	font.outline_size=2;
+	font.size=21;
+	
+	timeScroll.connect("scrolling",self,"onTimeScrollChanged");
+	
 	for i in 3: charIcons["player%s"%[i+1]]=load("res://assets/images/char-icons/no-icon.png");
 	
 	for i in ["purple","blue","green","red"]: 
@@ -78,7 +93,8 @@ func _ready():
 		match eventTab[i].get_class():
 			"OptionButton": eventTab[i].connect("item_selected",self,"onEventOptionChanged",[i]);
 			"LineEdit": eventTab[i].connect("text_changed",self,"onEventOptionChanged",[i]);
-	
+			"Button": eventTab[i].connect("pressed",self,"onEventOptionChanged",[true,i]);
+			
 	for i in sectionTab.keys():
 		match sectionTab[i].get_class():
 			"CheckBox": sectionTab[i].connect("toggled",self,"onSectionOptionChanged",[i]);
@@ -108,7 +124,7 @@ func _ready():
 	for i in Game.eventType:
 		eventTab.type.add_item(i);
 	
-	loadSong("black-sun","hard");
+	loadSong();
 	Conductor.setBpm(chart.bpm);
 	onSectionChanged();
 	
@@ -140,13 +156,13 @@ func _input(ev):
 		var mouseColumn=int(mouseGrid.x/gridSize);
 		
 		if ev.button_index==BUTTON_LEFT && ev.pressed && isMouseInsideGrid():
-			if int(mouseGrid.x/gridSize)>0:
+			if int(mouseGrid.x/gridSize)>-1:
 				var noteId=getNoteOverMouse(mouseTime,mouseColumn);
 				if noteId!=-1: 
 					chart.notes[curSection].sectionNotes.remove(noteId);
 					noteId=-1;
 				else: placeNote(mouseTime,mouseColumn);
-			else:
+			elif int(mouseGrid.x/gridSize)==-1:
 				var evId=getEventOverMouse(mouseTime);
 				if evId==-1: placeEvent(mouseTime);
 				else: 
@@ -155,11 +171,11 @@ func _input(ev):
 			
 		if ev.button_index==BUTTON_RIGHT && ev.pressed:
 			if isMouseInsideGrid():
-				if int(mouseGrid.x/gridSize)>0:
+				if int(mouseGrid.x/gridSize)>-1:
 					var noteId=getNoteOverMouse(mouseTime,mouseColumn);
 					if noteId!=-1: onNoteSelected(chart.notes[curSection].sectionNotes[noteId],noteId);
 					else: curNote=-1;
-				else:
+				elif int(mouseGrid.x/gridSize)==-1:
 					var evId=getEventOverMouse(mouseTime);
 					if evId!=-1: onEventSelected(evId);
 					else: curEvent=-1;
@@ -171,9 +187,11 @@ func _process(dt):
 	
 	if !paused:
 		Conductor.time=min(Conductor.time+dt,inst.stream.get_length());
+		if Conductor.time+0.1>inst.stream.get_length(): Conductor.time=0.0;
 		var time=(inst.get_playback_position()+AudioServer.get_time_since_last_mix())-AudioServer.get_output_latency();
 		if abs(time-Conductor.time)>(offsyncAllowed/1000.0):
 			for i in [inst,voices]: i.seek(Conductor.time);
+		timeScroll.value=Conductor.time/inst.stream.get_length();
 	
 	var nextSect=getSection(Conductor.time);
 	if nextSect!=curSection:
@@ -188,10 +206,14 @@ func _process(dt):
 	
 	noteTab.root.visible=curNote!=-1;
 	eventTab.root.visible=curEvent!=-1;
+	
+	timeLabel.text=str("TIME: %s / %s \nSECTION: %s / %s\n\n'ESC' - PLAYTEST\n'ENTER' - EXIT EDITOR"%[str(stepify(Conductor.time,0.01)).pad_decimals(2),str(stepify(inst.stream.get_length(),0.01)).pad_decimals(2),curSection,len(chart.notes)]);
 	update();
 	
 func _draw():
 	drawGrid([Color("d9d7d7"),Color("e7e7e7")]);
+	for i in range(-4 if curSection>0 else 0,8,1): 
+		draw_line(Vector2(0,(i*4)*gridSize),Vector2(8*gridSize,(i*4)*gridSize),Color.gray,2.0);
 	
 	if curSection>0: drawSection(curSection-1,-16*gridSize);
 	if curSection<len(chart.notes)-1: drawSection(curSection+1,16*gridSize);
@@ -220,8 +242,9 @@ func drawSection(tSect,offsetY):
 	var sectData=chart.notes[tSect];
 	var startTime=getSectionStart(tSect)*1000.0;
 	
-	draw_line(Vector2(0,offsetY),Vector2(8*gridSize,offsetY),Color.red.blend(Color(1,1,1,0.5)),2.0,false);
+	draw_line(Vector2(0,offsetY),Vector2(8*gridSize,offsetY),Color.tomato,2.0,false);
 	for n in sectData.sectionNotes:
+		if n[1]<0: continue;
 		var time=(n[0]-startTime)/1000.0;
 		var dur=n[2]/1000.0;
 		var column=int(n[1]);
@@ -232,8 +255,14 @@ func drawSection(tSect,offsetY):
 		var lenA=Vector2((column*gridSize)+gridSize/2,round(getStrumY(time))+offsetY+gridSize/2);
 		var lenB=Vector2((column*gridSize)+gridSize/2,round(getStrumY(time+dur))+offsetY+gridSize/2);
 		draw_texture_rect(tex,Rect2(pos+Vector2(0,offsetY),Vector2.ONE*gridSize),false,color);
+		
+		if getNoteTypeNumber(n[3])>0:
+			var txSize=font.get_string_size(str(getNoteTypeNumber(n[3])));
+			draw_string(font,pos+Vector2(0,offsetY)+Vector2((gridSize/2.0)-txSize.x/2.0,gridSize-txSize.y/2.0),str(getNoteTypeNumber(n[3])),Color.white);
+		
 		if n[2]>0.0: draw_line(lenA,lenB,Color.white,8.0);
-
+		
+		
 func drawEvents():
 	var startTime=getSectionStart(curSection)*1000.0;
 	for e in chart.events:
@@ -241,15 +270,18 @@ func drawEvents():
 		var pos=Vector2(-1*gridSize,getStrumY(time));
 		var color=Color.white;
 		draw_texture_rect(eventIcon,Rect2(pos,Vector2.ONE*gridSize),false,color);
-	
-	
+		
+		var txSize=font.get_string_size(str(len(e[1])));
+		draw_string(font,pos+Vector2((gridSize/2.0)-txSize.x/2.0,gridSize-txSize.y/2.0),str(len(e[1])),Color.white);
+		
+		
 func drawGrid(colors):
 	for x in range(-1,8): for y in range(-16 if curSection>0 else 0,32):
 		draw_rect(Rect2(x*gridSize,(y*gridSize),gridSize,gridSize),colors[(x+y)%2],true);
 
-func loadSong(song,mode):
+func loadSong():
 	var f=File.new();
-	f.open("res://assets/data/%s/%s.json"%[song,mode],File.READ);
+	f.open("res://assets/data/%s/%s.json"%[Game.curSong,Game.curMode],File.READ);
 	chart=parse_json(f.get_as_text()).song;
 	f.close();
 	
@@ -284,8 +316,8 @@ func loadSong(song,mode):
 	
 	for i in 3: onCharChanged("player%s"%[i+1]);
 	
-	inst.stream=load("res://assets/songs/%s/Inst.ogg"%[song]);
-	voices.stream=load("res://assets/songs/%s/Voices.ogg"%[song]);
+	inst.stream=load("res://assets/songs/%s/Inst.ogg"%[Game.curSong]);
+	voices.stream=load("res://assets/songs/%s/Voices.ogg"%[Game.curSong]);
 
 func selectOptionButtonByName(opt:OptionButton,id):
 	for i in opt.get_item_count():
@@ -303,7 +335,7 @@ func placeNote(time,column):
 func placeEvent(time):
 	var evTypeId=eventTab.type.get_item_text(eventTab.type.selected);
 	var sectStart=getSectionStart(curSection)*1000.0;
-	var evData=[sectStart+(time*1000.0),[[evTypeId,"",""]]];
+	var evData=[sectStart+(time*1000.0),[[evTypeId,eventTab.arg1.text,eventTab.arg2.text]]];
 	chart.events.append(evData);
 	onEventSelected(len(chart.events)-1);
 
@@ -331,6 +363,7 @@ func onEventPageChanged():
 	var evData=evPages[eventPage];
 	eventTab.arg1.text=evData[1];
 	eventTab.arg2.text=evData[2];
+	eventTab.pageLabel.text="Page %s/%s"%[eventPage+1,len(evPages)];
 	selectOptionButtonByName(eventTab.type,evData[0]);
 
 func onBpmChanged():
@@ -358,7 +391,22 @@ func onEventOptionChanged(val,opt):
 		"type": chart.events[curEvent][1][eventPage][0]=evId;
 		"arg1": chart.events[curEvent][1][eventPage][1]=val;
 		"arg2": chart.events[curEvent][1][eventPage][2]=val;
-	
+		"add": 
+			chart.events[curEvent][1].append(["","",""]);
+			eventPage+=1;
+			onEventPageChanged();
+		"sub": 
+			if len(chart.events[curEvent][1])>1:
+				chart.events[curEvent][1].remove(eventPage);
+				eventPage=max(eventPage-1,0);
+				onEventPageChanged();	
+		"next":
+			eventPage=min(eventPage+1,len(chart.events[curEvent][1])-1);
+			onEventPageChanged();
+		"prev":
+			eventPage=max(eventPage-1,0);
+			onEventPageChanged();
+		
 func onSongOptionChanged(val,opt):
 	match songTab[opt].get_class():
 		"OptionButton": 
@@ -398,6 +446,9 @@ func onCharChanged(chara):
 	var path=iconsPath%[songTab[chara].get_item_text(songTab[chara].selected)];
 	var noIcon=load(iconsPath%["no-icon"]);
 	charIcons[chara]=load(path) if ResourceLoader.exists(path) else noIcon;
+
+func onTimeScrollChanged():
+	Conductor.time=timeScroll.value*inst.stream.get_length();
 
 func getNoteOverMouse(mouseTime,mouseColumn):
 	var sectStart=getSectionStart(curSection)*1000.0;
@@ -454,6 +505,12 @@ func getSection(time):
 		if totalTime+sectLen>time:
 			return i;
 		totalTime+=sectLen;
+	return 0;
+
+func getNoteTypeNumber(type):
+	for i in len(Game.noteTypes):
+		if Game.noteTypes[i]==type:
+			return i;
 	return 0;
 
 func getStrumTime(y):
