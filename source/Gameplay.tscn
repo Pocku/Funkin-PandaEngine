@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://source/Gameplay.gd" type="Script" id=1]
+
+[node name="Gameplay" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+offset = Vector2( 640, 360 )
+transform = Transform2D( 1, 0, 0, 1, 640, 360 )
+
+[node name="Strums" type="Node2D" parent="UI"]
+
+[node name="GetReady" type="Sprite" parent="UI"]
+
+[node name="Inst" type="AudioStreamPlayer" parent="."]
+
+[node name="Voices" type="AudioStreamPlayer" parent="."]
+
+[node name="Tween" type="Tween" parent="."]

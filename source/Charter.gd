@@ -81,7 +81,7 @@ func _ready():
 	for i in 3: charIcons["player%s"%[i+1]]=load("res://assets/images/char-icons/no-icon.png");
 	
 	for i in ["purple","blue","green","red"]: 
-		noteAtlas.append(load("res://assets/images/ui-skin/default/notes-types/normal/%s.png"%[i]));
+		noteAtlas.append(load("res://assets/images/ui-skin/default/notes-types/default/%s.png"%[i]));
 	
 	for i in songTab.keys():
 		match songTab[i].get_class():
@@ -211,19 +211,20 @@ func _process(dt):
 	update();
 	
 func _draw():
-	drawGrid([Color("d9d7d7"),Color("e7e7e7")]);
+	drawGrid([Color("d9d7d7"),Color("e7e7e7")],[Color("d9d7d7").darkened(0.2),Color("e7e7e7").darkened(0.2)]);
 	for i in range(-4 if curSection>0 else 0,8,1): 
 		draw_line(Vector2(0,(i*4)*gridSize),Vector2(8*gridSize,(i*4)*gridSize),Color.gray,2.0);
 	
 	if curSection>0: drawSection(curSection-1,-16*gridSize);
 	if curSection<len(chart.notes)-1: drawSection(curSection+1,16*gridSize);
+	draw_line(Vector2(0,-(16*gridSize)),Vector2(0,(16*gridSize)*2),Color.black,2.0,false);
+	draw_line(Vector2(4*gridSize,-(16*gridSize)),Vector2(4*gridSize,(16*gridSize)*2),Color.black,2.0,false);
+	
 	drawSection(curSection,0);
 	drawEvents();
 	draw_line(Vector2(-1*gridSize,strumlineY),Vector2(8*gridSize,strumlineY),Color.white,3.0,false);
 	
 	if isMouseInsideGrid(): draw_rect(Rect2(mouseGrid,Vector2.ONE*gridSize),Color(1,1,1,0.7));
-	draw_line(Vector2(0,-(16*gridSize)),Vector2(0,(16*gridSize)*2),Color.black,2.0,false);
-	draw_line(Vector2(4*gridSize,-(16*gridSize)),Vector2(4*gridSize,(16*gridSize)*2),Color.black,2.0,false);
 	
 	var mustHit=chart.notes[curSection].mustHitSection;
 	var gfSection=chart.notes[curSection].gfSection;
@@ -242,8 +243,8 @@ func drawSection(tSect,offsetY):
 	var sectData=chart.notes[tSect];
 	var startTime=getSectionStart(tSect)*1000.0;
 	
-	draw_line(Vector2(0,offsetY),Vector2(8*gridSize,offsetY),Color.tomato,2.0,false);
-	for n in sectData.sectionNotes:
+	for i in len(sectData.sectionNotes):
+		var n=sectData.sectionNotes[i];
 		if n[1]<0: continue;
 		var time=(n[0]-startTime)/1000.0;
 		var dur=n[2]/1000.0;
@@ -255,6 +256,10 @@ func drawSection(tSect,offsetY):
 		var lenA=Vector2((column*gridSize)+gridSize/2,round(getStrumY(time))+offsetY+gridSize/2);
 		var lenB=Vector2((column*gridSize)+gridSize/2,round(getStrumY(time+dur))+offsetY+gridSize/2);
 		draw_texture_rect(tex,Rect2(pos+Vector2(0,offsetY),Vector2.ONE*gridSize),false,color);
+		
+		if curNote!=-1 && curNote==i:
+			draw_rect(Rect2(pos+Vector2(0,offsetY),Vector2.ONE*gridSize),Color.red,false,2);
+				
 		
 		if getNoteTypeNumber(n[3])>0:
 			var txSize=font.get_string_size(str(getNoteTypeNumber(n[3])));
@@ -274,13 +279,14 @@ func drawEvents():
 		var txSize=font.get_string_size(str(len(e[1])));
 		draw_string(font,pos+Vector2((gridSize/2.0)-txSize.x/2.0,gridSize-txSize.y/2.0),str(len(e[1])),Color.white);
 		
-func drawGrid(colors):
+func drawGrid(colors,darkColors):
 	for x in range(-1,8): for y in range(-16 if curSection>0 else 0,32):
-		draw_rect(Rect2(x*gridSize,(y*gridSize),gridSize,gridSize),colors[(x+y)%2],true);
+		var curColors=darkColors if y<0 || y>15 else colors;
+		draw_rect(Rect2(x*gridSize,(y*gridSize),gridSize,gridSize),curColors[(x+y)%2],true);
 
 func loadSong():
 	var f=File.new();
-	f.open("res://assets/data/%s/%s.json"%[Game.curSong,Game.curMode],File.READ);
+	f.open("res://assets/data/%s/%s.json"%[Game.song,Game.mode],File.READ);
 	chart=parse_json(f.get_as_text()).song;
 	f.close();
 	
@@ -315,8 +321,8 @@ func loadSong():
 	
 	for i in 3: onCharChanged("player%s"%[i+1]);
 	
-	inst.stream=load("res://assets/songs/%s/Inst.ogg"%[Game.curSong]);
-	voices.stream=load("res://assets/songs/%s/Voices.ogg"%[Game.curSong]);
+	inst.stream=load("res://assets/songs/%s/Inst.ogg"%[Game.song]);
+	voices.stream=load("res://assets/songs/%s/Voices.ogg"%[Game.song]);
 
 func selectOptionButtonByName(opt:OptionButton,id):
 	for i in opt.get_item_count():
@@ -422,13 +428,13 @@ func onSongOptionChanged(val,opt):
 					f.close();
 					printt("Chart saved!",path);
 				"load":
-					Game.curSong=songTab.song.get_item_text(songTab.song.selected);
-					Game.curMode=songTab.mode.get_item_text(songTab.mode.selected);
+					Game.song=songTab.song.get_item_text(songTab.song.selected);
+					Game.mode=songTab.mode.get_item_text(songTab.mode.selected);
 					get_tree().reload_current_scene();
-					printt("Song loaded!",Game.curSong,Game.curMode);
+					printt("Song loaded!",Game.song,Game.mode);
 				"reload":
 					get_tree().reload_current_scene();
-					printt("Song reloaded!",Game.curSong,Game.curMode);
+					printt("Song reloaded!",Game.song,Game.mode);
 				
 		_: chart[opt]=val;
 	if opt=="bpm": Conductor.setBpm(getLastBpm(curSection));

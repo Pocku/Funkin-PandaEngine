@@ -16,8 +16,9 @@ var eventType=[
 	"","camZoom","camMove"
 ]
 
-var curSong="black-sun";
-var curMode="hard";
+var song="black-sun";
+var mode="hard";
+var uiSkin="default";
 
 func getCharacterList():
 	var list=getFilesInFolder("source/characters/");
