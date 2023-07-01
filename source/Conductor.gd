@@ -6,6 +6,7 @@ var bpm=100;
 var crochet=60.0/bpm;
 var stepCrochet=crochet/4.0;
 var time=0.0;
+var waitTime=0.0;
 var beatCount=0;
 
 func reset():

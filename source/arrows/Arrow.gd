@@ -2,6 +2,7 @@ extends Node2D
 
 onready var sprite=$Sprite;
 onready var anims=$Sprite/Animations;
+onready var path=$Path;
 var column=0;
 
 func _ready():
