@@ -13,7 +13,7 @@ var offsyncAllowed=30.0;
 
 var score=0;
 var combo=0;
-var health=0.5;
+var health=50;
 var notesHit=0;
 var notesTotal=0;
 var goods=0;
@@ -21,6 +21,10 @@ var bads=0;
 var shits=0;
 var sicks=0;
 var misses=0;
+
+var bf=null;
+var dad=null;
+var gf=null;
 
 var notesQueue=[];
 var eventsQueue=[];
@@ -55,6 +59,23 @@ func _process(dt):
 			notesQueue.remove(0);
 	
 	
+	for strum in strums.get_children():
+		for i in strum.get_child_count():
+			var arrow=strum.get_child(i);
+			if !arrow.notes.empty():
+				var note=arrow.notes[0];
+				var ms=note.time-Conductor.time;
+				if ms<=0.0:
+					note.onHit();
+					arrow.notes.remove(0);
+					arrow.playAnim("confirm");
+					note.queue_free();
+				
+			if arrow.getCurAnim()=="":
+				arrow.playAnim("arrow");
+			
+			
+	
 func startCountdown():
 	for i in 5:
 		yield(get_tree().create_timer(Conductor.crochet),"timeout");
@@ -69,8 +90,10 @@ func startCountdown():
 	
 func createNote(nData):
 	var tStrum=null;
+	var isPlayer=false;
 	if nData.mustHit && nData.column>-1 && nData.column<4 || !nData.mustHit && nData.column>3 && nData.column<8:
 		tStrum=strums.get_child(1);
+		isPlayer=true;
 	if !nData.mustHit && nData.column>-1 && nData.column<4 || nData.mustHit && nData.column>3 && nData.column<8:
 		tStrum=strums.get_child(0);
 	
@@ -85,8 +108,13 @@ func createNote(nData):
 	note.length=nData.length;
 	note.duration=nData.length;
 	note.position.y=1600;
-	tStrum.get_child(fColumn).path.add_child(note);
+	note.isPlayer=isPlayer;
 	
+	var arrow=tStrum.get_child(fColumn);
+	arrow.path.add_child(note);
+	arrow.notes.append(note);
+	
+		
 func loadSong():
 	var f=File.new();
 	f.open("res://assets/data/%s/%s.json"%[Game.song,Game.mode],File.READ);

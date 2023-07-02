@@ -3,6 +3,8 @@ extends Node2D
 onready var sprite=$Sprite;
 onready var anims=$Sprite/Animations;
 onready var path=$Path;
+
+var notes=[];
 var column=0;
 
 func _ready():
@@ -14,5 +16,8 @@ func playAnim(id):
 func seekAnim(time):
 	return anims.seek(time);
 
-func getAnimTime(id):
+func getCurAnim():
 	return anims.current_animation;
+
+func getAnimTime(id):
+	return anims.current_animation_position;
