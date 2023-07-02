@@ -19,5 +19,5 @@ func seekAnim(time):
 func getCurAnim():
 	return anims.current_animation;
 
-func getAnimTime(id):
+func getAnimTime():
 	return anims.current_animation_position;

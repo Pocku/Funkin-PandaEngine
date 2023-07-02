@@ -18,8 +18,8 @@ var eventType=[
 
 var song="black-sun";
 var mode="hard";
-var uiSkin="default";
-var scrollScale=1000.0;
+var uiSkin="pixel";
+var scrollScale=1400.0;
 
 func getCharacterList():
 	var list=getFilesInFolder("source/characters/");

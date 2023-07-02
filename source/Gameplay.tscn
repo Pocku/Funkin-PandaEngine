@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://source/Gameplay.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/ui-skin/default/hpbar.png" type="Texture" id=2]
+[ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://assets/images/char-icons/bf.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/char-icons/dad.png" type="Texture" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 21
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 3 )
 
 [node name="Gameplay" type="Node2D"]
 script = ExtResource( 1 )
@@ -12,6 +22,43 @@ transform = Transform2D( 1, 0, 0, 1, 640, 360 )
 [node name="Strums" type="Node2D" parent="UI"]
 
 [node name="GetReady" type="Sprite" parent="UI"]
+
+[node name="HpBar" type="TextureProgress" parent="UI"]
+margin_left = -300.5
+margin_top = 298.0
+margin_right = 300.5
+margin_bottom = 317.0
+step = 0.001
+value = 50.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 2 )
+fill_mode = 1
+
+[node name="Icons" type="Node2D" parent="UI/HpBar"]
+position = Vector2( 300.5, 10 )
+
+[node name="Left" type="Sprite" parent="UI/HpBar/Icons"]
+position = Vector2( -48, 0 )
+texture = ExtResource( 5 )
+hframes = 2
+
+[node name="Right" type="Sprite" parent="UI/HpBar/Icons"]
+position = Vector2( 48, 0 )
+texture = ExtResource( 4 )
+flip_h = true
+hframes = 2
+
+[node name="ScoreLabel" type="RichTextLabel" parent="UI"]
+margin_left = -640.0
+margin_top = 327.0
+margin_right = 640.0
+margin_bottom = 353.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]N/A"
+text = "N/A"
+fit_content_height = true
+scroll_active = false
 
 [node name="Inst" type="AudioStreamPlayer" parent="."]
 

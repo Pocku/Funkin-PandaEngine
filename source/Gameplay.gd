@@ -2,6 +2,9 @@ extends Node2D
 
 onready var ui=$UI;
 onready var getReady=$UI/GetReady;
+onready var hpbar=$UI/HpBar;
+onready var scoreLabel=$UI/ScoreLabel;
+onready var playerIcons=$UI/HpBar/Icons;
 onready var inst=$Inst;
 onready var strums=$UI/Strums;
 onready var voices=$Voices;
@@ -32,6 +35,9 @@ var eventsQueue=[];
 func _ready():
 	loadSong();
 	
+	hpbar.tint_under=Color.red;
+	hpbar.tint_progress=Color.lime;
+	
 	for i in 2:
 		var strum=Strums.new();
 		strum.position.x=[-500,148][i];
@@ -58,33 +64,26 @@ func _process(dt):
 			createNote(notesQueue[0]);
 			notesQueue.remove(0);
 	
+func _physics_process(dt):
+	hpbar.value=lerp(hpbar.value,health,0.08);
+	playerIcons.position.x=601-float(hpbar.value/100.0)*601;
+	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s"%[0,str(0,"%"),0];
 	
-	for strum in strums.get_children():
-		for i in strum.get_child_count():
-			var arrow=strum.get_child(i);
-			if !arrow.notes.empty():
-				var note=arrow.notes[0];
-				var ms=note.time-Conductor.time;
-				if ms<=0.0:
-					note.onHit();
-					arrow.notes.remove(0);
-					arrow.playAnim("confirm");
-					note.queue_free();
-				
-			if arrow.getCurAnim()=="":
-				arrow.playAnim("arrow");
-			
-			
-	
+
 func startCountdown():
+	var countdownScale=1.0;
+	match Game.uiSkin:
+		"pixel": countdownScale=6.0;
+	
 	for i in 5:
 		yield(get_tree().create_timer(Conductor.crochet),"timeout");
 		if i>3: continue;
 		Sfx.play("intro%s-%s"%[["3","2","1","Go"][i],Game.uiSkin]);
 		getReady.texture=load("res://assets/images/ui-skin/%s/%s.png"%[Game.uiSkin,["","ready","set","go"][i]]) if i>0 else null;
-		tw.interpolate_property(getReady,"scale",Vector2.ONE*0.8,Vector2.ONE*0.6,Conductor.crochet,Tween.TRANS_CIRC,Tween.EASE_OUT);
+		tw.interpolate_property(getReady,"scale",Vector2.ONE*countdownScale*0.8,Vector2.ONE*countdownScale*0.6,Conductor.crochet,Tween.TRANS_CIRC,Tween.EASE_OUT);
 		tw.interpolate_property(getReady,"modulate:a",4.0,0.0,Conductor.crochet,Tween.TRANS_CIRC,Tween.EASE_OUT);
 		tw.start();
+		
 	for i in [inst,voices]: i.play(0.0);
 	songStarted=true;
 	
