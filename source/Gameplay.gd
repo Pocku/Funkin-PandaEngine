@@ -4,10 +4,13 @@ onready var ui=$UI;
 onready var getReady=$UI/GetReady;
 onready var hpbar=$UI/HpBar;
 onready var scoreLabel=$UI/ScoreLabel;
+onready var sicksLabel=$UI/SicksLabel;
 onready var playerIcons=$UI/HpBar/Icons;
-onready var inst=$Inst;
+onready var combo=$Combo;
 onready var strums=$UI/Strums;
+onready var inst=$Inst;
 onready var voices=$Voices;
+onready var cam=$Cam;
 onready var tw=$Tween;
 
 var chart={};
@@ -15,7 +18,7 @@ var songStarted=false;
 var offsyncAllowed=30.0;
 
 var score=0;
-var combo=0;
+var comboTotal=0;
 var health=50;
 var notesHit=0;
 var notesTotal=0;
@@ -34,6 +37,7 @@ var notesQueue=[];
 var eventsQueue=[];
 
 func _ready():
+	Conductor.connect("beat",self,"onBeat");
 	loadSong();
 	
 	stage=load("res://source/stages/%s.tscn"%[chart.stage]).instance();
@@ -51,6 +55,13 @@ func _ready():
 		stage.move_child(chara,min(data.depth,stage.get_child_count()));
 		set(["bf","dad","gf"][i],chara);
 	
+	cam.position=Vector2(stage.cam.x,stage.cam.y);
+	cam.rotation=deg2rad(stage.cam.rotation);
+	cam.baseZoom=stage.cam.zoom;
+	
+	combo.setBaseScale(0.75);
+	move_child(combo,get_child_count());
+	
 	hpbar.tint_under=Color.red;
 	hpbar.tint_progress=Color.lime;
 	
@@ -59,8 +70,13 @@ func _ready():
 		strums.add_child(strum);
 		strum.position.x=[-500,148][i];
 		strum.character=get(["dad","bf"][i]);
+		
 	strums.get_child(1).isPlayer=true;	
-	strums.position.y=[-238,230][0];
+	strums.position.y=[-264,270][int(Settings.downScroll)];
+	
+	hpbar.rect_position.y=[298,-298][int(Settings.downScroll)];
+	scoreLabel.rect_position.y=hpbar.rect_position.y+32;
+	updateScoreLabel();
 	
 	Conductor.setBpm(chart.bpm);
 	Conductor.waitTime=Conductor.crochet*5;
@@ -83,10 +99,43 @@ func _process(dt):
 			notesQueue.remove(0);
 	
 func _physics_process(dt):
-	hpbar.value=lerp(hpbar.value,health,0.13);
+	hpbar.value=lerp(hpbar.value,health,0.2);
 	playerIcons.position.x=601-float(hpbar.value/100.0)*601;
-	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s"%[0,str(0,"%"),0];
+	sicksLabel.bbcode_text="SICKS: %s \nGOODS: %s \nBADS:  %s \nSHITS: %s"%[sicks,goods,bads,shits];
+
+func popUpScore(data):
+	var ms=abs(data[0]-Conductor.time);
+	var rating="shit";
+	var points=0;
+	var acc=0.0;
 	
+	if ms<0.17:
+		rating="shit";
+		points=25;
+		acc=0.1;
+	if ms<0.12:
+		rating="bad";
+		points=100;
+		acc=0.3;
+	if ms<0.08:
+		rating="good";
+		points=500;
+		acc=0.8;
+	if ms<0.04:
+		rating="sick";
+		points=1000;
+		acc=1.0;
+	
+	combo.pop(rating);
+	score+=points;
+	notesHit+=acc;
+	set(str(rating,"s"),get(str(rating,"s"))+1);
+	updateScoreLabel();
+	
+func onBeat(beat):
+	cam.bumpScale=-0.02;
+	tw.interpolate_property(playerIcons,"scale",Vector2.ONE*1.08,Vector2.ONE,Conductor.crochet/4.0);
+	tw.start();
 
 func startCountdown():
 	var countdownScale=1.0;
@@ -125,6 +174,7 @@ func createNote(nData):
 			
 	var note=load("res://source/notes/%s.tscn"%[path]).instance();
 	var fColumn=int(nData.column)%4;
+	note.type=nData.type;
 	note.time=nData.time;
 	note.column=fColumn;
 	note.length=nData.length;
@@ -136,6 +186,8 @@ func createNote(nData):
 	arrow.path.add_child(note);
 	arrow.notes.append(note);
 	
+	if isPlayer && nData.type=="":
+		notesTotal+=1;
 		
 func loadSong():
 	var f=File.new();
@@ -176,7 +228,18 @@ func loadSong():
 	inst.stream=load("res://assets/songs/%s/Inst.ogg"%[Game.song]);
 	voices.stream=load("res://assets/songs/%s/Voices.ogg"%[Game.song]);
 	notesQueue.sort_custom(self,"sortNotes");
-	
+
+func muffleSong():
+	tw.interpolate_property(inst,"volume_db",-40.0,0.0,0.5);
+	tw.interpolate_property(voices,"volume_db",-40.0,0.0,0.5);
+	tw.start();
+
+func unMuffleSong():
+	inst.volume_db=0.0;
+	voices.volume_db=0.0;
+
+func updateScoreLabel():
+	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s"%[score,str(str(stepify(float((notesHit/notesTotal)*100.0 if notesTotal>0 else 0),0.01)).pad_decimals(2),"%"),misses];
 	
 func sortNotes(a,b):
 	return a.time<b.time;

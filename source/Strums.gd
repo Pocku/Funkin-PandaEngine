@@ -6,8 +6,11 @@ var character=null;
 func _ready():
 	scale*=0.75;
 	for i in 4:
-		var arrowPath="res://source/arrows/Arrow.tscn";
-		var arrow=load(arrowPath).instance();
+		var arrowPath="arrow";
+		match Game.uiSkin:
+			"pixel": arrowPath="arrow-pixel";
+		
+		var arrow=load("res://source/arrows/%s.tscn"%[arrowPath]).instance();
 		arrow.position.x=161*i;
 		arrow.column=i;
 		add_child(arrow);
@@ -36,13 +39,11 @@ func updateArrow(arrow,key):
 			note.onMiss();
 			if note.duration==0.0:
 				note=killNote(arrow);
-		
-		if canDeleteLongNote && note!=null:
-			note=killNote(arrow);
+			
+		if canDeleteLongNote && note!=null: note=killNote(arrow);
 		
 		if !Input.is_action_pressed(key) && note!=null:
-			if canMissLongNote && note.held:
-				note.onMiss();
+			if canMissLongNote && note.held: note.onMiss();
 		
 		if Input.is_action_just_pressed(key) && note!=null:
 			if !note.pressed:

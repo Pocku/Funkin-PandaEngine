@@ -18,7 +18,7 @@ var eventType=[
 
 var song="black-sun";
 var mode="hard";
-var uiSkin="pixel";
+var uiSkin="default";
 var scrollScale=1400.0;
 var botMode=false;
 
