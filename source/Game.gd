@@ -20,6 +20,7 @@ var song="black-sun";
 var mode="hard";
 var uiSkin="pixel";
 var scrollScale=1400.0;
+var botMode=false;
 
 func getCharacterList():
 	var list=getFilesInFolder("source/characters/");

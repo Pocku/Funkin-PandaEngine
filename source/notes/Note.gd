@@ -39,31 +39,44 @@ func updateLine():
 	end.scale.y=1.0-(abs(posY)/64.0) if posY<=0.0 else 1.0;
 
 func onHit():
+	var player=getStrumsPlayer();
 	pressed=true;
 	if duration>0.0:
 		texture=null;
 		held=true;
 		updateLine();
-	if isPlayer:
-		setProperty("health",min(getProperty("health")+10,100));
+	if isPlayer: setProperty("health",min(getProperty("health")+5,100));
+		
+	var singDir="sing%s"%["Left","Down","Up","Right"][column];	
+	player.playAnim(singDir);
+	player.seekAnim(0.0);
 	
 func onHeld():
 	held=true;
-	pass
+	if isPlayer: setProperty("health",min(getProperty("health")+0.015,100));
+	
+	var player=getStrumsPlayer();
+	var singDir="sing%s"%["Left","Down","Up","Right"][column];	
+	player.playAnim(singDir);
+	if player.getAnimTime()>0.1:
+		player.seekAnim(0.0);
 	
 func onMiss():
 	missed=true;
+	held=false;
 	if isPlayer: 
-		setProperty("health",max(getProperty("health")-10,0));
-	pass
+		setProperty("health",max(getProperty("health")-5,0));
 	
 func onHeldMiss():
+	held=false;
 	if isPlayer: 
-		setProperty("health",max(getProperty("health")-0.01,0));
-	pass
+		setProperty("health",max(getProperty("health")-0.02,0));
 
 func callFunc(id):
 	return get_tree().current_scene.call(id);
+
+func getStrumsPlayer():
+	return get_parent().get_parent().get_parent().character;
 
 func setProperty(id,val):
 	return get_tree().current_scene.set(id,val);

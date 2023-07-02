@@ -28,6 +28,7 @@ var misses=0;
 var bf=null;
 var dad=null;
 var gf=null;
+var stage=null;
 
 var notesQueue=[];
 var eventsQueue=[];
@@ -35,16 +36,33 @@ var eventsQueue=[];
 func _ready():
 	loadSong();
 	
+	stage=load("res://source/stages/%s.tscn"%[chart.stage]).instance();
+	add_child(stage);
+	for i in 3:
+		var charId=chart[["player1","player2","player3"][i]];
+		if charId=="" || not charId in Game.charactersList:
+			continue;
+		var chara=load("res://source/characters/%s.tscn"%[charId]).instance();
+		var data=stage[["bf","dad","gf"][i]];
+		stage.add_child(chara);
+		chara.position=Vector2(data.x,data.y);
+		chara.scale=Vector2.ONE*data.scale;
+		chara.scale.x*=-1 if data.flip else 1.0;
+		stage.move_child(chara,min(data.depth,stage.get_child_count()));
+		set(["bf","dad","gf"][i],chara);
+	
 	hpbar.tint_under=Color.red;
 	hpbar.tint_progress=Color.lime;
 	
 	for i in 2:
 		var strum=Strums.new();
-		strum.position.x=[-500,148][i];
 		strums.add_child(strum);
+		strum.position.x=[-500,148][i];
+		strum.character=get(["dad","bf"][i]);
 	strums.get_child(1).isPlayer=true;	
 	strums.position.y=[-238,230][0];
 	
+	Conductor.setBpm(chart.bpm);
 	Conductor.waitTime=Conductor.crochet*5;
 	startCountdown();
 	
@@ -65,7 +83,7 @@ func _process(dt):
 			notesQueue.remove(0);
 	
 func _physics_process(dt):
-	hpbar.value=lerp(hpbar.value,health,0.08);
+	hpbar.value=lerp(hpbar.value,health,0.13);
 	playerIcons.position.x=601-float(hpbar.value/100.0)*601;
 	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s"%[0,str(0,"%"),0];
 	
@@ -78,6 +96,7 @@ func startCountdown():
 	for i in 5:
 		yield(get_tree().create_timer(Conductor.crochet),"timeout");
 		if i>3: continue;
+		Conductor.addBeat();
 		Sfx.play("intro%s-%s"%[["3","2","1","Go"][i],Game.uiSkin]);
 		getReady.texture=load("res://assets/images/ui-skin/%s/%s.png"%[Game.uiSkin,["","ready","set","go"][i]]) if i>0 else null;
 		tw.interpolate_property(getReady,"scale",Vector2.ONE*countdownScale*0.8,Vector2.ONE*countdownScale*0.6,Conductor.crochet,Tween.TRANS_CIRC,Tween.EASE_OUT);
@@ -85,7 +104,11 @@ func startCountdown():
 		tw.start();
 		
 	for i in [inst,voices]: i.play(0.0);
+	Conductor.beatTime=0.0;
+	Conductor.beatCount=0;
+	Conductor.addBeat();
 	songStarted=true;
+	
 	
 func createNote(nData):
 	var tStrum=null;
@@ -96,7 +119,7 @@ func createNote(nData):
 	if !nData.mustHit && nData.column>-1 && nData.column<4 || nData.mustHit && nData.column>3 && nData.column<8:
 		tStrum=strums.get_child(0);
 	
-	var path="Note";
+	var path="note";
 	match nData.type:
 		_: pass;
 			

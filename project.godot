@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Strums",
 "language": "GDScript",
-"path": "res://source/Strums.gd"
+"path": "res://source/strums.gd"
 } ]
 _global_script_class_icons={
 "Strums": ""
@@ -21,14 +21,14 @@ _global_script_class_icons={
 [application]
 
 config/name="Funkin"
-run/main_scene="res://source/StartMenu.tscn"
+run/main_scene="res://source/start-menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Game="*res://source/Game.gd"
-Conductor="*res://source/Conductor.gd"
-Sfx="*res://source/Sfx.gd"
+Game="*res://source/game.gd"
+Conductor="*res://source/conductor.gd"
+Sfx="*res://source/sfx.gd"
 
 [display]
 
