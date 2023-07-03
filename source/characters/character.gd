@@ -16,7 +16,8 @@ func onBeat(beat):
 			seekAnim(0.0);
 
 func playAnim(id):
-	anims.play(id);
+	if anims.has_animation(id):
+		anims.play(id);
 
 func seekAnim(time):
 	return anims.seek(time);

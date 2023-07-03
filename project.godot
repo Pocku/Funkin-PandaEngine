@@ -30,6 +30,7 @@ Game="*res://source/game.gd"
 Conductor="*res://source/conductor.gd"
 Sfx="*res://source/sfx.gd"
 Settings="*res://source/settings.gd"
+VolumeMenu="*res://source/volume-menu.tscn"
 
 [display]
 

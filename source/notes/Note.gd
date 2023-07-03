@@ -78,11 +78,12 @@ func onHeld():
 	var player=getStrumsPlayer();
 	var singDir="sing%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
 	player.playAnim(singDir);
-	if player.getAnimTime()>0.1:
+	if player.getAnimTime()>0.15:
 		player.seekAnim(0.0);
 	callFunc("unMuffleSong");
 	
 func onMiss():
+	var player=getStrumsPlayer();
 	missed=true;
 	held=false;
 	if isPlayer: 
@@ -93,11 +94,20 @@ func onMiss():
 		callFunc("updateScoreLabel");
 		callFunc("muffleSong");
 	
+	var singDir="miss%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
+	player.playAnim(singDir);
+	player.seekAnim(0.0);
+	
 func onHeldMiss():
+	var player=getStrumsPlayer();
 	held=false;
 	if isPlayer: 
 		setProperty("health",max(getProperty("health")-0.15,0));
-
+		
+	var singDir="miss%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
+	player.playAnim(singDir);
+	player.seekAnim(0.0);
+	
 func callFunc(id,args=null):
 	if args==null:
 		return get_tree().current_scene.call(id);
