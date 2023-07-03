@@ -1,7 +1,7 @@
 extends Node2D
 
 onready var ui=$UI;
-onready var getReady=$UI/GetReady;
+onready var countdown=$UI/Countdown;
 onready var hpbar=$UI/HpBar;
 onready var scoreLabel=$UI/ScoreLabel;
 onready var sicksLabel=$UI/SicksLabel;
@@ -16,6 +16,7 @@ onready var tw=$Tween;
 var chart={};
 var songStarted=false;
 var offsyncAllowed=30.0;
+var curSection=0;
 
 var score=0;
 var comboTotal=0;
@@ -32,6 +33,8 @@ var bf=null;
 var dad=null;
 var gf=null;
 var stage=null;
+var events=null;
+var songScript=null;
 
 var notesQueue=[];
 var eventsQueue=[];
@@ -43,8 +46,12 @@ func _ready():
 	
 	PauseMenu.canPause=false;
 	
+	songScript=preload("res://source/song-script.gd").new();
+	add_child(songScript);
+	
 	stage=load("res://source/stages/%s.tscn"%[chart.stage]).instance();
 	add_child(stage);
+	
 	for i in 3:
 		var charId=chart[["player1","player2","player3"][i]];
 		if charId=="" || not charId in Game.getCharacterList():
@@ -62,7 +69,7 @@ func _ready():
 	cam.rotation=deg2rad(stage.cam.rotation);
 	cam.baseZoom=stage.cam.zoom;
 	
-	combo.setBaseScale(0.85);
+	combo.setBaseScale(0.67);
 	move_child(combo,get_child_count());
 	
 	hpbar.tint_under=Color.red;
@@ -70,12 +77,16 @@ func _ready():
 	
 	for i in 2:
 		var strum=Strums.new();
+		strum.isPlayer=[false,true][i];
 		strums.add_child(strum);
 		strum.position.x=[-500,148][i];
 		strum.character=get(["dad","bf"][i]);
-		
-	strums.get_child(1).isPlayer=true;	
 	strums.position.y=[-264,270][int(Settings.downScroll)];
+	
+	if Settings.midScroll:
+		strums.get_child(1).position.x=-strums.get_child(1).getWidth()/2.0;
+		strums.get_child(0).position.x=-(strums.get_child(0).getWidth()+161/2);
+		strums.get_child(0).modulate.a=0.2;
 	
 	hpbar.rect_position.y=[298,-298][int(Settings.downScroll)];
 	scoreLabel.rect_position.y=hpbar.rect_position.y+32;
@@ -83,7 +94,13 @@ func _ready():
 	
 	Conductor.setBpm(chart.bpm);
 	Conductor.waitTime=Conductor.crochet*5;
+	
+	events=preload("res://source/events.gd").new();
+	add_child(events);
+	
+	songScript.call("onCountdownStarted");
 	startCountdown();
+	
 	
 func _input(ev):
 	if ev is InputEventKey:
@@ -105,6 +122,24 @@ func _process(dt):
 		if dist<960:
 			createNote(notesQueue[0]);
 			notesQueue.remove(0);
+	
+	if !eventsQueue.empty():
+		var evTime=eventsQueue[0].time;
+		var subEvents=eventsQueue[0].events;
+		if (evTime-Conductor.time)<=0.0:
+			for i in subEvents:
+				events.onEvent(i[0],i[1],i[2]);
+				songScript.onEvent(i[0],i[1],i[2]);
+				printt("EVENT TRIGGERED:",i[0],i[1],i[2]);
+			eventsQueue.remove(0);
+	
+	var nextSect=getSection(Conductor.time);
+	if nextSect!=curSection:
+		curSection=nextSect;
+		onSectionChanged();
+		songScript.call("onSectionChanged",curSection,chart.notes[int(curSection)]);
+	
+	songScript.call("onUpdatePost",dt);
 	
 func _physics_process(dt):
 	hpbar.value=lerp(hpbar.value,health,0.2);
@@ -141,7 +176,6 @@ func popUpScore(data):
 	updateScoreLabel();
 	
 func onBeat(beat):
-	cam.bumpScale=-0.02;
 	tw.interpolate_property(playerIcons,"scale",Vector2.ONE*1.08,Vector2.ONE,Conductor.crochet/4.0);
 	tw.start();
 
@@ -155,10 +189,11 @@ func startCountdown():
 		if i>3: continue;
 		Conductor.addBeat();
 		Sfx.play("intro%s-%s"%[["3","2","1","Go"][i],Game.uiSkin]);
-		getReady.texture=load("res://assets/images/ui-skin/%s/%s.png"%[Game.uiSkin,["","ready","set","go"][i]]) if i>0 else null;
-		tw.interpolate_property(getReady,"scale",Vector2.ONE*countdownScale*0.8,Vector2.ONE*countdownScale*0.6,Conductor.crochet,Tween.TRANS_CIRC,Tween.EASE_OUT);
-		tw.interpolate_property(getReady,"modulate:a",4.0,0.0,Conductor.crochet,Tween.TRANS_CIRC,Tween.EASE_OUT);
+		countdown.texture=load("res://assets/images/ui-skin/%s/%s.png"%[Game.uiSkin,["","ready","set","go"][i]]) if i>0 else null;
+		tw.interpolate_property(countdown,"scale",Vector2.ONE*countdownScale*0.8,Vector2.ONE*countdownScale*0.6,Conductor.crochet,Tween.TRANS_CIRC,Tween.EASE_OUT);
+		tw.interpolate_property(countdown,"modulate:a",4.0,0.0,Conductor.crochet,Tween.TRANS_CIRC,Tween.EASE_OUT);
 		tw.start();
+		songScript.call("onCountdownBeat",i);
 		
 	for i in [inst,voices]: i.play(0.0);
 	Conductor.beatTime=0.0;
@@ -166,7 +201,11 @@ func startCountdown():
 	Conductor.addBeat();
 	PauseMenu.canPause=true;
 	songStarted=true;
-	
+	songScript.call("onSongStarted");
+
+func onSectionChanged():
+	pass
+
 func createNote(nData):
 	var tStrum=null;
 	var isPlayer=false;
@@ -196,7 +235,7 @@ func createNote(nData):
 	
 	if isPlayer && nData.type=="":
 		notesTotal+=1;
-		
+			
 func loadSong():
 	var f=File.new();
 	f.open("res://assets/data/%s/%s.json"%[Game.song,Game.mode],File.READ);
@@ -225,17 +264,49 @@ func loadSong():
 			var rawData=chart.notes[i].sectionNotes[n];
 			if rawData[1]>-1:
 				var nData={
-					"time":rawData[0]/1000.0,
+					"time":float(rawData[0])/1000.0,
 					"column":rawData[1],
-					"length":rawData[2]/1000.0,
+					"length":float(rawData[2])/1000.0,
 					"type":rawData[3],
 					"mustHit":chart.notes[i].mustHitSection
 				}
 				notesQueue.append(nData);
 	
+	for i in chart.events:
+		var data={
+			"time":float(i[0])/1000.0,
+			"events":i[1]
+		}
+		eventsQueue.append(data);
+	
 	inst.stream=load("res://assets/songs/%s/Inst.ogg"%[Game.song]);
 	voices.stream=load("res://assets/songs/%s/Voices.ogg"%[Game.song]);
 	notesQueue.sort_custom(self,"sortNotes");
+	#eventsQueue.sort_custom(self,"sortNotes");
+
+func getSectionStart(index):
+	var bpm=chart.bpm;
+	var time=0.0;
+	for i in range(0,index):
+		if (chart.notes[i].changeBPM if chart.notes[i].has("changeBPM") else false):
+			bpm=chart.notes[i].bpm
+		var sectLen=chart.notes[i].sectionBeats*(60.0/bpm);
+		time+=sectLen;
+	return time;
+
+func getSection(time):
+	var bpm=chart.bpm
+	var totalTime=0.0;
+	for i in range(0,chart.notes.size()):
+		if (chart.notes[i].changeBPM if chart.notes[i].has("changeBPM") else false):
+			bpm=chart.notes[i].bpm;
+		var sectLen=0.0;
+		if chart.notes[i].has("sectionBeats"):
+			sectLen=chart.notes[i].sectionBeats*(60.0/bpm);
+		if totalTime+sectLen>time:
+			return i;
+		totalTime+=sectLen;
+	return 0;
 
 func muffleSong():
 	tw.interpolate_property(inst,"volume_db",-40.0,0.0,0.5);
@@ -247,10 +318,13 @@ func unMuffleSong():
 	voices.volume_db=0.0;
 
 func updateScoreLabel():
-	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s"%[score,str(str(stepify(float((notesHit/notesTotal)*100.0 if notesTotal>0 else 0),0.01)).pad_decimals(2),"%"),misses];
+	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s    %s"%[
+		score,
+		str(str(stepify(float((notesHit/notesTotal)*100.0 if notesTotal>0 else 0),0.01)).pad_decimals(2),"%"),
+		misses,
+		"[color=red](BOTPLAY)" if Game.botMode else ""
+	];
 	
 func sortNotes(a,b):
 	return a.time<b.time;
 
-func sortEvents(a,b):
-	return a[0]<b[0];

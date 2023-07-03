@@ -4,7 +4,7 @@ onready var options=$Options;
 onready var tw=$Tween;
 onready var bg=$BG;
 
-var optionsList=["resume","restart song","exit to menu"];
+var optionsList=["resume","restart song","botplay","exit to menu"];
 var canPause=false;
 var paused=false;
 var mainOpt=0;
@@ -23,7 +23,6 @@ func _ready():
 		totalHeight+=130;
 	options.position=Vector2(1280/2,(720/2)-(totalHeight-120)/2);
 	
-	
 func _input(ev):
 	if ev is InputEventKey && canPause:
 		if ev.scancode in [KEY_UP,KEY_DOWN] && !ev.echo && ev.pressed:
@@ -41,7 +40,11 @@ func _input(ev):
 			if ev.scancode==KEY_ENTER:
 				match optionsList[mainOpt]:
 					"resume":
-						if paused: pause(false);
+						if paused: 
+							pause(false);
+							get_tree().current_scene.updateScoreLabel();
+					"botplay":
+						Game.botMode=!Game.botMode;
 					"restart song":
 						pause(false);
 						get_tree().reload_current_scene();
@@ -52,7 +55,10 @@ func _input(ev):
 func _physics_process(dt):
 	for i in options.get_child_count():
 		var opt=options.get_child(i);
-		opt.modulate=lerp(opt.modulate,Color.white if i==mainOpt else Color.white.darkened(0.6),0.13);
+		var mainColor=Color.white;
+		if optionsList[i]=="botplay":
+			mainColor=Color.yellow if Game.botMode else Color.white;
+		opt.modulate=lerp(opt.modulate,mainColor if i==mainOpt else mainColor.darkened(0.6),0.13);
 
 func onOptionChanged():
 	var opt=options.get_child(mainOpt);

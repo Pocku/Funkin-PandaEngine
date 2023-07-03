@@ -44,7 +44,7 @@ func _process(dt):
 	var ms=(time+Conductor.waitTime)-Conductor.time;
 	position.y=ms*(Game.scrollScale*([1,-1][int(Settings.downScroll)])/scrollMult) if !pressed else 0.0;
 	length=max(length-dt,0.0) if ms<=0.0 else length;
-	if ms<=0.0 && duration>0.0: updateLine();
+	if ms<=0.0 && duration>0.0 && pressed: updateLine();
 
 func updateLine():
 	var posY=(length*Game.scrollScale/scrollMult)-endHeight;
@@ -54,8 +54,6 @@ func updateLine():
 
 func onHit():
 	var player=getStrumsPlayer();
-	pressed=true;
-	pressed=true;
 	if duration>0.0:
 		texture=null;
 		held=true;
@@ -69,23 +67,21 @@ func onHit():
 	var singDir="sing%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
 	player.playAnim(singDir);
 	player.seekAnim(0.0);
+	Game.emit_signal("noteHit",getData());
 	
 func onHeld():
-	held=true;
+	var player=getStrumsPlayer();
 	if isPlayer: 
 		setProperty("health",min(getProperty("health")+0.015,100));
-		
-	var player=getStrumsPlayer();
 	var singDir="sing%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
 	player.playAnim(singDir);
 	if player.getAnimTime()>0.15:
 		player.seekAnim(0.0);
 	callFunc("unMuffleSong");
+	Game.emit_signal("noteHeld",getData());
 	
 func onMiss():
 	var player=getStrumsPlayer();
-	missed=true;
-	held=false;
 	if isPlayer: 
 		setProperty("health",max(getProperty("health")-5,0));
 		setProperty("score",getProperty("score")-100);
@@ -97,16 +93,17 @@ func onMiss():
 	var singDir="miss%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
 	player.playAnim(singDir);
 	player.seekAnim(0.0);
+	Game.emit_signal("noteMiss",getData());
 	
 func onHeldMiss():
 	var player=getStrumsPlayer();
-	held=false;
 	if isPlayer: 
 		setProperty("health",max(getProperty("health")-0.15,0));
 		
 	var singDir="miss%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
 	player.playAnim(singDir);
 	player.seekAnim(0.0);
+	Game.emit_signal("noteHeldMiss",getData());
 	
 func callFunc(id,args=null):
 	if args==null:
@@ -121,3 +118,12 @@ func setProperty(id,val):
 
 func getProperty(id):
 	return get_tree().current_scene.get(id);
+
+func getData():
+	return {
+		"time":time,
+		"column":column,
+		"duration":duration,
+		"type":type,
+		"isPlayer":isPlayer
+	}

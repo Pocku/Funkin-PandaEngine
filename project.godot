@@ -15,12 +15,18 @@ _global_script_classes=[ {
 "path": "res://source/alphabet/alphabet.gd"
 }, {
 "base": "Node2D",
+"class": "SongScript",
+"language": "GDScript",
+"path": "res://source/song-script.gd"
+}, {
+"base": "Node2D",
 "class": "Strums",
 "language": "GDScript",
 "path": "res://source/strums.gd"
 } ]
 _global_script_class_icons={
 "Alphabet": "",
+"SongScript": "",
 "Strums": ""
 }
 

@@ -24,7 +24,7 @@ transform = Transform2D( 1, 0, 0, 1, 640, 360 )
 
 [node name="Strums" type="Node2D" parent="UI"]
 
-[node name="GetReady" type="Sprite" parent="UI"]
+[node name="Countdown" type="Sprite" parent="UI"]
 
 [node name="HpBar" type="TextureProgress" parent="UI"]
 margin_left = -300.5
@@ -85,6 +85,7 @@ script = ExtResource( 7 )
 script = ExtResource( 8 )
 
 [node name="Cam" type="Camera2D" parent="."]
+position = Vector2( 640, 360 )
 rotating = true
 current = true
 script = ExtResource( 6 )

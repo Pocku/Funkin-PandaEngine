@@ -1,15 +1,21 @@
 extends Node
 
+signal noteHit(data);
+signal noteHeld(data);
+signal noteMiss(data);
+signal noteHeldMiss(data);
+signal playerDied;
+
 var noteTypes=[
 	"","Hurt","Alt"
 ]
 var eventType=[
-	"","camZoom","camMove"
+	"","camZoom","camMove","addBeatZoom"
 ]
 
 var song="black-sun";
 var mode="hard";
-var uiSkin="pixel";
+var uiSkin="default";
 var scrollScale=1400.0;
 var botMode=false;
 
