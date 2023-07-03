@@ -38,13 +38,16 @@ var eventsQueue=[];
 
 func _ready():
 	Conductor.connect("beat",self,"onBeat");
+	Conductor.reset();
 	loadSong();
+	
+	PauseMenu.canPause=false;
 	
 	stage=load("res://source/stages/%s.tscn"%[chart.stage]).instance();
 	add_child(stage);
 	for i in 3:
 		var charId=chart[["player1","player2","player3"][i]];
-		if charId=="" || not charId in Game.charactersList:
+		if charId=="" || not charId in Game.getCharacterList():
 			continue;
 		var chara=load("res://source/characters/%s.tscn"%[charId]).instance();
 		var data=stage[["bf","dad","gf"][i]];
@@ -59,7 +62,7 @@ func _ready():
 	cam.rotation=deg2rad(stage.cam.rotation);
 	cam.baseZoom=stage.cam.zoom;
 	
-	combo.setBaseScale(0.75);
+	combo.setBaseScale(0.85);
 	move_child(combo,get_child_count());
 	
 	hpbar.tint_under=Color.red;
@@ -82,7 +85,12 @@ func _ready():
 	Conductor.waitTime=Conductor.crochet*5;
 	startCountdown();
 	
-
+func _input(ev):
+	if ev is InputEventKey:
+		if ev.scancode in [KEY_7] && songStarted && !ev.echo && ev.pressed:
+			get_tree().change_scene("res://source/charter.tscn");
+	
+	
 func _process(dt):
 	Conductor.waitTime=max(Conductor.waitTime-dt,0.0);
 	if songStarted:
@@ -140,7 +148,7 @@ func onBeat(beat):
 func startCountdown():
 	var countdownScale=1.0;
 	match Game.uiSkin:
-		"pixel": countdownScale=6.0;
+		"pixel": countdownScale=8.0;
 	
 	for i in 5:
 		yield(get_tree().create_timer(Conductor.crochet),"timeout");
@@ -156,8 +164,8 @@ func startCountdown():
 	Conductor.beatTime=0.0;
 	Conductor.beatCount=0;
 	Conductor.addBeat();
+	PauseMenu.canPause=true;
 	songStarted=true;
-	
 	
 func createNote(nData):
 	var tStrum=null;
@@ -199,7 +207,7 @@ func loadSong():
 	if !chart.has("cutscene"): chart["cutscene"]="";
 	if !chart.has("stage"): chart["stage"]="stage";
 	if !chart.has("events"): chart["events"]=[];
-	if !chart.stage in Game.stagesList: chart.stage="stage";
+	if !chart.stage in Game.getStageList(): chart.stage="stage";
 	
 	for i in len(chart.notes):
 		if !chart.notes[i].has("gfSection"): chart.notes[i]["gfSection"]=false;

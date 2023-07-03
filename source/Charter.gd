@@ -111,11 +111,11 @@ func _ready():
 	for i in Game.getSongList(): 
 		songTab.song.add_item(i);
 		
-	for i in Game.stagesList: 
+	for i in Game.getStageList(): 
 		songTab.stage.add_item(i);
 		
 	for i in [songTab.player1,songTab.player2,songTab.player3]:
-		for c in Game.charactersList: 
+		for c in Game.getCharacterList(): 
 			i.add_item(c);
 	
 	for i in len(Game.noteTypes):
@@ -147,6 +147,9 @@ func _input(ev):
 			curSection=clamp(curSection+xDir,0,len(chart.notes));
 			Conductor.time=getSectionStart(curSection);
 			onSectionChanged();
+		
+		if ev.scancode in [KEY_ESCAPE] && !ev.echo && ev.pressed:
+			get_tree().change_scene("res://source/gameplay.tscn");
 		
 		if ev.scancode in [KEY_SHIFT] && !ev.echo:
 			snapPrecise=ev.pressed;
@@ -295,7 +298,7 @@ func loadSong():
 	if !chart.has("stage"): chart["stage"]="stage";
 	if !chart.has("events"): chart["events"]=[];
 	
-	if !chart.stage in Game.stagesList: chart.stage="stage";
+	if !chart.stage in Game.getStageList(): chart.stage="stage";
 	
 	for i in len(chart.notes):
 		if !chart.notes[i].has("gfSection"): chart.notes[i]["gfSection"]=false;
@@ -313,6 +316,8 @@ func loadSong():
 	songTab.bpm.value=chart.bpm;
 	songTab.speed.value=chart.speed;
 	
+	selectOptionButtonByName(songTab.song,Game.song);
+	selectOptionButtonByName(songTab.mode,Game.mode);
 	selectOptionButtonByName(songTab.stage,chart.stage);
 	selectOptionButtonByName(songTab.player1,chart.player1);
 	selectOptionButtonByName(songTab.player3,chart.player3);
@@ -417,6 +422,8 @@ func onSongOptionChanged(val,opt):
 		"OptionButton": 
 			if opt in ["player1","player2","player3"]: onCharChanged(opt);
 			chart[opt]=songTab[opt].get_item_text(songTab[opt].selected);
+			if opt=="song": Game.song=songTab[opt].get_item_text(songTab[opt].selected);
+			if opt=="mode": Game.mode=songTab[opt].get_item_text(songTab[opt].selected);
 			
 		"Button": 
 			match opt:

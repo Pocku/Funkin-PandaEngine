@@ -1,14 +1,5 @@
 extends Node
 
-var charactersList=[
-	"",
-	"bf",
-	"dad",
-	"gf"
-]
-var stagesList=[
-	"stage"
-]
 var noteTypes=[
 	"","Hurt","Alt"
 ]
@@ -18,12 +9,21 @@ var eventType=[
 
 var song="black-sun";
 var mode="hard";
-var uiSkin="default";
+var uiSkin="pixel";
 var scrollScale=1400.0;
 var botMode=false;
 
+func _input(ev):
+	if ev is InputEventKey:
+		if ev.scancode in [KEY_F4,KEY_F11] && !ev.echo && ev.pressed:
+			OS.window_fullscreen=!OS.window_fullscreen;
+
 func getCharacterList():
-	var list=getFilesInFolder("source/characters/");
+	var rawList=getFilesInFolder("source/characters/");
+	var list=[];
+	for i in len(rawList): 
+		if !str(rawList[i]).ends_with(".gd"):
+			list.append(str(rawList[i]).replace(".tscn",""));
 	list.push_front("");
 	return list;
 
@@ -31,7 +31,9 @@ func getSongList():
 	return getFilesInFolder("assets/songs/");
 
 func getStageList():
-	return getFilesInFolder("source/stages/");
+	var list=getFilesInFolder("source/stages/");
+	for i in len(list): list[i]=str(list[i]).replace(".tscn","");
+	return list;
 
 func getFilesInFolder(path):
 	var files=[];

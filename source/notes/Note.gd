@@ -5,7 +5,6 @@ onready var end=$Line/End;
 
 var type="";
 var time=0.0;
-var missTime=0.0;
 var scrollMult=1.0;
 var endHeight=64;
 var lineWidth=50;
@@ -55,6 +54,7 @@ func updateLine():
 
 func onHit():
 	var player=getStrumsPlayer();
+	pressed=true;
 	pressed=true;
 	if duration>0.0:
 		texture=null;

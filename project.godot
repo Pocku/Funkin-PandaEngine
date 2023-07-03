@@ -10,11 +10,17 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
+"class": "Alphabet",
+"language": "GDScript",
+"path": "res://source/alphabet/alphabet.gd"
+}, {
+"base": "Node2D",
 "class": "Strums",
 "language": "GDScript",
 "path": "res://source/strums.gd"
 } ]
 _global_script_class_icons={
+"Alphabet": "",
 "Strums": ""
 }
 
@@ -31,6 +37,8 @@ Conductor="*res://source/conductor.gd"
 Sfx="*res://source/sfx.gd"
 Settings="*res://source/settings.gd"
 VolumeMenu="*res://source/volume-menu.tscn"
+Debug="*res://source/debug.tscn"
+PauseMenu="*res://source/pause-menu.tscn"
 
 [display]
 

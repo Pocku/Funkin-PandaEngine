@@ -6,6 +6,7 @@ onready var tw=$Tween;
 onready var timer=$Timer;
 
 func _ready():
+	tab.rect_position.x=(1280/2.0)-(151/2.0);
 	timer.connect("timeout",self,"onTimerEnd")
 	setVolume(0.8);
 
@@ -25,5 +26,5 @@ func setVolume(val):
 	timer.start();
 	
 func onTimerEnd():
-	tw.interpolate_property(tab,"rect_position:y",0,-60.0,0.3,Tween.TRANS_CUBIC,Tween.EASE_IN_OUT);
+	tw.interpolate_property(tab,"rect_position:y",0,-64.0,0.3,Tween.TRANS_CUBIC,Tween.EASE_IN_OUT);
 	tw.start();
