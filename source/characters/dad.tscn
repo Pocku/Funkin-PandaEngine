@@ -205,6 +205,7 @@ tracks/2/keys = {
 
 [node name="Dad" type="Node2D"]
 script = ExtResource( 2 )
+camOffset = Vector2( 0, -400 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -183, -722 )

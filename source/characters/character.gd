@@ -3,6 +3,8 @@ extends Node
 onready var sprite=$Sprite;
 onready var anims=$Sprite/Animations;
 
+export var icon:Texture;
+export var camOffset=Vector2.ZERO;
 export var beatMult=1;
 
 func _ready():

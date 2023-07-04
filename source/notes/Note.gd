@@ -56,7 +56,6 @@ func onHit():
 	var player=getStrumsPlayer();
 	if duration>0.0:
 		texture=null;
-		held=true;
 		updateLine();
 	if isPlayer: 
 		setProperty("health",min(getProperty("health")+5,100));

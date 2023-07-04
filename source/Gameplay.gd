@@ -35,13 +35,20 @@ var gf=null;
 var stage=null;
 var events=null;
 var songScript=null;
+var sectionTarget=null;
+var camMoveWithSection=true;
 
 var notesQueue=[];
 var eventsQueue=[];
 
+var camSingOffset=Vector2.ZERO;
+var camSingLen=8.0;
+
 func _ready():
 	Conductor.connect("beat",self,"onBeat");
 	Conductor.reset();
+	
+	inst.connect("finished",self,"onSongFinished");
 	loadSong();
 	
 	PauseMenu.canPause=false;
@@ -116,7 +123,9 @@ func _process(dt):
 		var time=(inst.get_playback_position()+AudioServer.get_time_since_last_mix())-AudioServer.get_output_latency();
 		if abs(time-Conductor.time)>(offsyncAllowed/1000.0):
 			for i in [inst,voices]: i.seek(Conductor.time);
-	
+		if voices.stream && inst.get_playback_position()>voices.stream.get_length():
+			voices.volume_db=-80;
+		
 	if !notesQueue.empty():
 		var dist=((notesQueue[0].time+Conductor.waitTime)-Conductor.time)*Game.scrollScale;
 		if dist<960:
@@ -136,8 +145,9 @@ func _process(dt):
 	var nextSect=getSection(Conductor.time);
 	if nextSect!=curSection:
 		curSection=nextSect;
-		onSectionChanged();
+		onSectionChanged(chart.notes[curSection]);
 		songScript.call("onSectionChanged",curSection,chart.notes[int(curSection)]);
+		printt("SECTION CHANGED:",curSection);
 	
 	songScript.call("onUpdatePost",dt);
 	
@@ -145,7 +155,22 @@ func _physics_process(dt):
 	hpbar.value=lerp(hpbar.value,health,0.2);
 	playerIcons.position.x=601-float(hpbar.value/100.0)*601;
 	sicksLabel.bbcode_text="SICKS: %s \nGOODS: %s \nBADS:  %s \nSHITS: %s"%[sicks,goods,bads,shits];
-
+	
+	if is_instance_valid(sectionTarget):
+		match sectionTarget.getCurAnim():
+			"singLeft":
+				camSingOffset=Vector2.LEFT*camSingLen;
+			"singDown":
+				camSingOffset=Vector2.DOWN*camSingLen;
+			"singUp":
+				camSingOffset=Vector2.UP*camSingLen;
+			"singRight":
+				camSingOffset=Vector2.RIGHT*camSingLen;
+			"": pass;
+			_:
+				camSingOffset=Vector2.ZERO;
+	cam.offset=lerp(cam.offset,camSingOffset,0.08);
+	
 func popUpScore(data):
 	var ms=abs(data[0]-Conductor.time);
 	var rating="shit";
@@ -174,10 +199,6 @@ func popUpScore(data):
 	notesHit+=acc;
 	set(str(rating,"s"),get(str(rating,"s"))+1);
 	updateScoreLabel();
-	
-func onBeat(beat):
-	tw.interpolate_property(playerIcons,"scale",Vector2.ONE*1.08,Vector2.ONE,Conductor.crochet/4.0);
-	tw.start();
 
 func startCountdown():
 	var countdownScale=1.0;
@@ -203,8 +224,27 @@ func startCountdown():
 	songStarted=true;
 	songScript.call("onSongStarted");
 
-func onSectionChanged():
+func onBeat(beat):
+	tw.interpolate_property(playerIcons,"scale",Vector2.ONE*1.08,Vector2.ONE,Conductor.crochet/4.0);
+	tw.start();
+
+func onSongFinished():
+	inst.volume_db=-80.0;
+	voices.volume_db=-80.0;
 	pass
+
+func onSectionChanged(sectData):
+	var mustHit=sectData.mustHitSection;
+	var camTarget=Vector2();
+	var camMoveDur=0.8;
+	sectionTarget=bf if mustHit else dad;
+	
+	Conductor.setBpm(getLastBpm(curSection));
+	if camMoveWithSection:
+		camTarget=sectionTarget.global_position+sectionTarget.camOffset*sectionTarget.scale;
+		tw.interpolate_property(cam,"global_position",cam.global_position,camTarget,camMoveDur,Tween.TRANS_QUART,Tween.EASE_OUT);
+		tw.start();
+	
 
 func createNote(nData):
 	var tStrum=null;
@@ -282,7 +322,7 @@ func loadSong():
 	inst.stream=load("res://assets/songs/%s/Inst.ogg"%[Game.song]);
 	voices.stream=load("res://assets/songs/%s/Voices.ogg"%[Game.song]);
 	notesQueue.sort_custom(self,"sortNotes");
-	#eventsQueue.sort_custom(self,"sortNotes");
+	eventsQueue.sort_custom(self,"sortNotes");
 
 func getSectionStart(index):
 	var bpm=chart.bpm;
@@ -308,6 +348,14 @@ func getSection(time):
 		totalTime+=sectLen;
 	return 0;
 
+func getLastBpm(idx):
+	var bpm=chart.bpm;
+	var time=0.0;
+	for i in range(0,idx+1):
+		if chart.notes[i].changeBPM: 
+			bpm=chart.notes[i].bpm
+	return bpm;
+
 func muffleSong():
 	tw.interpolate_property(inst,"volume_db",-40.0,0.0,0.5);
 	tw.interpolate_property(voices,"volume_db",-40.0,0.0,0.5);
@@ -318,11 +366,12 @@ func unMuffleSong():
 	voices.volume_db=0.0;
 
 func updateScoreLabel():
-	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s    %s"%[
+	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s    %s  %s"%[
 		score,
 		str(str(stepify(float((notesHit/notesTotal)*100.0 if notesTotal>0 else 0),0.01)).pad_decimals(2),"%"),
 		misses,
-		"[color=red](BOTPLAY)" if Game.botMode else ""
+		"[color=red](BOTPLAY)" if Game.botMode else "",
+		notesTotal
 	];
 	
 func sortNotes(a,b):
