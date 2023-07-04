@@ -223,7 +223,7 @@ func _draw():
 	draw_line(Vector2(0,-(16*gridSize)),Vector2(0,(16*gridSize)*2),Color.black,2.0,false);
 	draw_line(Vector2(4*gridSize,-(16*gridSize)),Vector2(4*gridSize,(16*gridSize)*2),Color.black,2.0,false);
 	
-	drawSection(curSection,0);
+	drawSection(curSection,0,true);
 	drawEvents();
 	draw_line(Vector2(-1*gridSize,strumlineY),Vector2(8*gridSize,strumlineY),Color.white,3.0,false);
 	
@@ -242,7 +242,7 @@ func _draw():
 			"player2": draw_texture_rect_region(icon,Rect2(sideLeft if !mustHit else sideRight,strumlineY-32,64 if !mustHit else -64,64),Rect2(0,0,icon.get_width()/2,icon.get_height()),Color.white);
 	
 			
-func drawSection(tSect,offsetY):
+func drawSection(tSect,offsetY,isMain=false):
 	var sectData=chart.notes[tSect];
 	var startTime=getSectionStart(tSect)*1000.0;
 	
@@ -260,7 +260,7 @@ func drawSection(tSect,offsetY):
 		var lenB=Vector2((column*gridSize)+gridSize/2,round(getStrumY(time+dur))+offsetY+gridSize/2);
 		draw_texture_rect(tex,Rect2(pos+Vector2(0,offsetY),Vector2.ONE*gridSize),false,color);
 		
-		if curNote!=-1 && curNote==i:
+		if curNote!=-1 && curNote==i && isMain:
 			draw_rect(Rect2(pos+Vector2(0,offsetY),Vector2.ONE*gridSize),Color.red,false,2);
 				
 		
@@ -273,14 +273,19 @@ func drawSection(tSect,offsetY):
 		
 func drawEvents():
 	var startTime=getSectionStart(curSection)*1000.0;
-	for e in chart.events:
+	for i in len(chart.events):
+		var e=chart.events[i];
 		var time=(float(e[0])-startTime)/1000.0;
 		var pos=Vector2(-1*gridSize,getStrumY(time));
 		var color=Color.white;
 		draw_texture_rect(eventIcon,Rect2(pos,Vector2.ONE*gridSize),false,color);
 		
+		if curEvent!=-1 && curEvent==i:
+			draw_rect(Rect2(pos,Vector2.ONE*gridSize),Color.red,false,2);
+		
 		var txSize=font.get_string_size(str(len(e[1])));
-		draw_string(font,pos+Vector2((gridSize/2.0)-txSize.x/2.0,gridSize-txSize.y/2.0),str(len(e[1])),Color.white);
+		if len(e[1])>1:
+			draw_string(font,pos+Vector2((gridSize/2.0)-txSize.x/2.0,gridSize-txSize.y/2.0),str(len(e[1])),Color.white);
 		
 func drawGrid(colors,darkColors):
 	for x in range(-1,8): for y in range(-16 if curSection>0 else 0,32):
@@ -397,25 +402,26 @@ func onSectionOptionChanged(val,opt):
 
 func onEventOptionChanged(val,opt):
 	var evId=eventTab.type.get_item_text(eventTab.type.selected);
-	match opt:
-		"type": chart.events[curEvent][1][eventPage][0]=evId;
-		"arg1": chart.events[curEvent][1][eventPage][1]=val;
-		"arg2": chart.events[curEvent][1][eventPage][2]=val;
-		"add": 
-			chart.events[curEvent][1].append(["","",""]);
-			eventPage+=1;
-			onEventPageChanged();
-		"sub": 
-			if len(chart.events[curEvent][1])>1:
-				chart.events[curEvent][1].remove(eventPage);
+	if curEvent!=-1:
+		match opt:
+			"type": chart.events[curEvent][1][eventPage][0]=evId;
+			"arg1": chart.events[curEvent][1][eventPage][1]=val;
+			"arg2": chart.events[curEvent][1][eventPage][2]=val;
+			"add": 
+				chart.events[curEvent][1].append(["","",""]);
+				eventPage+=1;
+				onEventPageChanged();
+			"sub": 
+				if len(chart.events[curEvent][1])>1:
+					chart.events[curEvent][1].remove(eventPage);
+					eventPage=max(eventPage-1,0);
+					onEventPageChanged();	
+			"next":
+				eventPage=min(eventPage+1,len(chart.events[curEvent][1])-1);
+				onEventPageChanged();
+			"prev":
 				eventPage=max(eventPage-1,0);
-				onEventPageChanged();	
-		"next":
-			eventPage=min(eventPage+1,len(chart.events[curEvent][1])-1);
-			onEventPageChanged();
-		"prev":
-			eventPage=max(eventPage-1,0);
-			onEventPageChanged();
+				onEventPageChanged();
 		
 func onSongOptionChanged(val,opt):
 	match songTab[opt].get_class():

@@ -4,6 +4,6 @@
 
 [node name="XMLConverter" type="Node2D"]
 script = ExtResource( 1 )
-path = "res://assets/images/menus/main-menu/storymode-option"
-pathTo = "res://source/menus/main-menu/options/storymode"
-sceneName = "Option"
+path = "res://assets/images/menus/check-box"
+pathTo = "res://source/menus/check-box"
+sceneName = "CheckBox"

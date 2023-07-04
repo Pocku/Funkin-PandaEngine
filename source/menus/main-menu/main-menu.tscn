@@ -11,9 +11,9 @@ position = Vector2( 640, 360 )
 scale = Vector2( 1.05, 1.05 )
 texture = ExtResource( 2 )
 
-[node name="Options" type="Node2D" parent="."]
-
 [node name="Cam" type="Camera2D" parent="."]
 position = Vector2( 640, 360 )
+
+[node name="Options" type="Node2D" parent="."]
 
 [node name="Tween" type="Tween" parent="."]

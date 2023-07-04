@@ -8,6 +8,7 @@ var optionsList=["storymode","freeplay","options","credits"];
 var optionsOffsetY=160;
 var mainOpt=0;
 var optionsHeight=0;
+var confirmed=false;
 
 func _ready():
 	for i in optionsList:
@@ -29,7 +30,13 @@ func _input(ev):
 			var oldMainOpt=mainOpt;
 			mainOpt=clamp(mainOpt+dirY,0,len(optionsList)-1);
 			if oldMainOpt!=mainOpt: onMainOptionChanged();
-
+		
+		if ev.scancode in [KEY_ENTER] && !confirmed && !ev.echo && ev.pressed:
+			confirmed=true;
+			match optionsList[mainOpt]:
+				"options":
+					Game.changeScene("menus/options-menu/options-menu")
+		
 func onMainOptionChanged():
 	var centerY=(720/2.0);
 	var curOpt=options.get_child(mainOpt);
