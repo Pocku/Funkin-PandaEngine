@@ -15,17 +15,23 @@ _global_script_classes=[ {
 "path": "res://source/alphabet/alphabet.gd"
 }, {
 "base": "Node2D",
+"class": "Character",
+"language": "GDScript",
+"path": "res://source/gameplay/characters/character.gd"
+}, {
+"base": "Node2D",
 "class": "SongScript",
 "language": "GDScript",
-"path": "res://source/song-script.gd"
+"path": "res://source/gameplay/song-script.gd"
 }, {
 "base": "Node2D",
 "class": "Strums",
 "language": "GDScript",
-"path": "res://source/strums.gd"
+"path": "res://source/gameplay/strums.gd"
 } ]
 _global_script_class_icons={
 "Alphabet": "",
+"Character": "",
 "SongScript": "",
 "Strums": ""
 }
@@ -33,18 +39,19 @@ _global_script_class_icons={
 [application]
 
 config/name="Funkin"
-run/main_scene="res://source/start-menu.tscn"
+run/main_scene="res://source/menus/start-menu/start-menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Game="*res://source/game.gd"
-Conductor="*res://source/conductor.gd"
-Sfx="*res://source/sfx.gd"
-Settings="*res://source/settings.gd"
-VolumeMenu="*res://source/volume-menu.tscn"
-Debug="*res://source/debug.tscn"
-PauseMenu="*res://source/pause-menu.tscn"
+Transition="*res://source/autoload/transition.tscn"
+Game="*res://source/autoload/game.gd"
+Conductor="*res://source/autoload/conductor.gd"
+Sfx="*res://source/autoload/sfx.gd"
+Settings="*res://source/autoload/settings.gd"
+VolumeMenu="*res://source/autoload/volume-menu.tscn"
+Debug="*res://source/autoload/debug.tscn"
+PauseMenu="*res://source/autoload/pause-menu.tscn"
 
 [display]
 
