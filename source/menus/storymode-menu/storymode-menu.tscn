@@ -8,7 +8,7 @@
 [ext_resource path="res://assets/images/menus/storymode-menu/arrow.png" type="Texture" id=6]
 
 [sub_resource type="DynamicFont" id=1]
-size = 39
+size = 23
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 5 )
 
@@ -29,14 +29,14 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="Weeks" type="Node2D" parent="."]
+
 [node name="BG" type="Sprite" parent="."]
 position = Vector2( 0, 56 )
 texture = ExtResource( 1 )
 centered = false
 
-[node name="Weeks" type="Node2D" parent="."]
-
-[node name="Modes" type="Sprite" parent="."]
+[node name="Mode" type="Sprite" parent="."]
 position = Vector2( 1070, 511 )
 
 [node name="Tracks" type="Sprite" parent="."]
@@ -47,12 +47,12 @@ texture = ExtResource( 3 )
 position = Vector2( 892, 506 )
 texture = ExtResource( 6 )
 flip_h = true
-hframes = 2
 
 [node name="ArrowRight" type="Sprite" parent="."]
 position = Vector2( 1248, 504 )
 texture = ExtResource( 6 )
-hframes = 2
+
+[node name="Characters" type="Node2D" parent="."]
 
 [node name="TracksLabel" type="Label" parent="."]
 margin_top = 543.0
@@ -73,7 +73,8 @@ text = "WEEK SCORE: 0"
 valign = 1
 clip_text = true
 
-[node name="WeekLabel" type="Label" parent="."]
+[node name="WeekNameLabel" type="Label" parent="."]
+self_modulate = Color( 0.72549, 0.72549, 0.72549, 1 )
 margin_left = 632.0
 margin_right = 1266.0
 margin_bottom = 56.0

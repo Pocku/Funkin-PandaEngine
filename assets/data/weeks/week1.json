@@ -1,8 +1,17 @@
 {
 	"bg":"default",
-	"modes":["easy","normal","hard"],
-	"characters":["dad","bf","gf"],
-	"songs":["black-sun"],
+	"name":"daddy dearest",
+	"modes":["hard"],
+	"characters":[
+		["gf",640,420,0.5],
+		["bf",850,410,0.50],
+		["dad",420,410,0.48]
+	],
+	"songs":[
+		["bopeebo","dad","#af66ce"],
+		["fresh","dad","#af66ce"],
+		["dad-battle","dad","#af66ce"]
+	],
 	"weekBefore":"",
 	"startUnlocked":true,
 	"hideFreeplay":false,

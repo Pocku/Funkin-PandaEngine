@@ -1,8 +1,15 @@
 {
 	"bg":"default",
+	"name":"girlfiend",
 	"modes":["easy","normal","hard"],
-	"characters":["","bf","gf"],
-	"songs":["tutorial"],
+	"characters":[
+		["",0,0,0.5],
+		["gf",640,420,0.5],
+		["bf",850,410,0.50]
+	],
+	"songs":[
+		["tutorial","gf","#b80b6d"]
+	],
 	"weekBefore":"",
 	"startUnlocked":true,
 	"hideFreeplay":false,
