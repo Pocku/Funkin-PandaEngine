@@ -61,10 +61,9 @@ func _ready():
 	
 	for i in 3:
 		var charId=chart[["player1","player2","player3"][i]];
-		if charId=="": continue# || not charId in Game.getCharacterList():
-#			continue;
+		if charId=="" || not charId in Game.getCharacterList():
+			continue;
 		var chara=load("res://source/gameplay/characters/%s.tscn"%[charId]).instance();
-		print(chara)
 		var data=stage[["bf","dad","gf"][i]];
 		stage.add_child(chara);
 		chara.position=Vector2(data.x,data.y);
@@ -367,12 +366,11 @@ func unMuffleSong():
 	voices.volume_db=0.0;
 
 func updateScoreLabel():
-	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s    %s  %s"%[
+	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s    %s"%[
 		score,
 		str(str(stepify(float((notesHit/notesTotal)*100.0 if notesTotal>0 else 0),0.01)).pad_decimals(2),"%"),
 		misses,
-		"[color=red](BOTPLAY)" if Game.botMode else "",
-		notesTotal
+		"[color=red](BOTPLAY)" if Game.botMode else ""
 	];
 	
 func sortNotes(a,b):

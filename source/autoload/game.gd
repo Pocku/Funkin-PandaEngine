@@ -27,7 +27,7 @@ func _input(ev):
 func _process(dt):
 	OS.vsync_enabled=Settings.vsync;
 
-func changeScene(sceneName,useTrans=true,transTime=0.3,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
+func changeScene(sceneName,useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	var path="res://source/%s.tscn"%[sceneName];
 	if useTrans:
 		Transition.fadeIn(transTime,transInMask,transSmoothSize);
@@ -37,7 +37,7 @@ func changeScene(sceneName,useTrans=true,transTime=0.3,transInMask="vertical",tr
 	else:
 		get_tree().change_scene(path);
 
-func reloadScene(useTrans=true,transTime=0.3,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
+func reloadScene(useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	if useTrans:
 		Transition.fadeIn(transTime,transInMask,transSmoothSize);
 		yield(Transition,"finished");
