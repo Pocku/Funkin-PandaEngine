@@ -24,7 +24,10 @@ func _input(ev):
 		if ev.scancode in [KEY_F4,KEY_F11] && !ev.echo && ev.pressed:
 			OS.window_fullscreen=!OS.window_fullscreen;
 
-func changeScene(sceneName,useTrans=false,transTime=0.3,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
+func _process(dt):
+	OS.vsync_enabled=Settings.vsync;
+
+func changeScene(sceneName,useTrans=true,transTime=0.3,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	var path="res://source/%s.tscn"%[sceneName];
 	if useTrans:
 		Transition.fadeIn(transTime,transInMask,transSmoothSize);
@@ -34,7 +37,7 @@ func changeScene(sceneName,useTrans=false,transTime=0.3,transInMask="vertical",t
 	else:
 		get_tree().change_scene(path);
 
-func reloadScene(useTrans=false,transTime=0.3,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
+func reloadScene(useTrans=true,transTime=0.3,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	if useTrans:
 		Transition.fadeIn(transTime,transInMask,transSmoothSize);
 		yield(Transition,"finished");
@@ -42,6 +45,14 @@ func reloadScene(useTrans=false,transTime=0.3,transInMask="vertical",transOutMas
 		Transition.fadeOut(transTime,transOutMask,transSmoothSize);
 	else:
 		get_tree().reload_current_scene();
+
+func reloadKeys():
+	var noteInputs=["noteLeft","noteDown","noteUp","noteRight"];
+	for i in len(noteInputs):
+		var nKey=InputEventKey.new();
+		nKey.set_scancode(Settings.noteKeys[i]);
+		InputMap.action_erase_events(noteInputs[i]);
+		InputMap.action_add_event(noteInputs[i],nKey);
 
 func getCharacterList():
 	var rawList=getFilesInFolder("source/gameplay/characters/");
@@ -51,6 +62,7 @@ func getCharacterList():
 			list.append(str(rawList[i]).replace(".tscn",""));
 	list.push_front("");
 	return list;
+
 
 func getSongList():
 	return getFilesInFolder("assets/songs/");

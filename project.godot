@@ -44,8 +44,8 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Transition="*res://source/autoload/transition.tscn"
 Game="*res://source/autoload/game.gd"
+Transition="*res://source/autoload/transition.tscn"
 Conductor="*res://source/autoload/conductor.gd"
 Sfx="*res://source/autoload/sfx.gd"
 Settings="*res://source/autoload/settings.gd"
@@ -90,7 +90,6 @@ noteRight={
 
 [physics]
 
-common/physics_fps=120
 common/enable_pause_aware_picking=true
 
 [rendering]

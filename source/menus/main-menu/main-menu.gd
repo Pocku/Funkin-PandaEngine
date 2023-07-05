@@ -33,9 +33,12 @@ func _input(ev):
 		
 		if ev.scancode in [KEY_ENTER] && !confirmed && !ev.echo && ev.pressed:
 			confirmed=true;
-			match optionsList[mainOpt]:
-				"options":
-					Game.changeScene("menus/options-menu/options-menu")
+			Game.changeScene([
+				"gameplay/gameplay",
+				"gameplay/gameplay",
+				"menus/options-menu/options-menu",
+				"gameplay/gameplay"
+			][mainOpt])
 		
 func onMainOptionChanged():
 	var centerY=(720/2.0);
