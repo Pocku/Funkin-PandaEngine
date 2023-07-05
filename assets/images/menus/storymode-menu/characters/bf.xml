@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="boyfriend.png">
+	<!-- Created with Adobe Animate version 21.0.8.42666 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="BF HEY!! instance 10000" x="0" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10001" x="0" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10002" x="415" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10003" x="415" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10004" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10005" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10006" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10007" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10008" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10009" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10010" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10011" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10012" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10013" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10014" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10015" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10016" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10017" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10018" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10019" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10020" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10021" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10022" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10023" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10024" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF HEY!! instance 10025" x="830" y="0" width="415" height="420"/>
+	<SubTexture name="BF idle dance 10000" x="1245" y="0" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10001" x="1245" y="0" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10002" x="1245" y="412" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10003" x="1245" y="412" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10004" x="0" y="420" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10005" x="0" y="420" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10006" x="411" y="420" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10007" x="411" y="420" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10008" x="822" y="420" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10009" x="822" y="420" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10010" x="822" y="420" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10011" x="822" y="420" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10012" x="822" y="420" width="411" height="412"/>
+	<SubTexture name="BF idle dance 10013" x="822" y="420" width="411" height="412"/>
+</TextureAtlas>

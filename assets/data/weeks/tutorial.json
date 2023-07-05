@@ -1,0 +1,10 @@
+{
+	"bg":"default",
+	"modes":["easy","normal","hard"],
+	"characters":["","bf","gf"],
+	"songs":["tutorial"],
+	"weekBefore":"",
+	"startUnlocked":true,
+	"hideFreeplay":false,
+	"hideStorymode":false
+}

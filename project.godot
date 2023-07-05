@@ -28,18 +28,24 @@ _global_script_classes=[ {
 "class": "Strums",
 "language": "GDScript",
 "path": "res://source/gameplay/strums.gd"
+}, {
+"base": "Resource",
+"class": "WeekData",
+"language": "GDScript",
+"path": "res://source/resources/week.gd"
 } ]
 _global_script_class_icons={
 "Alphabet": "",
 "Character": "",
 "SongScript": "",
-"Strums": ""
+"Strums": "",
+"WeekData": ""
 }
 
 [application]
 
 config/name="Funkin"
-run/main_scene="res://source/menus/start-menu/start-menu.tscn"
+run/main_scene="res://source/menus/game-start/game-start.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -51,7 +57,6 @@ Sfx="*res://source/autoload/sfx.gd"
 Settings="*res://source/autoload/settings.gd"
 VolumeMenu="*res://source/autoload/volume-menu.tscn"
 Debug="*res://source/autoload/debug.tscn"
-PauseMenu="*res://source/autoload/pause-menu.tscn"
 
 [display]
 

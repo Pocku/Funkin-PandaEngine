@@ -27,21 +27,29 @@ func _input(ev):
 func _process(dt):
 	OS.vsync_enabled=Settings.vsync;
 
-func changeScene(sceneName,useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
+func saveGame():
+	pass
+
+func deleteSave():
+	pass
+
+func changeScene(sceneName,useTrans=true,transTime=0.28,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	var path="res://source/%s.tscn"%[sceneName];
 	if useTrans:
 		Transition.fadeIn(transTime,transInMask,transSmoothSize);
 		yield(Transition,"finished");
 		get_tree().change_scene(path);
+		yield(get_tree().create_timer(0.2),"timeout");
 		Transition.fadeOut(transTime,transOutMask,transSmoothSize);
 	else:
 		get_tree().change_scene(path);
 
-func reloadScene(useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
+func reloadScene(useTrans=true,transTime=0.28,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	if useTrans:
 		Transition.fadeIn(transTime,transInMask,transSmoothSize);
 		yield(Transition,"finished");
 		get_tree().reload_current_scene();
+		yield(get_tree().create_timer(0.2),"timeout");
 		Transition.fadeOut(transTime,transOutMask,transSmoothSize);
 	else:
 		get_tree().reload_current_scene();
@@ -53,7 +61,7 @@ func reloadKeys():
 		nKey.set_scancode(Settings.noteKeys[i]);
 		InputMap.action_erase_events(noteInputs[i]);
 		InputMap.action_add_event(noteInputs[i],nKey);
-
+		
 func getCharacterList():
 	var rawList=getFilesInFolder("source/gameplay/characters/");
 	var list=[];
@@ -63,14 +71,18 @@ func getCharacterList():
 	list.push_front("");
 	return list;
 
-
-func getSongList():
-	return getFilesInFolder("assets/songs/");
-
 func getStageList():
 	var list=getFilesInFolder("source/gameplay/stages/");
 	for i in len(list): list[i]=str(list[i]).replace(".tscn","");
 	return list;
+
+func getWeekList():
+	var list=getFilesInFolder("assets/data/weeks/");
+	for i in len(list): list[i]=str(list[i]).replace(".json","");
+	return list;
+
+func getSongList():
+	return getFilesInFolder("assets/songs/");
 
 func getFilesInFolder(path):
 	var files=[];

@@ -34,7 +34,7 @@ func _input(ev):
 		if ev.scancode in [KEY_ENTER] && !confirmed && !ev.echo && ev.pressed:
 			confirmed=true;
 			Game.changeScene([
-				"gameplay/gameplay",
+				"menus/storymode-menu/storymode-menu",
 				"gameplay/gameplay",
 				"menus/options-menu/options-menu",
 				"gameplay/gameplay"

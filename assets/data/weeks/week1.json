@@ -1,0 +1,10 @@
+{
+	"bg":"default",
+	"modes":["easy","normal","hard"],
+	"characters":["dad","bf","gf"],
+	"songs":["black-sun"],
+	"weekBefore":"",
+	"startUnlocked":true,
+	"hideFreeplay":false,
+	"hideStorymode":false
+}

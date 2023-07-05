@@ -24,6 +24,9 @@ var data={
 	],
 	"controls":[
 		["note keys","noteKeys"]
+	],
+	"save-data":[
+		["delete","delete"]
 	]
 }
 var optionsQueue=[];
@@ -81,7 +84,8 @@ func _ready():
 							st.position.x=52;
 							st.position.y=75;
 							st.scale*=0.7;
-							
+						
+					
 		height+=offsetY*1.2;
 	onOptionChanged();
 	
@@ -155,7 +159,14 @@ func onOptionPressed(data):
 						keyMappingMenu.visible=true;
 						Settings.noteKeys=[];
 						options.hide();
-
+		
+		TYPE_NIL:
+			match varId:
+				"delete":
+					Game.deleteSave();
+					var pid=OS.execute(OS.get_executable_path(),[],false);
+					OS.kill(OS.get_process_id());
+			
 	
 func onOptionScroll(data,dirX):
 	var opt=data[0];

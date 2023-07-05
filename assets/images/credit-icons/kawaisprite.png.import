@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/kawaisprite.png-365271ac1ee5eb3fdf776d8523ccb8f3.stex"
+path="res://.import/kawaisprite.png-6737e09381f3033d33c6c0d5f1de29ff.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/creditsMenu/icons/kawaisprite.png"
-dest_files=[ "res://.import/kawaisprite.png-365271ac1ee5eb3fdf776d8523ccb8f3.stex" ]
+source_file="res://assets/images/credit-icons/kawaisprite.png"
+dest_files=[ "res://.import/kawaisprite.png-6737e09381f3033d33c6c0d5f1de29ff.stex" ]
 
 [params]
 

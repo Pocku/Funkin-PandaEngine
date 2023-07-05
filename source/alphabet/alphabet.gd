@@ -5,7 +5,7 @@ export var cutoff=-1;
 export var charOffset=Vector2(48,80);
 export var spaceWidth=48;
 export var centered=false;
-var chars="abcdefghijklmnopqrstuvwxyz0123456789:<>,";
+var chars="abcdefghijklmnopqrstuvwxyz0123456789:<>,-+.";
 var tex={};
 
 func _ready():
@@ -15,6 +15,9 @@ func _ready():
 		if fChar==",": fChar="comma";
 		if fChar=="<": fChar="arrowLeft";
 		if fChar==">": fChar="arrowRight";
+		if fChar=="-": fChar="minus";
+		if fChar=="+": fChar="plus";
+		if fChar==".": fChar="dot";
 		tex[i]=load("res://assets/images/alphabet/%s.png"%[fChar]);
 
 func _physics_process(dt):

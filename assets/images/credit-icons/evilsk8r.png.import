@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/evilsk8r.png-28d1085c08c6a774f02dabd701049b3c.stex"
+path="res://.import/evilsk8r.png-95c48213be20ae880986b53f85deaba5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/creditsMenu/icons/evilsk8r.png"
-dest_files=[ "res://.import/evilsk8r.png-28d1085c08c6a774f02dabd701049b3c.stex" ]
+source_file="res://assets/images/credit-icons/evilsk8r.png"
+dest_files=[ "res://.import/evilsk8r.png-95c48213be20ae880986b53f85deaba5.stex" ]
 
 [params]
 

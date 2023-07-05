@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var ui=$UI;
+onready var pause=$Pause;
 onready var countdown=$UI/Countdown;
 onready var hpbar=$UI/HpBar;
 onready var scoreLabel=$UI/ScoreLabel;
@@ -50,8 +51,6 @@ func _ready():
 	
 	inst.connect("finished",self,"onSongFinished");
 	loadSong();
-	
-	PauseMenu.canPause=false;
 	
 	songScript=preload("res://source/gameplay/song-script.gd").new();
 	add_child(songScript);
@@ -112,7 +111,7 @@ func _ready():
 func _input(ev):
 	if ev is InputEventKey:
 		if ev.scancode in [KEY_7] && songStarted && !ev.echo && ev.pressed:
-			Game.changeScene("menus/charter/charter")
+			Game.changeScene("charter/charter")
 	
 	
 func _process(dt):
@@ -220,9 +219,9 @@ func startCountdown():
 	Conductor.beatTime=0.0;
 	Conductor.beatCount=0;
 	Conductor.addBeat();
-	PauseMenu.canPause=true;
 	songStarted=true;
 	songScript.call("onSongStarted");
+	pause.canPause=true;
 
 func onBeat(beat):
 	tw.interpolate_property(playerIcons,"scale",Vector2.ONE*1.08,Vector2.ONE,Conductor.crochet/4.0);
@@ -278,7 +277,7 @@ func createNote(nData):
 			
 func loadSong():
 	var f=File.new();
-	f.open("res://assets/data/%s/%s.json"%[Game.song,Game.mode],File.READ);
+	f.open("res://assets/data/songs/%s/%s.json"%[Game.song,Game.mode],File.READ);
 	chart=parse_json(f.get_as_text()).song;
 	f.close();
 	

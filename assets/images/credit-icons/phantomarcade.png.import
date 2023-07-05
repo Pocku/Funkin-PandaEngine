@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/phantomarcade.png-a018cdae2cec53fa035d723bc29b916a.stex"
+path="res://.import/phantomarcade.png-a2b479b4fa0515e1bf811cc310bbadac.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/creditsMenu/icons/phantomarcade.png"
-dest_files=[ "res://.import/phantomarcade.png-a018cdae2cec53fa035d723bc29b916a.stex" ]
+source_file="res://assets/images/credit-icons/phantomarcade.png"
+dest_files=[ "res://.import/phantomarcade.png-a2b479b4fa0515e1bf811cc310bbadac.stex" ]
 
 [params]
 

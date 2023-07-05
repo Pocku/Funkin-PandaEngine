@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="daddy.png">
+	<!-- Created with Adobe Animate version 21.0.8.42666 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Dad idle dance instance 10000" x="0" y="0" width="421" height="767" frameX="-5" frameY="0" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10001" x="0" y="0" width="421" height="767" frameX="-5" frameY="0" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10002" x="421" y="0" width="429" height="759" frameX="0" frameY="-8" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10003" x="421" y="0" width="429" height="759" frameX="0" frameY="-8" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10004" x="850" y="0" width="425" height="758" frameX="-1" frameY="-9" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10005" x="850" y="0" width="425" height="758" frameX="-1" frameY="-9" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10006" x="0" y="767" width="424" height="759" frameX="-2" frameY="-8" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10007" x="0" y="767" width="424" height="759" frameX="-2" frameY="-8" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10008" x="424" y="767" width="420" height="767" frameX="-4" frameY="0" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10009" x="424" y="767" width="420" height="767" frameX="-4" frameY="0" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10010" x="844" y="767" width="421" height="767" frameX="-5" frameY="0" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10011" x="844" y="767" width="421" height="767" frameX="-5" frameY="0" frameWidth="429" frameHeight="767"/>
+	<SubTexture name="Dad idle dance instance 10012" x="0" y="0" width="421" height="767" frameX="-5" frameY="0" frameWidth="429" frameHeight="767"/>
+</TextureAtlas>

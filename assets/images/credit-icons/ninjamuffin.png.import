@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ninjamuffin.png-6bcd9a3fe42ee0ab0eabde390a4e5493.stex"
+path="res://.import/ninjamuffin.png-cfa6eda85c34d0798d28188a5a4376d4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/creditsMenu/icons/ninjamuffin.png"
-dest_files=[ "res://.import/ninjamuffin.png-6bcd9a3fe42ee0ab0eabde390a4e5493.stex" ]
+source_file="res://assets/images/credit-icons/ninjamuffin.png"
+dest_files=[ "res://.import/ninjamuffin.png-cfa6eda85c34d0798d28188a5a4376d4.stex" ]
 
 [params]
 
