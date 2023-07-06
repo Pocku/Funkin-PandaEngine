@@ -16,6 +16,7 @@ onready var tw=$Tween;
 
 var chart={};
 var songStarted=false;
+var songFinished=false;
 var offsyncAllowed=30.0;
 var curSection=0;
 
@@ -51,6 +52,11 @@ func _ready():
 	
 	inst.connect("finished",self,"onSongFinished");
 	loadSong();
+	
+	if true:
+		Conductor.time=inst.stream.get_length()-6.0;
+		while notesQueue[0].time<=Conductor.time:
+			notesQueue.remove(0);
 	
 	songScript=preload("res://source/gameplay/song-script.gd").new();
 	add_child(songScript);
@@ -117,9 +123,11 @@ func _input(ev):
 	
 func _process(dt):
 	Conductor.waitTime=max(Conductor.waitTime-dt,0.0);
-	if songStarted:
+	if songStarted && !songFinished:
 		Conductor.time=min(Conductor.time+dt,inst.stream.get_length());
-		if Conductor.time+0.1>inst.stream.get_length(): Conductor.time=0.0;
+		if Conductor.time>=inst.stream.get_length():
+			songFinished=true;
+			onSongFinished();
 		var time=(inst.get_playback_position()+AudioServer.get_time_since_last_mix())-AudioServer.get_output_latency();
 		if abs(time-Conductor.time)>(offsyncAllowed/1000.0):
 			for i in [inst,voices]: i.seek(Conductor.time);
@@ -231,8 +239,21 @@ func onBeat(beat):
 func onSongFinished():
 	inst.volume_db=-80.0;
 	voices.volume_db=-80.0;
-	pass
+	
 
+	
+	
+	if Game.storyMode:
+		if len(Game.songsQueue)>0:
+			Game.songsQueue.remove(0);
+		if len(Game.songsQueue)==0:
+			Game.changeScene("menus/freeplay-menu/freeplay-menu");
+		else:
+			Game.song=Game.songsQueue[0];
+			Game.reloadScene();
+	else:
+		Game.changeScene("menus/freeplay-menu/freeplay-menu");
+		
 func onSectionChanged(sectData):
 	var mustHit=sectData.mustHitSection;
 	var camTarget=Vector2();

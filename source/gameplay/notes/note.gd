@@ -5,6 +5,8 @@ onready var end=$Line/End;
 
 var type="";
 var time=0.0;
+var missTime=0.0;
+
 var scrollMult=1.0;
 var endHeight=64;
 var lineWidth=50;
@@ -45,7 +47,8 @@ func _process(dt):
 	position.y=ms*(Game.scrollScale*([1,-1][int(Settings.downScroll)])/scrollMult) if !pressed else 0.0;
 	length=max(length-dt,0.0) if ms<=0.0 else length;
 	if ms<=0.0 && duration>0.0 && pressed: updateLine();
-
+	if ms<=0.0 && duration>0.0 && !held: missTime+=dt;
+	
 func updateLine():
 	var posY=(length*Game.scrollScale/scrollMult)-endHeight;
 	line.points[1].y=max(posY,0.0);

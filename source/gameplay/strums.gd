@@ -60,6 +60,7 @@ func updateArrow(arrow,key):
 		
 		if Input.is_action_just_pressed(key) && canHit && note!=null:
 			note.held=true;
+			note.missTime=0.0;
 			if !note.pressed:
 				note.onHit();
 				note.pressed=true;
@@ -71,11 +72,12 @@ func updateArrow(arrow,key):
 			if note.duration>0.0:
 				if note.held && note.pressed:
 					note.onHeld();
+					note.missTime=0.0;
 					arrow.playAnim("confirm");
 					if arrow.getAnimTime()>0.1:
 						arrow.seekAnim(0.0);
 				else:
-					if canMissLongNote:
+					if canMissLongNote && note.missTime>0.13:
 						note.onHeldMiss();
 		
 	if Input.is_action_just_pressed(key):

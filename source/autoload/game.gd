@@ -17,6 +17,7 @@ var weeksList=[
 	"week1",
 	"week-test"
 ]
+var songsData=[];
 
 var song="black-sun";
 var mode="hard";
@@ -28,6 +29,9 @@ var uiSkin="default";
 var scrollScale=1400.0;
 var botMode=false;
 
+func _ready():
+	saveGame();
+
 func _input(ev):
 	if ev is InputEventKey:
 		if ev.scancode in [KEY_F4,KEY_F11] && !ev.echo && ev.pressed:
@@ -37,9 +41,6 @@ func _process(dt):
 	OS.vsync_enabled=Settings.vsync;
 
 func saveGame():
-	pass
-
-func deleteSave():
 	pass
 
 func changeScene(sceneName,useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
@@ -96,6 +97,15 @@ func getStageList():
 
 func getSongList():
 	return getFilesInFolder("assets/songs/");
+
+func getGameSaveData():
+	var f:=File.new();
+	var data=null;
+	if f.file_exists("user://save.json"):
+		f.open("user://save.json",File.READ);
+		data=parse_json(f.get_as_text());
+		f.close();
+	return data;
 
 func getFilesInFolder(path):
 	var files=[];

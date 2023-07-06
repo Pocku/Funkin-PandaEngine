@@ -36,13 +36,13 @@ func _ready():
 func _input(ev):
 	if ev is InputEventKey:
 		if !ev.echo && ev.pressed:
-			if ev.scancode in [KEY_DOWN,KEY_UP]:
+			if ev.scancode in [KEY_DOWN,KEY_UP] && !confirmed:
 				var dirY=int(ev.scancode==KEY_DOWN)-int(ev.scancode==KEY_UP);
 				var oldMainOpt=mainOpt;
 				mainOpt=clamp(mainOpt+dirY,0,len(weeksQueue)-1);
 				if oldMainOpt!=mainOpt: onWeekChanged();
 			
-			if ev.scancode in [KEY_LEFT,KEY_RIGHT] && !ev.echo && ev.pressed:
+			if ev.scancode in [KEY_LEFT,KEY_RIGHT] && !ev.echo && ev.pressed && !confirmed:
 				var dirX=int(ev.scancode==KEY_RIGHT)-int(ev.scancode==KEY_LEFT);
 				var oldModeOpt=modeOpt;
 				modeOpt=clamp(modeOpt+dirX,0,len(modesQueue)-1);
@@ -54,9 +54,18 @@ func _input(ev):
 					onModeChanged();
 			
 			if Game.canChangeScene && ev.scancode in [KEY_ESCAPE] && !confirmed:
-				Game.changeScene("menus/main-menu/main-menu")
+				Game.changeScene("menus/main-menu/main-menu");
 				confirmed=true;
-		
+			
+			if Game.canChangeScene && ev.scancode in [KEY_ENTER] && !confirmed:
+				for i in getWeekData(weeksQueue[mainOpt]).songs:
+					Game.songsQueue.append(i[0]);
+				Game.storyMode=true;
+				Game.song=Game.songsQueue[0];
+				Game.mode=modesQueue[modeOpt];
+				Game.changeScene("gameplay/gameplay");
+				confirmed=true;
+			
 func onWeekChanged():
 	var data=getWeekData(weeksQueue[mainOpt]);
 	
@@ -98,8 +107,6 @@ func onWeekChanged():
 	
 	for i in weeks.get_child_count():
 		weeks.get_child(i).modulate=Color.white if i==mainOpt else Color.darkgray;
-
-
 
 func onModeChanged():
 	mode.texture=load("res://assets/images/menus/storymode-menu/modes/%s.png"%[modesQueue[modeOpt]]);
