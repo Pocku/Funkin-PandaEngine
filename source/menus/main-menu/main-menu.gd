@@ -37,7 +37,7 @@ func _input(ev):
 				"menus/storymode-menu/storymode-menu",
 				"menus/freeplay-menu/freeplay-menu",
 				"menus/options-menu/options-menu",
-				"gameplay/gameplay"
+				"menus/credits-menu/credits-menu"
 			][mainOpt])
 		
 func onMainOptionChanged():

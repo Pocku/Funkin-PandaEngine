@@ -89,10 +89,7 @@ func onSongChanged():
 func onModeChanged():
 	modeLabel.text=str("<",modesQueue[modeOpt],">");
 	
-	pass
-
-
-
+	
 func getWeekData(weekId):
 	var f=File.new();
 	f.open("res://assets/data/weeks/%s.json"%[weekId],File.READ);
