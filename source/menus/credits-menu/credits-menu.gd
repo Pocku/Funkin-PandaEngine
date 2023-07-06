@@ -6,7 +6,7 @@ onready var tw=$Tween;
 
 var creditsData={
 	"Panda-Engine":[
-		["Pockolas","pouko","#79e9d2","(aka uSauu, Pouko) Artist and Coder of Panda Engine"]
+		["Pockolas","pouko","#79e9d2","Artist and Coder of Panda Engine/nTwitter: @pockolas "]
 	],
 	"Funkin'-Crew":[
 		["ninjamuffin99","ninjamuffin","#d31b4f","Coder of FridayNightFunkin'"],
@@ -16,7 +16,7 @@ var creditsData={
 	]
 }
 var membersQueue=[];
-var memberOffsetY=150;
+var memberOffsetY=165;
 var mainOpt=0;
 var confirmed=false;
 
@@ -50,9 +50,9 @@ func _ready():
 			icon.position.x=-80;
 			icon.scale*=0.8;
 			
-			desc.scale*=0.4;
+			desc.scale*=0.32;
 			desc.position.x=8;
-			desc.position.y=64;
+			desc.position.y=58;
 			
 			membersQueue.append([i,opt,desc,height]);
 			height+=memberOffsetY;

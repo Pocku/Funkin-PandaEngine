@@ -5,19 +5,21 @@ export var cutoff=-1;
 export var charOffset=Vector2(48,80);
 export var spaceWidth=48;
 export var centered=false;
-var chars="abcdefghijklmnopqrstuvwxyz0123456789:<>,-+.";
+var chars="abcdefghijklmnopqrstuvwxyz0123456789:<>,-+.@";
 var tex={};
 
 func _ready():
 	for i in chars:
 		var fChar=i;
-		if fChar==":": fChar="colon";
-		if fChar==",": fChar="comma";
-		if fChar=="<": fChar="arrowLeft";
-		if fChar==">": fChar="arrowRight";
-		if fChar=="-": fChar="minus";
-		if fChar=="+": fChar="plus";
-		if fChar==".": fChar="dot";
+		match fChar:
+			":": fChar="colon"
+			",": fChar="comma"
+			"<": fChar="arrowLeft"
+			">": fChar="arrowRight"
+			"-": fChar="minus"
+			"+": fChar="plus"
+			".": fChar="dot"
+			"@": fChar="atsign"
 		tex[i]=load("res://assets/images/alphabet/%s.png"%[fChar]);
 
 func _physics_process(dt):

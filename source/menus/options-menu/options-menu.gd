@@ -119,7 +119,7 @@ func _input(ev):
 			var dirX=int(ev.scancode==KEY_RIGHT)-int(ev.scancode==KEY_LEFT);
 			onOptionScroll(optionsQueue[mainOpt],dirX);
 		
-		if ev.scancode in [KEY_ESCAPE] && !ev.echo && ev.pressed && !keyMapping && !confirmed:
+		if Game.canChangeScene && ev.scancode in [KEY_ESCAPE] && !ev.echo && ev.pressed && !keyMapping && !confirmed:
 			Game.changeScene("menus/main-menu/main-menu")
 			confirmed=true;
 			

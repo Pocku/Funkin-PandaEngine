@@ -15,20 +15,14 @@ centered = false
 [node name="Options" type="Node2D" parent="."]
 
 [node name="Score" type="Node2D" parent="."]
-position = Vector2( 25, 599 )
-scale = Vector2( 0.7, 0.7 )
+position = Vector2( 25, 660 )
+scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 3 )
 text = "HIGH-SCORE: 0"
 
-[node name="Author" type="Node2D" parent="."]
-position = Vector2( 28.0001, 646 )
-scale = Vector2( 0.5, 0.5 )
-script = ExtResource( 3 )
-text = "BY KAWAI-SPRITE"
-
 [node name="Mode" type="Node2D" parent="."]
-position = Vector2( 28.0002, 683 )
-scale = Vector2( 0.4, 0.4 )
+position = Vector2( 24, 700 )
+scale = Vector2( 0.35, 0.35 )
 script = ExtResource( 3 )
 text = "<HARD>"
 

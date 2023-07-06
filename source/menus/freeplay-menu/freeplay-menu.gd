@@ -3,12 +3,11 @@ extends Node2D
 onready var bg=$BG;
 onready var options=$Options;
 onready var modeLabel=$Mode;
-onready var authorLabel=$Author;
 onready var scoreLabel=$Score;
 onready var tw=$Tween;
 
 
-var optionsOffsetY=120;
+var optionsOffsetY=145;
 var modesQueue=[];
 var songsQueue=[];
 var mainOpt=0;
@@ -23,11 +22,22 @@ func _ready():
 		for rawData in wData.songs:
 			var opt=Alphabet.new();
 			var icon=Sprite.new();
+			var author=Alphabet.new();
+			
 			opt.text=rawData[0];
+			author.text=str("by ",rawData[2]);
 			options.add_child(opt);
+			
+			author.scale*=0.26;
+			author.position=Vector2(12,55)
+			
 			opt.add_child(icon);
+			opt.add_child(author);
+			
 			opt.position.y=height;
 			opt.position.x=0;
+			
+			
 			icon.texture=load("res://assets/images/char-icons/%s.png"%[rawData[1]]);
 			icon.hframes=2;
 			icon.position.x=-78;
@@ -67,8 +77,7 @@ func _input(ev):
 			
 func onSongChanged():
 	modeOpt=0;
-	authorLabel.text="by %s"%[songsQueue[mainOpt][2]]
-	
+
 	for i in len(songsQueue):
 		if i==mainOpt:
 			var sData=songsQueue[i];
@@ -78,10 +87,13 @@ func onSongChanged():
 			
 	for i in options.get_child_count():
 		var opt=options.get_child(i);
+		var optAuthor=options.get_child(i).get_child(1);
+	
 		tw.interpolate_property(opt,"position:x",opt.position.x,48 if i==mainOpt else 0,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 		var dist=float(abs(mainOpt-i))/float(len(songsQueue));
 		tw.interpolate_property(opt,"modulate:a",opt.modulate.a,lerp(1.0,0.0,dist),0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 		tw.interpolate_property(opt,"self_modulate",opt.self_modulate,Color(songsQueue[mainOpt][3]) if i==mainOpt else Color.white,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
+		tw.interpolate_property(optAuthor,"self_modulate",optAuthor.self_modulate,Color(songsQueue[mainOpt][3]) if i==mainOpt else Color.white,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 		
 	tw.interpolate_property(options,"position",options.position,Vector2(240,(720/2)-40)-Vector2.DOWN*mainOpt*optionsOffsetY,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 	tw.start();
