@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://source/menus/freeplay-menu/freeplay-menu.gd" type="Script" id=1]
-[ext_resource path="res://assets/images/menus/menu-gray.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/menus/menu-black.png" type="Texture" id=2]
 [ext_resource path="res://source/alphabet/alphabet.gd" type="Script" id=3]
 
 [node name="FreeplayMenu" type="Node2D"]

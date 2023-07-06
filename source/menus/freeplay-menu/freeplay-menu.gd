@@ -79,9 +79,9 @@ func onSongChanged():
 	for i in options.get_child_count():
 		var opt=options.get_child(i);
 		tw.interpolate_property(opt,"position:x",opt.position.x,48 if i==mainOpt else 0,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
-		var dist=float(abs(mainOpt-i))/float(len(songsQueue)/4.0);
+		var dist=float(abs(mainOpt-i))/float(len(songsQueue));
 		tw.interpolate_property(opt,"modulate:a",opt.modulate.a,lerp(1.0,0.0,dist),0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
-		tw.interpolate_property(opt,"self_modulate",opt.self_modulate,Color.white if i==mainOpt else Color.darkgray,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
+		tw.interpolate_property(opt,"self_modulate",opt.self_modulate,Color(songsQueue[mainOpt][3]) if i==mainOpt else Color.white,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 		
 	tw.interpolate_property(options,"position",options.position,Vector2(240,(720/2)-40)-Vector2.DOWN*mainOpt*optionsOffsetY,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 	tw.start();

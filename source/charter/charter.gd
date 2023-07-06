@@ -149,7 +149,7 @@ func _input(ev):
 			onSectionChanged();
 		
 		if ev.scancode in [KEY_ESCAPE] && !ev.echo && ev.pressed:
-			get_tree().change_scene("res://source/gameplay.tscn");
+			Game.changeScene("gameplay/gameplay")
 		
 		if ev.scancode in [KEY_SHIFT] && !ev.echo:
 			snapPrecise=ev.pressed;

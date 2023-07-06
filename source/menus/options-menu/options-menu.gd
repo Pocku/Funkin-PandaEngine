@@ -134,7 +134,7 @@ func onOptionChanged():
 	
 	for i in len(optionsQueue):
 		var opt=optionsQueue[i][0];
-		opt.self_modulate=Color.white if i!=mainOpt else Color.yellow;
+		opt.self_modulate=Color.white if i!=mainOpt else Color.crimson.lightened(0.2);
 		tw.interpolate_property(opt,"position:x",-16 if i==mainOpt else 0.0,0.0,0.28,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 	tw.start();
 	
