@@ -67,6 +67,7 @@ func _ready():
 		stage.add_child(chara);
 		chara.position=Vector2(data.x,data.y);
 		chara.scale=Vector2.ONE*data.scale;
+		chara.scale.x*=-1 if chara.flipped else 1.0;
 		chara.scale.x*=-1 if data.flip else 1.0;
 		stage.move_child(chara,min(data.depth,stage.get_child_count()));
 		set(["bf","dad","gf"][i],chara);

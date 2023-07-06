@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Voices.mp3-63dd74aef1e8949d77cf742e52a8760e.mp3str"
+
+[deps]
+
+source_file="res://assets/songs/fresh/Voices.mp3"
+dest_files=[ "res://.import/Voices.mp3-63dd74aef1e8949d77cf742e52a8760e.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

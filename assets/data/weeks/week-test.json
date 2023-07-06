@@ -1,14 +1,14 @@
 {
 	"bg":"default",
-	"name":"girlfiend",
+	"name":"Pixel BF",
 	"modes":["hard"],
 	"characters":[
-		["",0,0,0.5],
 		["gf",640,420,0.5],
-		["bf",850,410,0.50]
+		["bf",850,410,0.50],
+		["bf",420,410,0.48,true]
 	],
 	"songs":[
-		["tutorial","gf","kawai sprite","#b80b6d"]
+		["test","bf","kawai sprite","#00bafc"]
 	],
 	"weekBefore":"",
 	"startUnlocked":true,

@@ -106,7 +106,7 @@ func _input(ev):
 				optionsQueue[mainOpt][0].get_child(0).text=keysTx;
 				Game.reloadKeys();
 
-		if ev.scancode in [KEY_DOWN,KEY_UP] && !ev.echo && ev.pressed && !keyMapping:
+		if Game.canChangeScene && ev.scancode in [KEY_DOWN,KEY_UP] && !ev.echo && ev.pressed && !keyMapping:
 			var dirY=int(ev.scancode==KEY_DOWN)-int(ev.scancode==KEY_UP);
 			var oldMainOpt=mainOpt;
 			mainOpt=clamp(mainOpt+dirY,0,len(optionsQueue)-1);

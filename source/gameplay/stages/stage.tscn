@@ -4,6 +4,13 @@
 
 [node name="Stage" type="Node2D"]
 script = ExtResource( 1 )
+dad = {
+"depth": 1,
+"flip": true,
+"scale": 1.0,
+"x": 260,
+"y": 640
+}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = -785.0

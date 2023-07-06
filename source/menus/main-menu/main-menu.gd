@@ -31,11 +31,11 @@ func _input(ev):
 			mainOpt=clamp(mainOpt+dirY,0,len(optionsList)-1);
 			if oldMainOpt!=mainOpt: onMainOptionChanged();
 		
-		if ev.scancode in [KEY_ENTER] && !confirmed && !ev.echo && ev.pressed:
+		if Game.canChangeScene && ev.scancode in [KEY_ENTER] && !confirmed && !ev.echo && ev.pressed:
 			confirmed=true;
 			Game.changeScene([
 				"menus/storymode-menu/storymode-menu",
-				"gameplay/gameplay",
+				"menus/freeplay-menu/freeplay-menu",
 				"menus/options-menu/options-menu",
 				"gameplay/gameplay"
 			][mainOpt])

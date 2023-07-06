@@ -3,7 +3,7 @@ extends Node
 var showFps=true;
 var useShaders=true;
 var downScroll=true;
-var midScroll=true;
+var midScroll=false;
 var ghostTap=true;
 var lowQuality=false;
 var enemyNotes=true;

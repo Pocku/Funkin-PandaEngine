@@ -12,11 +12,17 @@ var noteTypes=[
 var eventType=[
 	"","camZoom","camMove","addBeatZoom"
 ]
+var weeksList=[
+	"tutorial",
+	"week1",
+	"week-test"
+]
 
 var song="black-sun";
 var mode="hard";
 var songsQueue=[];
 var storyMode=false;
+var canChangeScene=true;
 
 var uiSkin="default";
 var scrollScale=1400.0;
@@ -36,26 +42,35 @@ func saveGame():
 func deleteSave():
 	pass
 
-func changeScene(sceneName,useTrans=true,transTime=0.28,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
+func changeScene(sceneName,useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	var path="res://source/%s.tscn"%[sceneName];
+	get_tree().current_scene.set_process_input(false);
+	canChangeScene=false;
 	if useTrans:
 		Transition.fadeIn(transTime,transInMask,transSmoothSize);
 		yield(Transition,"finished");
 		get_tree().change_scene(path);
 		yield(get_tree().create_timer(0.2),"timeout");
 		Transition.fadeOut(transTime,transOutMask,transSmoothSize);
+		yield(Transition,"finished");
+		canChangeScene=true;
 	else:
 		get_tree().change_scene(path);
-
-func reloadScene(useTrans=true,transTime=0.28,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
+		canChangeScene=true;
+	
+func reloadScene(useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
+	canChangeScene=false;
 	if useTrans:
 		Transition.fadeIn(transTime,transInMask,transSmoothSize);
 		yield(Transition,"finished");
 		get_tree().reload_current_scene();
 		yield(get_tree().create_timer(0.2),"timeout");
 		Transition.fadeOut(transTime,transOutMask,transSmoothSize);
+		yield(Transition,"finished");
+		canChangeScene=true;
 	else:
 		get_tree().reload_current_scene();
+		canChangeScene=true;
 
 func reloadKeys():
 	var noteInputs=["noteLeft","noteDown","noteUp","noteRight"];
@@ -77,11 +92,6 @@ func getCharacterList():
 func getStageList():
 	var list=getFilesInFolder("source/gameplay/stages/");
 	for i in len(list): list[i]=str(list[i]).replace(".tscn","");
-	return list;
-
-func getWeekList():
-	var list=getFilesInFolder("assets/data/weeks/");
-	for i in len(list): list[i]=str(list[i]).replace(".json","");
 	return list;
 
 func getSongList():
