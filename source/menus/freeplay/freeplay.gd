@@ -6,12 +6,12 @@ onready var modeLabel=$Mode;
 onready var scoreLabel=$Score;
 onready var tw=$Tween;
 
-
 var optionsOffsetY=145;
 var modesQueue=[];
 var songsQueue=[];
 var mainOpt=0;
 var modeOpt=0;
+var curAccuracy=0.0;
 var confirmed=false;
 
 func _ready():
@@ -70,6 +70,7 @@ func _input(ev):
 					
 		if Game.canChangeScene && ev.scancode in [KEY_ESCAPE] && !confirmed:
 			Game.changeScene("menus/main-menu/main-menu");
+			Sfx.play("menu-cancel");
 			confirmed=true;
 		
 		if Game.canChangeScene && ev.scancode in [KEY_ENTER] && !confirmed:
@@ -77,9 +78,16 @@ func _input(ev):
 			Game.song=songsQueue[mainOpt][0];
 			Game.mode=modesQueue[modeOpt];
 			Game.changeScene("gameplay/gameplay");
+			Sfx.play("menu-ok");
+			Music.stopAll();
 			confirmed=true;
+
+func _process(dt):
+	scoreLabel.text="HIGHSCORE: /n%s (%s)"%[str(stepify(curAccuracy*100.0,0.1)).pad_decimals(1)+"%",Game.songsData[songsQueue[mainOpt][0]][2]];
+	
 			
 func onSongChanged():
+	Sfx.play("menu-scroll");
 	modeOpt=0;
 
 	for i in len(songsQueue):
@@ -98,7 +106,8 @@ func onSongChanged():
 		tw.interpolate_property(opt,"modulate:a",opt.modulate.a,lerp(1.0,0.0,dist),0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 		tw.interpolate_property(opt,"self_modulate",opt.self_modulate,Color(songsQueue[mainOpt][3]) if i==mainOpt else Color.white,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 		tw.interpolate_property(optAuthor,"self_modulate",optAuthor.self_modulate,Color(songsQueue[mainOpt][3]) if i==mainOpt else Color.white,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
-		
+	
+	tw.interpolate_property(self,"curAccuracy",curAccuracy,Game.songsData[songsQueue[mainOpt][0]][1],0.32);
 	tw.interpolate_property(options,"position",options.position,Vector2(240,(720/2)-40)-Vector2.DOWN*mainOpt*optionsOffsetY,0.24,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 	tw.start();
 

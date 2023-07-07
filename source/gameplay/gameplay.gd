@@ -17,7 +17,6 @@ onready var tw=$Tween;
 var chart={};
 var songStarted=false;
 var songFinished=false;
-var offsyncAllowed=30.0;
 var curSection=0;
 
 var score=0;
@@ -30,6 +29,7 @@ var bads=0;
 var shits=0;
 var sicks=0;
 var misses=0;
+var fc="?";
 
 var bf=null;
 var dad=null;
@@ -95,11 +95,15 @@ func _ready():
 		strum.position.x=[-500,148][i];
 		strum.character=get(["dad","bf"][i]);
 	strums.position.y=[-264,270][int(Settings.downScroll)];
+	strums.get_child(0).visible=Settings.enemyNotes;
 	
 	if Settings.midScroll:
 		strums.get_child(1).position.x=-strums.get_child(1).getWidth()/2.0;
 		strums.get_child(0).position.x=-(strums.get_child(0).getWidth()+161/2);
 		strums.get_child(0).modulate.a=0.2;
+	
+	hpbar.visible=!Settings.hideHud;
+	scoreLabel.visible=!Settings.hideHud;
 	
 	hpbar.rect_position.y=[298,-298][int(Settings.downScroll)];
 	scoreLabel.rect_position.y=hpbar.rect_position.y+32;
@@ -129,7 +133,7 @@ func _process(dt):
 			songFinished=true;
 			onSongFinished();
 		var time=(inst.get_playback_position()+AudioServer.get_time_since_last_mix())-AudioServer.get_output_latency();
-		if abs(time-Conductor.time)>(offsyncAllowed/1000.0):
+		if abs(time-Conductor.time)>(Game.offsyncAllowed/1000.0):
 			for i in [inst,voices]: i.seek(Conductor.time);
 		if voices.stream && inst.get_playback_position()>voices.stream.get_length():
 			voices.volume_db=-80;
@@ -178,6 +182,7 @@ func _physics_process(dt):
 			_:
 				camSingOffset=Vector2.ZERO;
 	cam.offset=lerp(cam.offset,camSingOffset,0.08);
+	updateFC();
 	
 func popUpScore(data):
 	var ms=abs(data[0]-Conductor.time);
@@ -240,18 +245,29 @@ func onSongFinished():
 	inst.volume_db=-80.0;
 	voices.volume_db=-80.0;
 	
+	# Replace new score and accuracy
+	var newAcc=float(notesHit)/float(notesTotal);
+	if Game.songsData[Game.song][1]<newAcc: Game.songsData[Game.song][1]=newAcc;
+	if Game.songsData[Game.song][0]<score: Game.songsData[Game.song][0]=score;
+
+	if compareFC(fc,Game.songsData[Game.song][2]):
+		Game.songsData[Game.song][2]=fc;
+	
 	if Game.storyMode:
 		if len(Game.songsQueue)>0:
 			Game.songsQueue.remove(0);
 		if len(Game.songsQueue)==0:
 			Game.weeksData[Game.week][0]=true; # Setting week finished to true
 			Game.changeScene("menus/storymode/storymode");
+			Music.play("freaky");
 		else:
 			Game.song=Game.songsQueue[0];
 			Game.reloadScene();
 	else:
 		Game.changeScene("menus/freeplay/freeplay");
-		
+		Music.play("freaky");
+	Game.saveGame();
+	
 func onSectionChanged(sectData):
 	var mustHit=sectData.mustHitSection;
 	var camTarget=Vector2();
@@ -263,7 +279,6 @@ func onSectionChanged(sectData):
 		camTarget=sectionTarget.global_position+sectionTarget.camOffset*sectionTarget.scale;
 		tw.interpolate_property(cam,"global_position",cam.global_position,camTarget,camMoveDur,Tween.TRANS_QUART,Tween.EASE_OUT);
 		tw.start();
-	
 
 func createNote(nData):
 	var tStrum=null;
@@ -323,7 +338,7 @@ func loadSong():
 			var rawData=chart.notes[i].sectionNotes[n];
 			if rawData[1]>-1:
 				var nData={
-					"time":float(rawData[0])/1000.0,
+					"time":(float(rawData[0])/1000.0)+(Settings.notesOffset/1000.0),
 					"column":rawData[1],
 					"length":float(rawData[2])/1000.0,
 					"type":rawData[3],
@@ -333,7 +348,7 @@ func loadSong():
 	
 	for i in chart.events:
 		var data={
-			"time":float(i[0])/1000.0,
+			"time":(float(i[0])/1000.0)+(Settings.notesOffset/1000.0),
 			"events":i[1]
 		}
 		eventsQueue.append(data);
@@ -386,14 +401,44 @@ func unMuffleSong():
 	inst.volume_db=0.0;
 	voices.volume_db=0.0;
 
+func updateFC():
+	var newFc="?";
+	if sicks>0: 
+		newFc="SFC";
+	if goods>0:
+		newFc="GFC";
+	if bads>0 || shits>0:
+		newFc="FC";
+	if misses>0 && misses<10:
+		newFc="SDCB";
+	if misses >= 10:
+		newFc="Clear";
+	fc=newFc;
+
+func compareFC(newFC,oldFC):
+	var newFc="?"
+	var FCVals=[0,0];
+	
+	for i in 2:
+		var tFC=[newFC,oldFC][i];
+		if tFC=="SFC": FCVals[i]=4;
+		if tFC=="GFC": FCVals[i]=3;
+		if tFC=="FC": FCVals[i]=2;
+		if tFC=="SDCB": FCVals[i]=1;
+		if tFC=="Clear" || tFC=="?": FCVals[i]=0;
+	
+	print(FCVals);
+	return FCVals[0]>FCVals[1];
+
 func updateScoreLabel():
-	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s    Misses: %s    %s"%[
+	scoreLabel.bbcode_text="[center]Score:%s    Accuracy: %s (%s)    Misses: %s    %s"%[
 		score,
 		str(str(stepify(float((notesHit/notesTotal)*100.0 if notesTotal>0 else 0),0.01)).pad_decimals(2),"%"),
+		fc,
 		misses,
 		"[color=red](BOTPLAY)" if Game.botMode else ""
 	];
-	
+
 func sortNotes(a,b):
 	return a.time<b.time;
 

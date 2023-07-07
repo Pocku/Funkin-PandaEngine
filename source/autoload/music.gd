@@ -23,3 +23,8 @@ func stop(id):
 	var time=audio.get_playback_position();
 	audio.stop();
 	return time;
+
+func stopAll():
+	for i in get_child_count():
+		while get_child(i).playing:
+			get_child(i).stop();

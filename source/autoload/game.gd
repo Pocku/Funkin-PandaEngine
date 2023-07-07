@@ -26,17 +26,22 @@ var uiSkin="default";
 var scrollScale=1400.0;
 var botMode=false;
 
+var offsyncAllowed=30.0;
+var engineVersion="1.0b";
+
 func _ready():
-	for i in getFileTxt("assets/data/weekList"):
+	for i in getWeekList():
 		var weekName=str(i).replace(".json","");
 		var data=getWeekData(weekName);
 		weeksData[weekName]=[false];
 		for j in data.songs:
-			songsData[j[0]]=[0,0,false];
+			songsData[j[0]]=[0,0,"?"];
 	
 	if getGameSaveData()==null:
 		saveGame();
-		print("FIRST TIME PLAYING!")
+		print("FIRST TIME PLAYING!");
+	else:
+		loadGame();
 
 func _input(ev):
 	if ev is InputEventKey:
@@ -44,20 +49,41 @@ func _input(ev):
 			OS.window_fullscreen=!OS.window_fullscreen;
 
 func _process(dt):
+	Engine.set_target_fps(Settings.fpsCap);
 	OS.vsync_enabled=Settings.vsync;
 
 func saveGame():
 	var data={};
 	data["settings"]={};
-	data["weeks"]=weeksData.duplicate(true);
-	data["songs"]=songsData.duplicate(true);
+	data["weeksData"]=weeksData.duplicate(true);
+	data["songsData"]=songsData.duplicate(true);
 	for i in Settings.get_script().get_script_property_list():
 		data["settings"][i.name]=Settings.get(i.name);
 	var f=File.new();
 	f.open("user://save.json",File.WRITE);
 	f.store_line(to_json(data));
 	f.close();
-	printt("GAME SAVED!",data)
+	printt("GAME SAVED!");
+	
+func loadGame():
+	var f=File.new();
+	var data=null;
+	f.open("user://save.json",File.READ);
+	data=parse_json(f.get_as_text());
+	f.close();
+	
+	for i in data.settings.keys():
+		Settings.set(i,data.settings[i]);
+	for i in data.weeksData.keys():
+		weeksData[i]=data.weeksData[i];
+	for i in data.songsData.keys():
+		songsData[i]=data.songsData[i];
+	reloadKeys();
+	printt("GAME LOADED!");
+	
+func deleteSave():
+	var dir=Directory.new();
+	dir.remove("user://save.json");
 	
 func changeScene(sceneName,useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	var path="res://source/%s.tscn"%[sceneName];
@@ -128,7 +154,7 @@ func getWeekData(weekId):
 
 func getWeekList():
 	var list=[];
-	for i in getFileTxt("assets/data/weekList"):
+	for i in getFileTxt("assets/data/week-list"):
 		var weekName=str(i).replace(".json","");
 		list.append(weekName);
 	print(list)

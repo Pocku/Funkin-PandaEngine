@@ -12,6 +12,7 @@ var data={
 		["low quality","lowQuality"],
 		["shaders","useShaders"],
 		["vsync","vsync"],
+		["fps","fpsCap",[30,240,1]]
 	],
 	"gameplay":[
 		["downscroll","downScroll"],
@@ -20,7 +21,8 @@ var data={
 		["note splashes","noteSplashes"],
 		["enemy notes","enemyNotes"],
 		["hide hud","hideHud"],
-		["show fps","showFps"]
+		["show fps","showFps"],
+		["notes offset","notesOffset",[0,500,1]]
 	],
 	"controls":[
 		["note keys","noteKeys"]
@@ -59,13 +61,13 @@ func _ready():
 			
 			match typeof(Settings.get(i[1])):
 				TYPE_BOOL:
-					var cb=preload("res://source/menus/check-box.tscn").instance();
+					var cb=preload("res://source/menus/options/check-box.tscn").instance();
 					opt.add_child(cb);
 					cb.position=Vector2(-70,4);
 					cb.scale*=0.75;
 					cb.get_node("Sprite/Animations").play("static" if !Settings.get(i[1]) else "select")
 				
-				TYPE_INT:
+				TYPE_INT,TYPE_REAL:
 					var sb=Alphabet.new();
 					opt.add_child(sb);
 					sb.text=str("<",Settings.get(i[1]),">");
@@ -120,7 +122,9 @@ func _input(ev):
 			onOptionScroll(optionsQueue[mainOpt],dirX);
 		
 		if Game.canChangeScene && ev.scancode in [KEY_ESCAPE] && !ev.echo && ev.pressed && !keyMapping && !confirmed:
-			Game.changeScene("menus/main-menu/main-menu")
+			Game.changeScene("menus/main-menu/main-menu");
+			Game.saveGame();
+			Sfx.play("menu-cancel");
 			confirmed=true;
 			
 		
@@ -130,12 +134,13 @@ func _process(dt):
 	
 func onOptionChanged():
 	var targetY=(720/2)-optionsQueue[mainOpt][2];
+	Sfx.play("menu-scroll");
 	tw.interpolate_property(options,"position:y",options.position.y,targetY,0.28,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 	
 	for i in len(optionsQueue):
 		var opt=optionsQueue[i][0];
 		opt.self_modulate=Color.white if i!=mainOpt else Color.crimson.lightened(0.2);
-		tw.interpolate_property(opt,"position:x",-16 if i==mainOpt else 0.0,0.0,0.28,Tween.TRANS_CUBIC,Tween.EASE_OUT);
+		tw.interpolate_property(opt,"position:x",16 if i==mainOpt else 0.0,0.0,0.28,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 	tw.start();
 	
 func onOptionPressed(data):
@@ -150,6 +155,7 @@ func onOptionPressed(data):
 			anims.play("static" if !Settings.get(varId) else "select");
 			tw.interpolate_property(opt,"scale",Vector2(1.05,0.9),Vector2.ONE,0.2,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 			tw.start();
+			Sfx.play("menu-%s"%(["cancel","ok"][int(Settings.get(varId))]));
 	
 		TYPE_ARRAY:
 			match varId:

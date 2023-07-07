@@ -17,6 +17,7 @@ var modesQueue=[];
 var modeOpt=0;
 var mainOpt=0;
 var confirmed=false;
+var curScore=0;
 
 func _ready():
 	weeks.position=Vector2(640,528);
@@ -64,6 +65,7 @@ func _input(ev):
 			
 			if Game.canChangeScene && ev.scancode in [KEY_ESCAPE] && !confirmed:
 				Game.changeScene("menus/main-menu/main-menu");
+				Sfx.play("menu-cancel");
 				confirmed=true;
 			
 			if Game.canChangeScene && ev.scancode in [KEY_ENTER] && !confirmed:
@@ -77,26 +79,40 @@ func _input(ev):
 					Game.week=weeksQueue[mainOpt];
 					Game.song=Game.songsQueue[0];
 					Game.mode=modesQueue[modeOpt];
-					Game.changeScene("gameplay/gameplay");
+					Sfx.play("menu-ok");
+					Music.stopAll();
+					
+					for c in characters.get_children():
+						var charAnims=c.get_node("Sprite/Animations");
+						if charAnims.has_animation("hey"): charAnims.play("hey");
 					confirmed=true;
+					
+					yield(get_tree().create_timer(0.6),"timeout");
+					Game.changeScene("gameplay/gameplay");
 				else:
 					var weekOpt=weeks.get_child(mainOpt);
 					var shakeLen=8;
+					Sfx.play("menu-cancel");
 					while shakeLen>0:
 						randomize();
 						weekOpt.position.x=0+[-shakeLen,shakeLen][int(shakeLen)%2];
 						yield(get_tree().create_timer(0.03),"timeout");
 						shakeLen-=1;
-					
+
+func _process(dt):
+	scoreLabel.text="WEEK SCORE: %s"%[str(int(curScore)).pad_zeros(3)];
+				
 func onWeekChanged():
 	var data=Game.getWeekData(weeksQueue[mainOpt]);
 	var isUnlocked=Game.isWeekCompleted(data.needWeek);
+	Sfx.play("menu-scroll");
+	curScore=0;
 	
 	var oldModes=modesQueue;
 	modesQueue=["easy","normal","hard"];
 	modeOpt=0;
 	onModeChanged();
-
+	
 	for i in characters.get_children(): 
 		if is_instance_valid(i): i.queue_free();
 	
@@ -107,9 +123,11 @@ func onWeekChanged():
 		modeOpt=0;
 		onModeChanged();
 		
+		var totalScore=0;
 		trackslabel.text="";
 		for s in data.songs:
 			trackslabel.text+=str(s[0]).capitalize()+"\n";
+			totalScore+=Game.songsData[s[0]][0];
 			
 		for i in len(data.characters):
 			var charId=data.characters[i][0];
@@ -124,6 +142,9 @@ func onWeekChanged():
 			chara.scale=charScale;
 			chara.scale.x*=[1,-1][int(shouldFlip)];
 			chara.modulate=Color("#f9cf51");
+		
+		tw.interpolate_property(self,"curScore",curScore,totalScore,0.25);
+		tw.start();
 	else:
 		weekNameLabel.text="?";
 		trackslabel.text="?";

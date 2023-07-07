@@ -20,6 +20,7 @@ func reset():
 	bpm=100;
 	crochet=60.0/bpm;
 	stepCrochet=crochet/4.0;
+	beatTime=0.0;
 	beatCount=0.0;
 	waitTime=0.0;
 	time=0.0;

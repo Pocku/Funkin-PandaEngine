@@ -5,7 +5,9 @@ func _ready():
 	for i in ["1","2","3","Go"]:
 		addSfx("intro%s-%s"%[i,"default"]);
 		addSfx("intro%s-%s"%[i,"pixel"]);
-
+	for i in ["ok","cancel","scroll"]:
+		addSfx("menu-%s"%[i]);
+	
 func addSfx(id):
 	var audio=AudioStreamPlayer.new();
 	audio.name=id;

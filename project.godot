@@ -49,10 +49,12 @@ config/icon="res://icon.png"
 Game="*res://source/autoload/game.gd"
 Transition="*res://source/autoload/transition.tscn"
 Conductor="*res://source/autoload/conductor.gd"
+Music="*res://source/autoload/music.gd"
 Sfx="*res://source/autoload/sfx.gd"
 Settings="*res://source/autoload/settings.gd"
 VolumeMenu="*res://source/autoload/volume-menu.tscn"
 Debug="*res://source/autoload/debug.tscn"
+Flash="*res://source/autoload/flash.tscn"
 
 [display]
 

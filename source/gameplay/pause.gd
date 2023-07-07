@@ -25,7 +25,7 @@ func _ready():
 	
 func _input(ev):
 	if ev is InputEventKey && canPause:
-		if ev.scancode in [KEY_UP,KEY_DOWN] && !ev.echo && ev.pressed:
+		if ev.scancode in [KEY_UP,KEY_DOWN] && !ev.echo && ev.pressed && paused:
 			var dirY=int(ev.scancode==KEY_DOWN)-int(ev.scancode==KEY_UP);
 			var oldMainOpt=mainOpt;
 			mainOpt=clamp(mainOpt+dirY,0,len(optionsList)-1);
@@ -53,7 +53,8 @@ func _input(ev):
 						Game.reloadScene(true);
 					"exit to menu":
 						pause(false);
-						Game.changeScene("menus/main-menu/main-menu")
+						Game.changeScene("menus/%s/%s"%(["main-menu","main-menu"] if Game.storyMode else ["freeplay","freeplay"]));
+						Music.play("freaky");
 					
 func _physics_process(dt):
 	for i in options.get_child_count():
@@ -65,6 +66,7 @@ func _physics_process(dt):
 
 func onOptionChanged():
 	var opt=options.get_child(mainOpt);
+	Sfx.play("menu-scroll")
 	tw.interpolate_property(opt,"scale",Vector2.ONE*1.02,Vector2.ONE,0.2,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 	tw.start();	
 

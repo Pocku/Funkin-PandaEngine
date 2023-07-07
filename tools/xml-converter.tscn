@@ -4,6 +4,6 @@
 
 [node name="XMLConverter" type="Node2D"]
 script = ExtResource( 1 )
-path = "res://assets/images/menus/storymode-menu/characters/gf"
-pathTo = "res://source/menus/storymode-menu/characters/gf"
-sceneName = "BF"
+path = "res://assets/images/menus/title-screen/logo"
+pathTo = "res://source/menus/title-screen/logo"
+sceneName = "Logo"

@@ -15,13 +15,13 @@ centered = false
 [node name="Options" type="Node2D" parent="."]
 
 [node name="Score" type="Node2D" parent="."]
-position = Vector2( 25, 660 )
+position = Vector2( 20, 607 )
 scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 3 )
 text = "HIGH-SCORE: 0"
 
 [node name="Mode" type="Node2D" parent="."]
-position = Vector2( 24, 700 )
+position = Vector2( 19, 687 )
 scale = Vector2( 0.35, 0.35 )
 script = ExtResource( 3 )
 text = "<HARD>"

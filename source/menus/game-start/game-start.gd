@@ -1,4 +1,4 @@
 extends Node2D
 
 func _ready():
-	Game.changeScene("menus/main-menu/main-menu");
+	Game.changeScene("menus/title-screen/title-screen");

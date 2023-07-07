@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://source/menus/main-menu/main-menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/menus/shared/menu-black.png" type="Texture" id=2]
+[ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 21
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 4 )
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource( 1 )
@@ -16,5 +23,14 @@ texture = ExtResource( 2 )
 position = Vector2( 640, 360 )
 
 [node name="Options" type="Node2D" parent="."]
+
+[node name="EngineVersion" type="Label" parent="."]
+margin_left = 6.0
+margin_top = 695.0
+margin_right = 1276.0
+margin_bottom = 716.0
+custom_fonts/font = SubResource( 1 )
+align = 2
+valign = 1
 
 [node name="Tween" type="Tween" parent="."]

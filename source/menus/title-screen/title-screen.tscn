@@ -1,6 +1,27 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://source/menus/title-screen/title-screen.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/menus/title-screen/newgrounds-logo.png" type="Texture" id=2]
+[ext_resource path="res://source/menus/title-screen/gf.tscn" type="PackedScene" id=3]
+[ext_resource path="res://source/menus/title-screen/logo.tscn" type="PackedScene" id=4]
+[ext_resource path="res://source/menus/title-screen/press-enter.tscn" type="PackedScene" id=5]
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 1 )
+
+[node name="Strings" type="Node2D" parent="."]
+
+[node name="Logo" parent="." instance=ExtResource( 4 )]
+position = Vector2( 375, 264 )
+
+[node name="GF" parent="." instance=ExtResource( 3 )]
+position = Vector2( 937, 716 )
+
+[node name="PressEnter" parent="." instance=ExtResource( 5 )]
+modulate = Color( 0, 0.858824, 1, 1 )
+position = Vector2( 35, 620 )
+
+[node name="NewgroundsLogo" type="Sprite" parent="."]
+visible = false
+position = Vector2( 640, 480 )
+texture = ExtResource( 2 )

@@ -73,10 +73,12 @@ func _input(ev):
 
 			if Game.canChangeScene && ev.scancode in [KEY_ESCAPE] && !confirmed:
 				Game.changeScene("menus/main-menu/main-menu");
+				Sfx.play("menu-cancel");
 				confirmed=true;
 
 func onOptionChanged():
 	var tgColor=Color(membersQueue[mainOpt][0][2]);
+	Sfx.play("menu-scroll");
 	
 	for i in len(membersQueue):
 		var opt=membersQueue[i][1];
