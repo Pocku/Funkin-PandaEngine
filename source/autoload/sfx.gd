@@ -1,6 +1,7 @@
 extends Node
 
 func _ready():
+	pause_mode=Node.PAUSE_MODE_PROCESS;
 	for i in ["1","2","3","Go"]:
 		addSfx("intro%s-%s"%[i,"default"]);
 		addSfx("intro%s-%s"%[i,"pixel"]);

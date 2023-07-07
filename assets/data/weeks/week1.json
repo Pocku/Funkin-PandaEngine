@@ -10,8 +10,7 @@
 	"songs":[
 		["fresh","dad","kawai sprite","#af66ce"]
 	],
-	"weekBefore":"",
-	"startUnlocked":true,
+	"needWeek":"tutorial",
 	"hideFreeplay":false,
 	"hideStorymode":false
 }

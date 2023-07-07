@@ -10,8 +10,7 @@
 	"songs":[
 		["tutorial","gf","kawai sprite","#b80b6d"]
 	],
-	"weekBefore":"",
-	"startUnlocked":true,
+	"needWeek":"",
 	"hideFreeplay":false,
 	"hideStorymode":false
 }

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/gameover-end.ogg-95def6ef9c1965e0f63cf4c00365e6d3.oggstr"
+
+[deps]
+
+source_file="res://assets/musics/gameover-end.ogg"
+dest_files=[ "res://.import/gameover-end.ogg-95def6ef9c1965e0f63cf4c00365e6d3.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

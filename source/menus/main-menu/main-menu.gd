@@ -34,10 +34,10 @@ func _input(ev):
 		if Game.canChangeScene && ev.scancode in [KEY_ENTER] && !confirmed && !ev.echo && ev.pressed:
 			confirmed=true;
 			Game.changeScene([
-				"menus/storymode-menu/storymode-menu",
-				"menus/freeplay-menu/freeplay-menu",
-				"menus/options-menu/options-menu",
-				"menus/credits-menu/credits-menu"
+				"menus/storymode/storymode",
+				"menus/freeplay/freeplay",
+				"menus/options/options",
+				"menus/credits/credits"
 			][mainOpt])
 		
 func onMainOptionChanged():

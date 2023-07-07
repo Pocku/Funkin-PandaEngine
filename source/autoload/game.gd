@@ -12,15 +12,12 @@ var noteTypes=[
 var eventType=[
 	"","camZoom","camMove","addBeatZoom"
 ]
-var weeksList=[
-	"tutorial",
-	"week1",
-	"week-test"
-]
-var songsData=[];
+var songsData={};
+var weeksData={};
 
-var song="black-sun";
-var mode="hard";
+var week="";
+var song="";
+var mode="";
 var songsQueue=[];
 var storyMode=false;
 var canChangeScene=true;
@@ -30,7 +27,16 @@ var scrollScale=1400.0;
 var botMode=false;
 
 func _ready():
-	saveGame();
+	for i in getFileTxt("assets/data/weekList"):
+		var weekName=str(i).replace(".json","");
+		var data=getWeekData(weekName);
+		weeksData[weekName]=[false];
+		for j in data.songs:
+			songsData[j[0]]=[0,0,false];
+	
+	if getGameSaveData()==null:
+		saveGame();
+		print("FIRST TIME PLAYING!")
 
 func _input(ev):
 	if ev is InputEventKey:
@@ -41,8 +47,18 @@ func _process(dt):
 	OS.vsync_enabled=Settings.vsync;
 
 func saveGame():
-	pass
-
+	var data={};
+	data["settings"]={};
+	data["weeks"]=weeksData.duplicate(true);
+	data["songs"]=songsData.duplicate(true);
+	for i in Settings.get_script().get_script_property_list():
+		data["settings"][i.name]=Settings.get(i.name);
+	var f=File.new();
+	f.open("user://save.json",File.WRITE);
+	f.store_line(to_json(data));
+	f.close();
+	printt("GAME SAVED!",data)
+	
 func changeScene(sceneName,useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	var path="res://source/%s.tscn"%[sceneName];
 	get_tree().current_scene.set_process_input(false);
@@ -80,7 +96,12 @@ func reloadKeys():
 		nKey.set_scancode(Settings.noteKeys[i]);
 		InputMap.action_erase_events(noteInputs[i]);
 		InputMap.action_add_event(noteInputs[i],nKey);
-		
+
+func isWeekCompleted(weekName):
+	if weekName=="":
+		return true;
+	return weeksData[weekName][0]==true;
+	
 func getCharacterList():
 	var rawList=getFilesInFolder("source/gameplay/characters/");
 	var list=[];
@@ -98,6 +119,21 @@ func getStageList():
 func getSongList():
 	return getFilesInFolder("assets/songs/");
 
+func getWeekData(weekId):
+	var f=File.new();
+	f.open("res://assets/data/weeks/%s.json"%[weekId],File.READ);
+	var data=parse_json(f.get_as_text());
+	f.close();
+	return data;
+
+func getWeekList():
+	var list=[];
+	for i in getFileTxt("assets/data/weekList"):
+		var weekName=str(i).replace(".json","");
+		list.append(weekName);
+	print(list)
+	return list;
+
 func getGameSaveData():
 	var f:=File.new();
 	var data=null;
@@ -105,6 +141,16 @@ func getGameSaveData():
 		f.open("user://save.json",File.READ);
 		data=parse_json(f.get_as_text());
 		f.close();
+	return data;
+
+func getFileTxt(path):
+	var f=File.new();
+	var data=[];
+	f.open("res://"+path+".txt",File.READ);
+	while not f.eof_reached():
+		var line = f.get_line();
+		data.append(line);
+	f.close();
 	return data;
 
 func getFilesInFolder(path):

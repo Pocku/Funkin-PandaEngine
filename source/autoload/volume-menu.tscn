@@ -2,7 +2,7 @@
 
 [ext_resource path="res://source/autoload/volume-menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://assets/images/volume-bar.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/misc/volume-bar.png" type="Texture" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 21

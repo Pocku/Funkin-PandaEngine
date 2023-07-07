@@ -240,19 +240,17 @@ func onSongFinished():
 	inst.volume_db=-80.0;
 	voices.volume_db=-80.0;
 	
-
-	
-	
 	if Game.storyMode:
 		if len(Game.songsQueue)>0:
 			Game.songsQueue.remove(0);
 		if len(Game.songsQueue)==0:
-			Game.changeScene("menus/freeplay-menu/freeplay-menu");
+			Game.weeksData[Game.week][0]=true; # Setting week finished to true
+			Game.changeScene("menus/storymode/storymode");
 		else:
 			Game.song=Game.songsQueue[0];
 			Game.reloadScene();
 	else:
-		Game.changeScene("menus/freeplay-menu/freeplay-menu");
+		Game.changeScene("menus/freeplay/freeplay");
 		
 func onSectionChanged(sectData):
 	var mustHit=sectData.mustHitSection;
@@ -340,8 +338,10 @@ func loadSong():
 		}
 		eventsQueue.append(data);
 	
-	inst.stream=load("res://assets/songs/%s/Inst.ogg"%[Game.song]);
-	voices.stream=load("res://assets/songs/%s/Voices.ogg"%[Game.song]);
+	var instPath="res://assets/songs/%s/Inst.ogg"%[Game.song];
+	var voicesPath="res://assets/songs/%s/Voices.ogg"%[Game.song];
+	inst.stream=load(instPath) if ResourceLoader.exists(instPath) else null;
+	voices.stream=load(voicesPath) if ResourceLoader.exists(voicesPath) else null;
 	notesQueue.sort_custom(self,"sortNotes");
 	eventsQueue.sort_custom(self,"sortNotes");
 
