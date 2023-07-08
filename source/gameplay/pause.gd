@@ -1,5 +1,9 @@
 extends CanvasLayer
 
+onready var songLabel=$SongLabel;
+onready var modeLabel=$ModeLabel;
+onready var deathsLabel=$DeathsLabel;
+
 onready var options=$Options;
 onready var tw=$Tween;
 onready var bg=$BG;
@@ -15,6 +19,10 @@ func _ready():
 	if !Game.allowBotMode:
 		optionsList.remove(2);
 	
+	songLabel.text=str(Game.song).to_upper();
+	modeLabel.text=str(Game.mode).to_upper();
+	deathsLabel.text="BLUE-BALLED: %s"%[Game.songsData[Game.song][3]];
+	
 	options.modulate.a=0.0;
 	bg.modulate.a=0.0;
 	for i in len(optionsList):
@@ -25,6 +33,10 @@ func _ready():
 		options.add_child(opt);
 		totalHeight+=130;
 	options.position=Vector2(1280/2,(720/2)-(totalHeight-120)/2);
+	
+	for i in [songLabel,modeLabel,deathsLabel]:
+		i.rect_position.y=-8;
+		i.modulate.a=0.0;
 	
 func _input(ev):
 	if ev is InputEventKey && canPause:
@@ -81,6 +93,14 @@ func pause(toggle):
 	get_tree().paused=paused;
 
 func fade(isIn):
+	var labels=[songLabel,modeLabel,deathsLabel]
+	for i in len(labels):
+		var label=labels[i];
+		var yPos=[8,27,46][i];
+		tw.interpolate_property(label,"rect_position:y",label.rect_position.y,[yPos-16,yPos][int(isIn)],0.8-(i*0.2),Tween.TRANS_CUBIC,Tween.EASE_OUT);
+		tw.interpolate_property(label,"modulate:a",label.modulate.a,[1.0,0.0][int(!isIn)],0.8-(i*0.2),Tween.TRANS_CUBIC,Tween.EASE_OUT);
+	
+	
 	tw.interpolate_property(bg,"modulate:a",bg.modulate.a,[0.0,1.0][int(isIn)],0.2,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 	tw.interpolate_property(options,"modulate:a",options.modulate.a,[0.0,1.0][int(isIn)],0.2,Tween.TRANS_CUBIC,Tween.EASE_OUT);
 	tw.start();	

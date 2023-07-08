@@ -10,7 +10,7 @@ var enemyNotes=true;
 var noteSplashes=true;
 var hideHud=false;
 var notesOffset=0.0;
-var fpsCap=60;
+var fpsCap=120;
 var volume=1.0;
 var vsync=false;
 

@@ -56,6 +56,8 @@ func _ready():
 	inst.connect("finished",self,"onSongFinished");
 	loadSong();
 	
+	Game.scrollScale=1000.0*chart.speed;
+	
 	if false:
 		Conductor.time=inst.stream.get_length()-6.0;
 		while notesQueue[0].time<=Conductor.time:

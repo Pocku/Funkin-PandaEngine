@@ -1,6 +1,7 @@
 class_name SongScript extends Node2D
 
 onready var scn=get_parent();
+onready var stage=getProperty("stage");
 onready var bf=getProperty("bf");
 onready var dad=getProperty("dad");
 onready var gf=getProperty("gf");
