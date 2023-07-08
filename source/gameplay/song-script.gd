@@ -58,6 +58,18 @@ func onBeat(beat):
 func onPlayerDeath():
 	pass
 
+func camMoveTo(x,y,t=0.3):
+	tw.interpolate_property(cam,"global_position",cam.global_position,Vector2(x,y),t,Tween.TRANS_CUBIC,Tween.EASE_IN_OUT);
+	tw.start();
+
+func camZoomTo(zm,t=0.3):
+	tw.interpolate_property(cam,"baseZoom",cam.baseZoom,zm,t,Tween.TRANS_CUBIC,Tween.EASE_IN_OUT);
+	tw.start();
+
+func camRotateTo(rot,t=0.3):
+	tw.interpolate_property(cam,"rotation",cam.rotation,rot,t,Tween.TRANS_CUBIC,Tween.EASE_IN_OUT);
+	tw.start();
+
 func setProperty(path,val):
 	scn.set(path,val);
 

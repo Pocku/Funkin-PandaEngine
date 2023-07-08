@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Voices.mp3-1fd2141b924555f7fe2f98a693b3f987.mp3str"
+
+[deps]
+
+source_file="res://assets/songs/roses/Voices.mp3"
+dest_files=[ "res://.import/Voices.mp3-1fd2141b924555f7fe2f98a693b3f987.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

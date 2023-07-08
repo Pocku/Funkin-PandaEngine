@@ -25,15 +25,15 @@ _global_script_classes=[ {
 "path": "res://source/gameplay/song-script.gd"
 }, {
 "base": "Node2D",
-"class": "Strums",
+"class": "StrumLine",
 "language": "GDScript",
-"path": "res://source/gameplay/strums.gd"
+"path": "res://source/gameplay/strumline.gd"
 } ]
 _global_script_class_icons={
 "Alphabet": "",
 "Character": "",
 "SongScript": "",
-"Strums": ""
+"StrumLine": ""
 }
 
 [application]

@@ -83,7 +83,8 @@ layer = 11
 [node name="Voices" type="AudioStreamPlayer" parent="."]
 
 [node name="Combo" type="Sprite" parent="."]
-position = Vector2( 638, 359 )
+position = Vector2( 473, 312 )
+z_index = 15
 script = ExtResource( 7 )
 
 [node name="Counter" type="Node2D" parent="Combo"]

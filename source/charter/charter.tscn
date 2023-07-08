@@ -381,6 +381,13 @@ value = 4.0
 allow_greater = true
 align = 2
 
+[node name="Clear" type="Button" parent="UI/Tabs/Section"]
+margin_left = 214.0
+margin_top = 8.0
+margin_right = 284.0
+margin_bottom = 28.0
+text = "Clear"
+
 [node name="TimeScroll" type="HScrollBar" parent="UI/Tabs"]
 margin_top = 698.0
 margin_right = 292.0

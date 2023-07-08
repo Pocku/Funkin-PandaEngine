@@ -1,0 +1,16 @@
+{
+	"bg":"default",
+	"name":"Senpai",
+	"modes":["hard"],
+	"characters":[
+		["gf",640,420,0.5],
+		["bf",850,410,0.50],
+		["bf",420,410,0.48,true]
+	],
+	"songs":[
+		["roses","senpai","kawai sprite","#ffaa6f"]
+	],
+	"needWeek":"",
+	"hideFreeplay":false,
+	"hideStorymode":false
+}

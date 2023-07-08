@@ -1,0 +1,103 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/images/characters/gf-pixel.png" type="Texture" id=1]
+[ext_resource path="res://source/gameplay/characters/gf.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "danceLeft"
+length = 0.7
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 0, 0, 120, 106 ), Rect2( 0, 0, 120, 106 ), Rect2( 130, 0, 120, 106 ), Rect2( 130, 0, 120, 106 ), Rect2( 130, 0, 120, 106 ), Rect2( 260, 0, 120, 106 ), Rect2( 260, 0, 120, 106 ), Rect2( 260, 0, 120, 106 ), Rect2( 260, 0, 120, 106 ), Rect2( 390, 0, 120, 106 ), Rect2( 390, 0, 120, 106 ), Rect2( 390, 0, 120, 106 ), Rect2( 390, 0, 120, 106 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -60, -106 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "danceRight"
+length = 0.9
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 0, 116, 120, 106 ), Rect2( 0, 116, 120, 106 ), Rect2( 130, 116, 120, 106 ), Rect2( 130, 116, 120, 106 ), Rect2( 260, 116, 120, 106 ), Rect2( 260, 116, 120, 106 ), Rect2( 260, 116, 120, 106 ), Rect2( 390, 116, 120, 106 ), Rect2( 390, 116, 120, 106 ), Rect2( 390, 116, 120, 106 ), Rect2( 390, 116, 120, 106 ), Rect2( 390, 116, 120, 106 ), Rect2( 0, 232, 120, 106 ), Rect2( 0, 232, 120, 106 ), Rect2( 0, 232, 120, 106 ), Rect2( 0, 232, 120, 106 ), Rect2( 0, 232, 120, 106 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -60, -106 ) ]
+}
+
+[node name="GF" type="Node2D"]
+script = ExtResource( 2 )
+healthColor = Color( 0.956863, 0.298039, 0.47451, 1 )
+camOffset = Vector2( 0, -62 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -60, -106 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 120, 106 )
+
+[node name="Animations" type="AnimationPlayer" parent="Sprite"]
+playback_speed = 1.3
+anims/danceLeft = SubResource( 1 )
+anims/danceRight = SubResource( 2 )

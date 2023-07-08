@@ -8,6 +8,7 @@ var ghostTap=true;
 var lowQuality=false;
 var enemyNotes=true;
 var noteSplashes=true;
+var classicHud=false;
 var hideHud=false;
 var notesOffset=0.0;
 var fpsCap=120;

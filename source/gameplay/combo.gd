@@ -9,6 +9,11 @@ var jumpHeight=3.0;
 var ratings={};
 
 func _ready():
+	match Game.uiSkin:
+		"pixel": 
+			scale=Vector2.ONE*7.0;
+			counter.scale*=1.2;
+	counter.position=Vector2(0,55)/scale;
 	for i in ["sick","good","bad","shit"]:
 		ratings[i]=load("res://assets/images/ui-skin/%s/combo/%s.png"%[Game.uiSkin,i]);
 	hide();
@@ -19,11 +24,6 @@ func _physics_process(dt):
 	global_position+=vel;
 	modulate.a=lerp(modulate.a,0.0,0.13);
 
-func setBaseScale(base):
-	match Game.uiSkin:
-		"pixel": scale=Vector2.ONE*6.0;
-	scale*=base;
-	counter.position=Vector2(0,55)/scale;
 
 func pop(ratingId):
 	texture=ratings[ratingId];

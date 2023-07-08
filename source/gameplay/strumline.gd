@@ -1,9 +1,11 @@
-class_name Strums extends Node2D
+class_name StrumLine extends Node2D
 
 var isPlayer=false;
 var character=null;
 
 func _ready():
+	Game.connect("noteHit",self,"onNoteHit");
+	
 	scale*=0.75;
 	var w=0.0;
 	for i in 4:
@@ -94,9 +96,15 @@ func updateArrow(arrow,key):
 		if justTap && !Settings.ghostTap && getProperty("countdownStarted"):
 			setProperty("health",max(getProperty("health")-1,0));
 			setProperty("misses",getProperty("misses")+1);
-			var singDir="miss%s"%[(["Left","Down","Up","Right"] if character.scale.x>0 else ["Right","Down","Up","Left"])[arrow.column]];	
-			character.playAnim(singDir);
-			character.seekAnim(0.0);
+			
+			var chara=getProperty(["dad","gf"][int(isPlayer)]);
+			var sectData=getProperty("curSectionData");
+			if sectData.gfSection && isPlayer && sectData.mustHitSection || sectData.gfSection && !isPlayer && !sectData.mustHitSection:
+				chara=getProperty("gf");
+			var singDir="miss%s"%[(["Left","Down","Up","Right"] if chara.scale.x>0 else ["Right","Down","Up","Left"])[arrow.column]];	
+			chara.playAnim(singDir);
+			chara.seekAnim(0.0);
+			
 			callFunc("updateScoreLabel");
 			callFunc("muffleSong");
 			
@@ -126,7 +134,10 @@ func updateBotArrow(arrow):
 				note.queue_free();
 				arrow.notes.remove(0);
 	removeAvailableGhostNotes(arrow);
-	
+
+func onNoteHit(data):
+	pass
+
 func checkForGhostNotesInRange(arrow):
 	if !arrow.ghostNotes.empty():
 		var note=arrow.ghostNotes[0];

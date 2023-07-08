@@ -36,11 +36,13 @@ var dead=false;
 var bf=null;
 var dad=null;
 var gf=null;
+
 var stage=null;
 var events=null;
 var songScript=null;
 var sectionTarget=null;
 var camMoveWithSection=true;
+var isGfSection=false;
 
 var notesQueue=[];
 var eventsQueue=[];
@@ -84,18 +86,20 @@ func _ready():
 	tw.interpolate_property(cam,"baseZoom",0.2,stage.cam.zoom,1.0,Tween.TRANS_QUART,Tween.EASE_OUT);
 	tw.start();
 	
-	combo.setBaseScale(0.67);
+	combo.scale*=0.64;
 	move_child(combo,get_child_count());
 	
-	hpbar.tint_under=Color.red;
-	hpbar.tint_progress=Color.lime;
+	hpbar.tint_under=Color.red if Settings.classicHud else dad.healthColor;
+	hpbar.tint_progress=Color.lime if Settings.classicHud else bf.healthColor;
+	playerIcons.get_child(0).texture=dad.icon;
+	playerIcons.get_child(1).texture=bf.icon;
 	
 	for i in 2:
-		var strum=Strums.new();
+		var strum=StrumLine.new();
 		strum.isPlayer=[false,true][i];
 		strums.add_child(strum);
 		strum.position.x=[-500,148][i];
-		strum.character=get(["dad","bf"][i]);
+		strum.character=["dad","bf"][i];
 	strums.position.y=[-264,270][int(Settings.downScroll)];
 	strums.get_child(0).visible=Settings.enemyNotes;
 	
@@ -137,6 +141,7 @@ func _ready():
 	else:
 		Game.emit_signal("cutsceneFinished");
 	
+	
 func _input(ev):
 	if ev is InputEventKey:
 		if !ev.echo && ev.pressed:
@@ -161,7 +166,7 @@ func _process(dt):
 		
 	if !notesQueue.empty():
 		var dist=((notesQueue[0].time+Conductor.waitTime)-Conductor.time)*Game.scrollScale;
-		if dist<960:
+		if dist<930:
 			createNote(notesQueue[0]);
 			notesQueue.remove(0);
 	
@@ -178,7 +183,7 @@ func _process(dt):
 	var nextSect=getSection(Conductor.time);
 	if nextSect!=curSection:
 		curSection=nextSect;
-		onSectionChanged(chart.notes[curSection]);
+		onSectionChanged();
 		songScript.call("onSectionChanged",curSection,chart.notes[int(curSection)]);
 		printt("SECTION CHANGED:",curSection);
 	
@@ -232,7 +237,7 @@ func popUpScore(data):
 		rating="sick";
 		points=1000;
 		acc=1.0;
-		if data[4]: #Check if it's a player note:
+		if data[4] && !Game.uiSkin in ["pixel"]: #Check if it's a player note:
 			strums.get_child(1).get_child(data[1]).createSplash();
 	
 	combo.pop(rating);
@@ -267,7 +272,8 @@ func startCountdown():
 	songStarted=true;
 	songScript.call("onSongStarted");
 	pause.canPause=true;
-
+	onSectionChanged()
+	
 func onBeat(beat):
 	tw.interpolate_property(playerIcons,"scale",Vector2.ONE*1.08,Vector2.ONE,Conductor.crochet/4.0);
 	tw.start();
@@ -301,12 +307,30 @@ func onSongFinished():
 		get_tree().paused=false;
 	Game.saveGame();
 	
-func onSectionChanged(sectData):
+func onSectionChanged():
+	var sectData=chart.notes[curSection];
 	var mustHit=sectData.mustHitSection;
+	var gfSection=sectData.gfSection;
 	var camTarget=Vector2();
 	var camMoveDur=0.8;
-	sectionTarget=bf if mustHit else dad;
 	
+	sectionTarget=bf if mustHit else dad;
+	sectionTarget=gf if gfSection else sectionTarget;
+	
+	playerIcons.get_child(0).texture=dad.icon;
+	playerIcons.get_child(1).texture=bf.icon;
+	if !Settings.classicHud: 
+		hpbar.tint_under=dad.healthColor;
+		hpbar.tint_progress=bf.healthColor;
+	
+	if gfSection:
+		if !mustHit:
+			playerIcons.get_child(0).texture=gf.icon;
+			if !Settings.classicHud: hpbar.tint_under=gf.healthColor;
+		else:
+			playerIcons.get_child(1).texture=gf.icon;
+			if !Settings.classicHud: hpbar.tint_progress=gf.healthColor;
+		
 	Conductor.setBpm(getLastBpm(curSection));
 	if camMoveWithSection:
 		camTarget=sectionTarget.global_position+sectionTarget.camOffset*sectionTarget.scale;
@@ -346,6 +370,8 @@ func createNote(nData):
 	note.duration=nData.length;
 	note.position.y=1600;
 	note.isPlayer=isPlayer;
+	note.gfNote=nData.gfNote;
+	note.strumline=tStrum;
 	
 	var arrow=tStrum.get_child(fColumn);
 	arrow.path.add_child(note);
@@ -384,14 +410,20 @@ func loadSong():
 			
 			var rawData=chart.notes[i].sectionNotes[n];
 			if rawData[1]>-1:
+				var mustHit=chart.notes[i].mustHitSection;
+				var isGfNote=false;
+				
+				if mustHit && rawData[1]<4 && chart.notes[i].gfSection || !mustHit && rawData[1]<4 && chart.notes[i].gfSection:
+					isGfNote=true; 
+				
 				var nData={
 					"time":(float(rawData[0])/1000.0)+(Settings.notesOffset/1000.0),
 					"column":rawData[1],
 					"length":float(rawData[2])/1000.0,
 					"type":rawData[3],
-					"mustHit":chart.notes[i].mustHitSection,
+					"mustHit":mustHit,
 					"altAnim":chart.notes[i].altAnim,
-					"gfSection":chart.notes[i].gfSection
+					"gfNote":isGfNote
 				}
 				notesQueue.append(nData);
 	
@@ -490,4 +522,3 @@ func updateScoreLabel():
 
 func sortNotes(a,b):
 	return a.time<b.time;
-

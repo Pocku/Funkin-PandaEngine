@@ -18,7 +18,9 @@ var duration=0.0;
 var pressed=false;
 var held=false;
 var missed=false;
+var gfNote=false;
 var isPlayer=false;
+var strumline=null;
 
 func _ready():
 	var typeSkin="default";
@@ -55,7 +57,6 @@ func updateLine():
 	end.scale.y=1.0-(abs(posY)/endHeight) if posY<=0.0 else 1.0;
 
 func onHit():
-	var player=getStrumsPlayer();
 	if duration>0.0:
 		texture=null;
 		updateLine();
@@ -65,24 +66,19 @@ func onHit():
 		callFunc("popUpScore",[time,column,duration,type,isPlayer]);
 		callFunc("unMuffleSong");
 		
-	var singDir="sing%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
-	player.playAnim(singDir);
-	player.seekAnim(0.0);
+	triggerEvent("playAnim","sing%s"%["Left","Down","Up","Right"][column],["dad","bf"][int(isPlayer)] if !gfNote else "gf");
+	triggerEvent("seekAnim",0.0,getCharacter());
+	
 	Game.emit_signal("noteHit",getData());
 	
 func onHeld():
-	var player=getStrumsPlayer();
-	if isPlayer: 
-		setProperty("health",min(getProperty("health")+0.015,100));
-	var singDir="sing%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
-	player.playAnim(singDir);
-	if player.getAnimTime()>0.15:
-		player.seekAnim(0.0);
-	callFunc("unMuffleSong");
+	if isPlayer: setProperty("health",min(getProperty("health")+0.015,100));
+	triggerEvent("playAnim","sing%s"%["Left","Down","Up","Right"][column],getCharacter());
+	if float(triggerEvent("getAnimTime",getCharacter()))>0.2:
+		triggerEvent("seekAnim",0.0,getCharacter());
 	Game.emit_signal("noteHeld",getData());
 	
 func onMiss():
-	var player=getStrumsPlayer();
 	if isPlayer: 
 		setProperty("health",max(getProperty("health")-5,0));
 		setProperty("score",getProperty("score")-100);
@@ -90,29 +86,25 @@ func onMiss():
 		setProperty("misses",getProperty("misses")+1);
 		callFunc("updateScoreLabel");
 		callFunc("muffleSong");
-	
-	var singDir="miss%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
-	player.playAnim(singDir);
-	player.seekAnim(0.0);
+	triggerEvent("playAnim","miss%s"%["Left","Down","Up","Right"][column],getCharacter());
+	triggerEvent("seekAnim",0.0,getCharacter());
 	Game.emit_signal("noteMiss",getData());
 	
 func onHeldMiss():
-	var player=getStrumsPlayer();
-	if isPlayer: 
-		setProperty("health",max(getProperty("health")-0.15,0));
-		
-	var singDir="miss%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
-	player.playAnim(singDir);
-	player.seekAnim(0.0);
+	if isPlayer: setProperty("health",max(getProperty("health")-0.15,0));
+	triggerEvent("playAnim","miss%s"%["Left","Down","Up","Right"][column],getCharacter());
+	triggerEvent("seekAnim",0.0,getCharacter());
 	Game.emit_signal("noteHeldMiss",getData());
+	
 	
 func callFunc(id,args=null):
 	if args==null:
 		return get_tree().current_scene.call(id);
 	return get_tree().current_scene.call(id,args);
 
-func getStrumsPlayer():
-	return get_parent().get_parent().get_parent().character;
+func triggerEvent(ev,arg1="",arg2=""):
+	var events=getProperty("events");
+	return events.onEvent(ev,arg1,arg2);
 
 func setProperty(id,val):
 	return get_tree().current_scene.set(id,val);
@@ -120,11 +112,15 @@ func setProperty(id,val):
 func getProperty(id):
 	return get_tree().current_scene.get(id);
 
+func getCharacter():
+	return ["dad","bf"][int(isPlayer)] if !gfNote else "gf"
+
 func getData():
 	return {
 		"time":time,
 		"column":column,
 		"duration":duration,
 		"type":type,
-		"isPlayer":isPlayer
+		"isPlayer":isPlayer,
+		"strumline":strumline
 	}

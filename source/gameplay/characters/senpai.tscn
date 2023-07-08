@@ -1,0 +1,367 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://assets/images/characters/senpai.png" type="Texture" id=1]
+[ext_resource path="res://source/gameplay/characters/character.gd" type="Script" id=2]
+[ext_resource path="res://assets/images/char-icons/senpai.png" type="Texture" id=3]
+
+[sub_resource type="Animation" id=1]
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 0, 0, 125, 164 ), Rect2( 0, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ), Rect2( 135, 0, 125, 164 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 270, 0, 125, 164 ), Rect2( 270, 0, 125, 164 ), Rect2( 405, 0, 125, 164 ), Rect2( 405, 0, 125, 164 ), Rect2( 540, 0, 125, 164 ), Rect2( 540, 0, 125, 164 ), Rect2( 675, 0, 125, 164 ), Rect2( 675, 0, 125, 164 ), Rect2( 810, 0, 125, 164 ), Rect2( 810, 0, 125, 164 ), Rect2( 810, 0, 125, 164 ), Rect2( 810, 0, 125, 164 ), Rect2( 810, 0, 125, 164 ), Rect2( 810, 0, 125, 164 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 945, 0, 125, 164 ), Rect2( 945, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ), Rect2( 1080, 0, 125, 164 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 1215, 0, 125, 164 ), Rect2( 1215, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ), Rect2( 1350, 0, 125, 164 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 1485, 0, 125, 164 ), Rect2( 1485, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ), Rect2( 1620, 0, 125, 164 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "idle"
+length = 1.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 810, 174, 124, 163 ), Rect2( 810, 174, 124, 163 ), Rect2( 944, 174, 124, 163 ), Rect2( 944, 174, 124, 163 ), Rect2( 1078, 174, 124, 163 ), Rect2( 1078, 174, 124, 163 ), Rect2( 1212, 174, 124, 163 ), Rect2( 1212, 174, 124, 163 ), Rect2( 1346, 174, 124, 163 ), Rect2( 1346, 174, 124, 163 ), Rect2( 1480, 174, 124, 163 ), Rect2( 1480, 174, 124, 163 ), Rect2( 1614, 174, 124, 163 ), Rect2( 1748, 174, 124, 163 ), Rect2( 1882, 174, 124, 163 ), Rect2( 0, 347, 124, 163 ), Rect2( 134, 347, 124, 163 ), Rect2( 268, 347, 124, 163 ), Rect2( 402, 347, 124, 163 ), Rect2( 536, 347, 124, 163 ), Rect2( 670, 347, 124, 163 ), Rect2( 804, 347, 124, 163 ), Rect2( 938, 347, 124, 163 ), Rect2( 1480, 174, 124, 163 ), Rect2( 1480, 174, 124, 163 ), Rect2( 1614, 174, 124, 163 ), Rect2( 1072, 347, 124, 163 ), Rect2( 1206, 347, 124, 163 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -58, -147 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "singDown"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 1755, 0, 125, 163 ), Rect2( 1755, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ), Rect2( 1890, 0, 125, 163 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -59, -147 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "singLeft"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 0, 174, 125, 163 ), Rect2( 0, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ), Rect2( 135, 174, 125, 163 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -60, -147 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "singRight"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 270, 174, 125, 163 ), Rect2( 270, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ), Rect2( 405, 174, 125, 163 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -59, -147 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "singUp"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 540, 174, 125, 163 ), Rect2( 540, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ), Rect2( 675, 174, 125, 163 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -58, -152 ) ]
+}
+
+[node name="Senpai" type="Node2D"]
+script = ExtResource( 2 )
+icon = ExtResource( 3 )
+healthColor = Color( 1, 0.666667, 0.435294, 1 )
+camOffset = Vector2( 0, -70 )
+beatMult = 2
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -58, -147 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 810, 174, 124, 163 )
+
+[node name="Animations" type="AnimationPlayer" parent="Sprite"]
+playback_speed = 1.3
+"anims/Angry Senpai DOWN NOTE instance 10" = SubResource( 1 )
+"anims/Angry Senpai Idle instance 10" = SubResource( 2 )
+"anims/Angry Senpai LEFT NOTE instance 10" = SubResource( 3 )
+"anims/Angry Senpai RIGHT NOTE instance 10" = SubResource( 4 )
+"anims/Angry Senpai UP NOTE instance 10" = SubResource( 5 )
+anims/idle = SubResource( 10 )
+anims/singDown = SubResource( 6 )
+anims/singLeft = SubResource( 7 )
+anims/singRight = SubResource( 8 )
+anims/singUp = SubResource( 9 )

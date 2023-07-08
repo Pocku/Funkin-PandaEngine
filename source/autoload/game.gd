@@ -18,7 +18,7 @@ var songsQueue=[];
 var storyMode=false;
 var canChangeScene=true;
 
-var uiSkin="default";
+var uiSkin="pixel";
 var scrollScale=1400.0;
 var allowBotMode=false;
 var botMode=false;

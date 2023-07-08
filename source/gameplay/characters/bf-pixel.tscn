@@ -1,0 +1,283 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://assets/images/characters/bf-pixel.png" type="Texture" id=1]
+[ext_resource path="res://source/gameplay/characters/character.gd" type="Script" id=2]
+[ext_resource path="res://assets/images/char-icons/bf-pixel.png" type="Texture" id=3]
+
+[sub_resource type="Animation" id=3]
+resource_name = "idle"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 332, 0, 73, 73 ), Rect2( 332, 0, 73, 73 ), Rect2( 415, 0, 73, 73 ), Rect2( 415, 0, 73, 73 ), Rect2( 0, 83, 73, 73 ), Rect2( 0, 83, 73, 73 ), Rect2( 83, 83, 73, 73 ), Rect2( 83, 83, 73, 73 ), Rect2( 166, 83, 73, 73 ), Rect2( 166, 83, 73, 73 ), Rect2( 166, 83, 73, 73 ), Rect2( 166, 83, 73, 73 ), Rect2( 166, 83, 73, 73 ), Rect2( 166, 83, 73, 73 ) ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "missDown"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 166, 0, 73, 73 ), Rect2( 0, 0, 73, 73 ), Rect2( 0, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ), Rect2( 83, 0, 73, 73 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "missLeft"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 415, 83, 73, 73 ), Rect2( 249, 83, 73, 73 ), Rect2( 249, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ), Rect2( 332, 83, 73, 73 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "missRight"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 249, 166, 73, 73 ), Rect2( 83, 166, 73, 73 ), Rect2( 83, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ), Rect2( 166, 166, 73, 73 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "missUp"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 83, 249, 73, 73 ), Rect2( 415, 166, 73, 73 ), Rect2( 415, 166, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ), Rect2( 0, 249, 73, 73 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "singDown"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 166, 0, 73, 73 ), Rect2( 166, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ), Rect2( 249, 0, 73, 73 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "singLeft"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 415, 83, 73, 73 ), Rect2( 415, 83, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ), Rect2( 0, 166, 73, 73 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "singRight"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 249, 166, 73, 73 ), Rect2( 249, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ), Rect2( 332, 166, 73, 73 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "singUp"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(":offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(":region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Rect2( 83, 249, 73, 73 ), Rect2( 83, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ), Rect2( 166, 249, 73, 73 ) ]
+}
+
+[node name="BF" type="Node2D"]
+script = ExtResource( 2 )
+icon = ExtResource( 3 )
+healthColor = Color( 0.482353, 0.839216, 0.964706, 1 )
+camOffset = Vector2( 0, -20 )
+beatMult = 2
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -36, -67 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 332, 0, 73, 73 )
+
+[node name="Animations" type="AnimationPlayer" parent="Sprite"]
+playback_speed = 1.3
+anims/idle = SubResource( 3 )
+anims/missDown = SubResource( 1 )
+anims/missLeft = SubResource( 4 )
+anims/missRight = SubResource( 6 )
+anims/missUp = SubResource( 8 )
+anims/singDown = SubResource( 2 )
+anims/singLeft = SubResource( 5 )
+anims/singRight = SubResource( 7 )
+anims/singUp = SubResource( 9 )

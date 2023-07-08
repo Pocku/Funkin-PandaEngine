@@ -25,7 +25,8 @@ onready var sectionTab={
 	"gfSection":$UI/Tabs/Section/GfSection,
 	"changeBPM":$UI/Tabs/Section/ChangeBPM,
 	"bpm":$UI/Tabs/Section/Bpm,
-	"sectionBeats":$UI/Tabs/Section/Beats
+	"sectionBeats":$UI/Tabs/Section/Beats,
+	"clear":$UI/Tabs/Section/Clear
 }
 onready var noteTab={
 	"root":$UI/Tabs/Note,
@@ -99,6 +100,7 @@ func _ready():
 		match sectionTab[i].get_class():
 			"CheckBox": sectionTab[i].connect("toggled",self,"onSectionOptionChanged",[i]);
 			"SpinBox": sectionTab[i].connect("value_changed",self,"onSectionOptionChanged",[i]);
+			"Button": sectionTab[i].connect("pressed",self,"onSectionOptionChanged",[true,i]);
 	
 	for i in noteTab.keys():
 		match noteTab[i].get_class():
@@ -401,7 +403,9 @@ func onSectionOptionChanged(val,opt):
 	chart.notes[curSection][opt]=val;
 	if opt=="bpm" && chart.notes[curSection]["changeBPM"] || opt=="changeBPM":
 		Conductor.setBpm(getLastBpm(curSection));
-
+	if opt=="clear":
+		chart.notes[curSection].sectionNotes.clear();
+	
 func onEventOptionChanged(val,opt):
 	var evId=eventTab.type.get_item_text(eventTab.type.selected);
 	if curEvent!=-1:

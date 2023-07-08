@@ -4,7 +4,7 @@ onready var sprite=$Sprite;
 onready var path=$Path;
 
 var notes=[];
-var ignoredNotes=[];
+var ghostNotes=[];
 var splashes=null;
 var column=0;
 
