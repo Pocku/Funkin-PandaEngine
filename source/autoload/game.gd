@@ -131,7 +131,7 @@ func isWeekCompleted(weekName):
 	return weeksData[weekName][0]==true;
 	
 func getCharacterList():
-	var rawList=getFilesInFolder("source/gameplay/characters/");
+	var rawList=getFileTxt("assets/data/characters")
 	var list=[];
 	for i in len(rawList): 
 		if !str(rawList[i]).ends_with(".gd"):
@@ -140,12 +140,12 @@ func getCharacterList():
 	return list;
 
 func getStageList():
-	var list=getFilesInFolder("source/gameplay/stages/");
+	var list=getFileTxt("assets/data/stages")
 	for i in len(list): list[i]=str(list[i]).replace(".tscn","");
 	return list;
 
 func getSongList():
-	return getFilesInFolder("assets/songs/");
+	return songsData.keys();
 
 func getWeekData(weekId):
 	var f=File.new();
@@ -156,7 +156,7 @@ func getWeekData(weekId):
 
 func getWeekList():
 	var list=[];
-	for i in getFileTxt("assets/data/week-list"):
+	for i in getFileTxt("assets/data/weeks"):
 		var weekName=str(i).replace(".json","");
 		list.append(weekName);
 	print(list)
@@ -180,14 +180,3 @@ func getFileTxt(path):
 		data.append(line);
 	f.close();
 	return data;
-
-func getFilesInFolder(path):
-	var files=[];
-	var dir=Directory.new();
-	dir.open("res://"+path);
-	dir.list_dir_begin(true);
-	var file = dir.get_next();
-	while file!='':
-		files+=[file];
-		file=dir.get_next();
-	return files;

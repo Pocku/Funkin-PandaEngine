@@ -44,7 +44,7 @@ onready var eventTab={
 	"prev":$UI/Tabs/Event/Prev,
 	"pageLabel":$UI/Tabs/Event/PageLabel
 }
-var eventIcon=preload("res://assets/images/event-icon.png");
+var eventIcon=preload("res://assets/images/misc/event-icon.png");
 var font=DynamicFont.new();
 
 var chart={};

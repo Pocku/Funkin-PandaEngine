@@ -120,6 +120,6 @@ func killStrings():
 
 func getRandomText():
 	randomize();
-	var list=Game.getFileTxt("assets/data/intro-text");
+	var list=Game.getFileTxt("assets/data/intro-texts");
 	return list[randi()%(len(list)-1)]
 	
