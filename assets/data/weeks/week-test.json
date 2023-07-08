@@ -10,7 +10,7 @@
 	"songs":[
 		["test","bf","kawai sprite","#00bafc"]
 	],
-	"needWeek":"week1",
+	"needWeek":"",
 	"hideFreeplay":false,
 	"hideStorymode":false
 }

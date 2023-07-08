@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://source/cutscenes/textbox/textbox.tscn" type="PackedScene" id=1]
+[ext_resource path="res://source/cutscenes/dialogue.gd" type="Script" id=2]
+
+[node name="Dialogue" type="CanvasLayer"]
+layer = 10
+script = ExtResource( 2 )
+
+[node name="BG" type="ColorRect" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 1, 0.952941, 0.0980392 )
+
+[node name="Portraits" type="Node2D" parent="."]
+
+[node name="Textbox" parent="." instance=ExtResource( 1 )]
+position = Vector2( 640, 600 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="CanvasMod" type="CanvasModulate" parent="."]

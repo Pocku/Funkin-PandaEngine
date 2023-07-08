@@ -82,7 +82,15 @@ func updateArrow(arrow,key):
 		
 	if Input.is_action_just_pressed(key):
 		arrow.playAnim("confirm" if !justTap else "press");
-		
+		if justTap && !Settings.ghostTap && getProperty("countdownStarted"):
+			setProperty("health",max(getProperty("health")-1,0));
+			setProperty("misses",getProperty("misses")+1);
+			var singDir="miss%s"%[(["Left","Down","Up","Right"] if character.scale.x>0 else ["Right","Down","Up","Left"])[arrow.column]];	
+			character.playAnim(singDir);
+			character.seekAnim(0.0);
+			callFunc("updateScoreLabel");
+			callFunc("muffleSong");
+			
 	if !Input.is_action_pressed(key):
 		arrow.playAnim("arrow");
 			
@@ -108,11 +116,23 @@ func updateBotArrow(arrow):
 			if susMs<=0.0 && note.duration>0.0:
 				note.queue_free();
 				arrow.notes.remove(0);
-				
-func getWidth():
-	return (get_child_count()-1)*161*scale.x;
-			
+		
 func killNote(arrow):
 	arrow.notes[0].queue_free();
 	arrow.notes.remove(0);
 	return null;
+
+func getWidth():
+	return (get_child_count()-1)*161*scale.x;
+
+func callFunc(id,args=null):
+	if args==null:
+		return get_tree().current_scene.call(id);
+	return get_tree().current_scene.call(id,args);
+
+func setProperty(id,val):
+	return get_tree().current_scene.set(id,val);
+
+func getProperty(id):
+	return get_tree().current_scene.get(id);
+

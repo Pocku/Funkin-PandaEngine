@@ -17,6 +17,7 @@ onready var tw=$Tween;
 var chart={};
 var songStarted=false;
 var songFinished=false;
+var countdownStarted=false;
 var curSection=0;
 
 var score=0;
@@ -47,6 +48,7 @@ var camSingOffset=Vector2.ZERO;
 var camSingLen=8.0;
 
 func _ready():
+	Game.connect("cutsceneFinished",self,"startCountdown");
 	Conductor.connect("beat",self,"onBeat");
 	Conductor.reset();
 	
@@ -104,6 +106,7 @@ func _ready():
 	
 	hpbar.visible=!Settings.hideHud;
 	scoreLabel.visible=!Settings.hideHud;
+	sicksLabel.visible=!Settings.hideHud;
 	
 	hpbar.rect_position.y=[298,-298][int(Settings.downScroll)];
 	scoreLabel.rect_position.y=hpbar.rect_position.y+32;
@@ -115,18 +118,28 @@ func _ready():
 	events=preload("res://source/gameplay/events.gd").new();
 	add_child(events);
 	
-	songScript.call("onCountdownStarted");
-	startCountdown();
-	
+	if Game.storyMode:
+		var cutscenePath="dialogue";
+		match Game.song:
+			"tutorial":
+				Game.cutscene=Game.song;
+			"test":
+				Game.cutscene="zap";
+				cutscenePath="video";
+			_:
+				Game.emit_signal("cutsceneFinished");
+		var cutscene=load("res://source/cutscenes/%s.tscn"%[cutscenePath]).instance();
+		add_child(cutscene);
+	else:
+		Game.emit_signal("cutsceneFinished");
 	
 func _input(ev):
 	if ev is InputEventKey:
 		if ev.scancode in [KEY_7] && songStarted && !ev.echo && ev.pressed:
-			Game.changeScene("charter/charter")
-	
+			Game.changeScene("charter/charter");
 	
 func _process(dt):
-	Conductor.waitTime=max(Conductor.waitTime-dt,0.0);
+	if countdownStarted: Conductor.waitTime=max(Conductor.waitTime-dt,0.0);
 	if songStarted && !songFinished:
 		Conductor.time=min(Conductor.time+dt,inst.stream.get_length());
 		if Conductor.time>=inst.stream.get_length():
@@ -164,7 +177,7 @@ func _process(dt):
 	songScript.call("onUpdatePost",dt);
 	
 func _physics_process(dt):
-	hpbar.value=lerp(hpbar.value,health,0.2);
+	hpbar.value=lerp(hpbar.value,health,0.32);
 	playerIcons.position.x=601-float(hpbar.value/100.0)*601;
 	sicksLabel.bbcode_text="SICKS: %s \nGOODS: %s \nBADS:  %s \nSHITS: %s"%[sicks,goods,bads,shits];
 	
@@ -206,6 +219,8 @@ func popUpScore(data):
 		rating="sick";
 		points=1000;
 		acc=1.0;
+		if data[4]: #Check if it's a player note:
+			strums.get_child(1).get_child(data[1]).createSplash();
 	
 	combo.pop(rating);
 	score+=points;
@@ -215,6 +230,9 @@ func popUpScore(data):
 
 func startCountdown():
 	var countdownScale=1.0;
+	countdownStarted=true;
+	songScript.call("onCountdownStarted");
+	
 	match Game.uiSkin:
 		"pixel": countdownScale=8.0;
 	
@@ -260,12 +278,14 @@ func onSongFinished():
 			Game.weeksData[Game.week][0]=true; # Setting week finished to true
 			Game.changeScene("menus/storymode/storymode");
 			Music.play("freaky");
+			get_tree().paused=false;
 		else:
 			Game.song=Game.songsQueue[0];
 			Game.reloadScene();
 	else:
 		Game.changeScene("menus/freeplay/freeplay");
 		Music.play("freaky");
+		get_tree().paused=false;
 	Game.saveGame();
 	
 func onSectionChanged(sectData):

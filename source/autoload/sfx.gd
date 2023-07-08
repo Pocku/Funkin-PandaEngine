@@ -7,11 +7,14 @@ func _ready():
 		addSfx("intro%s-%s"%[i,"pixel"]);
 	for i in ["ok","cancel","scroll"]:
 		addSfx("menu-%s"%[i]);
+	for i in 3:
+		addSfx("type%s"%[i],"wav");
+
 	
-func addSfx(id):
+func addSfx(id,type="ogg"):
 	var audio=AudioStreamPlayer.new();
 	audio.name=id;
-	audio.stream=load("res://assets/sounds/%s.ogg"%[id]);
+	audio.stream=load("res://assets/sounds/%s.%s"%[id,type]);
 	add_child(audio);
 	
 func play(id,t=0.0):

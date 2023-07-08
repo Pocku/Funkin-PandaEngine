@@ -4,6 +4,8 @@ onready var sprite=$Sprite;
 onready var path=$Path;
 
 var notes=[];
+var ignoredNotes=[];
+var splashes=null;
 var column=0;
 
 func _ready():

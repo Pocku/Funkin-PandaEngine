@@ -1,5 +1,6 @@
 extends Node
 
+signal cutsceneFinished;
 signal noteHit(data);
 signal noteHeld(data);
 signal noteMiss(data);
@@ -18,6 +19,7 @@ var weeksData={};
 var week="";
 var song="";
 var mode="";
+var cutscene="";
 var songsQueue=[];
 var storyMode=false;
 var canChangeScene=true;

@@ -63,7 +63,7 @@ func onHit():
 	if isPlayer: 
 		setProperty("health",min(getProperty("health")+5,100));
 		setProperty("comboTotal",getProperty("comboTotal")+1);
-		callFunc("popUpScore",[time,column,duration,type]);
+		callFunc("popUpScore",[time,column,duration,type,isPlayer]);
 		callFunc("unMuffleSong");
 		
 	var singDir="sing%s"%[(["Left","Down","Up","Right"] if player.scale.x>0 else ["Right","Down","Up","Left"])[column]];	
