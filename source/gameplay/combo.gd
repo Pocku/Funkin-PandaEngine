@@ -3,9 +3,9 @@ extends Sprite
 onready var spawn=global_position;
 onready var counter=$Counter;
 
-var grav=8.0;
+var grav=10.0;
 var vel=Vector2();
-var jumpHeight=2.0;
+var jumpHeight=3.0;
 var ratings={};
 
 func _ready():
@@ -17,7 +17,7 @@ func _physics_process(dt):
 	vel.y+=grav*dt;
 	if global_position.y>1280: vel.y=0;
 	global_position+=vel;
-	modulate.a=lerp(modulate.a,0.0,0.08);
+	modulate.a=lerp(modulate.a,0.0,0.13);
 
 func setBaseScale(base):
 	match Game.uiSkin:
@@ -29,5 +29,5 @@ func pop(ratingId):
 	texture=ratings[ratingId];
 	global_position=spawn;
 	vel.y=-jumpHeight;
-	modulate.a=50.0;
+	modulate.a=24.0;
 	show();

@@ -4,7 +4,7 @@ onready var options=$Options;
 onready var tw=$Tween;
 onready var bg=$BG;
 
-var optionsList=["resume","restart song","botplay","exit to menu"];
+var optionsList=["resume","restart song","botplay","settings","exit to menu"];
 var canPause=false;
 var paused=false;
 var mainOpt=0;
@@ -12,6 +12,9 @@ var mainOpt=0;
 var totalHeight=0.0;
 
 func _ready():
+	if !Game.allowBotMode:
+		optionsList.remove(2);
+	
 	options.modulate.a=0.0;
 	bg.modulate.a=0.0;
 	for i in len(optionsList):
@@ -48,6 +51,9 @@ func _input(ev):
 							fade(false);
 					"botplay":
 						Game.botMode=!Game.botMode;
+					"settings":
+						pause(false);
+						Game.changeScene("menus/options/options");
 					"restart song":
 						pause(false);
 						Game.reloadScene(true);

@@ -41,7 +41,6 @@ func _ready():
 	else:
 		line.queue_free();
 	
-	
 func _process(dt):
 	var ms=(time+Conductor.waitTime)-Conductor.time;
 	position.y=ms*(Game.scrollScale*([1,-1][int(Settings.downScroll)])/scrollMult) if !pressed else 0.0;

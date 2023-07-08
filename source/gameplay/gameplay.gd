@@ -55,13 +55,10 @@ func _ready():
 	inst.connect("finished",self,"onSongFinished");
 	loadSong();
 	
-	if true:
+	if false:
 		Conductor.time=inst.stream.get_length()-6.0;
 		while notesQueue[0].time<=Conductor.time:
 			notesQueue.remove(0);
-	
-	songScript=preload("res://source/gameplay/song-script.gd").new();
-	add_child(songScript);
 	
 	stage=load("res://source/gameplay/stages/%s.tscn"%[chart.stage]).instance();
 	add_child(stage);
@@ -76,13 +73,13 @@ func _ready():
 		chara.position=Vector2(data.x,data.y);
 		chara.scale=Vector2.ONE*data.scale;
 		chara.scale.x*=-1 if chara.flipped else 1.0;
-		chara.scale.x*=-1 if data.flip else 1.0;
 		stage.move_child(chara,min(data.depth,stage.get_child_count()));
 		set(["bf","dad","gf"][i],chara);
 	
 	cam.position=Vector2(stage.cam.x,stage.cam.y);
 	cam.rotation=deg2rad(stage.cam.rotation);
-	cam.baseZoom=stage.cam.zoom;
+	tw.interpolate_property(cam,"baseZoom",0.2,stage.cam.zoom,1.0,Tween.TRANS_QUART,Tween.EASE_OUT);
+	tw.start();
 	
 	combo.setBaseScale(0.67);
 	move_child(combo,get_child_count());
@@ -114,6 +111,10 @@ func _ready():
 	
 	Conductor.setBpm(chart.bpm);
 	Conductor.waitTime=Conductor.crochet*5;
+	
+	var songScriptPath="res://source/gameplay/songs/%s.gd"%[Game.song];
+	songScript=preload("res://source/gameplay/song-script.gd").new() if !ResourceLoader.exists(songScriptPath) else load(songScriptPath).new();
+	add_child(songScript);
 	
 	events=preload("res://source/gameplay/events.gd").new();
 	add_child(events);
@@ -311,7 +312,8 @@ func createNote(nData):
 	
 	var path="note";
 	match nData.type:
-		_: pass;
+		"hurt": path="hurt";
+		_: path="note";
 			
 	var note=load("res://source/gameplay/notes/%s.tscn"%[path]).instance();
 	var fColumn=int(nData.column)%4;
@@ -325,7 +327,10 @@ func createNote(nData):
 	
 	var arrow=tStrum.get_child(fColumn);
 	arrow.path.add_child(note);
-	arrow.notes.append(note);
+	
+	match nData.type:
+		"hurt": arrow.ghostNotes.append(note);
+		_: arrow.notes.append(note);
 	
 	if isPlayer && nData.type=="":
 		notesTotal+=1;
@@ -362,7 +367,9 @@ func loadSong():
 					"column":rawData[1],
 					"length":float(rawData[2])/1000.0,
 					"type":rawData[3],
-					"mustHit":chart.notes[i].mustHitSection
+					"mustHit":chart.notes[i].mustHitSection,
+					"altAnim":chart.notes[i].altAnim,
+					"gfSection":chart.notes[i].gfSection
 				}
 				notesQueue.append(nData);
 	

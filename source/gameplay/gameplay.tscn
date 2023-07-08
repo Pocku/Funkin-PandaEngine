@@ -20,6 +20,7 @@ font_data = ExtResource( 1 )
 script = ExtResource( 5 )
 
 [node name="UI" type="CanvasLayer" parent="."]
+layer = 10
 offset = Vector2( 640, 360 )
 transform = Transform2D( 1, 0, 0, 1, 640, 360 )
 
@@ -75,6 +76,7 @@ text = "N/A"
 scroll_active = false
 
 [node name="Pause" parent="." instance=ExtResource( 9 )]
+layer = 11
 
 [node name="Inst" type="AudioStreamPlayer" parent="."]
 

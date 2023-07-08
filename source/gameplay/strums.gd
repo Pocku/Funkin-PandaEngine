@@ -27,6 +27,8 @@ func _process(dt):
 
 func updateArrow(arrow,key):
 	var justTap=true;
+	var checkGhostNotes=true;
+	
 	if !arrow.notes.empty():
 		var note=arrow.notes[0];
 		var ms=(note.time+Conductor.waitTime)-Conductor.time;
@@ -39,14 +41,14 @@ func updateArrow(arrow,key):
 			if !note.pressed:
 				note.onMiss();
 				note.missed=true;
-			note=killNote(arrow);
+			note=killCurrentNote(arrow);
 		
 		if note!=null:
 			if totalMs<=0.0 && note.duration>0.0:
 				if !note.pressed:
 					note.onMiss();
 					note.missed=true;
-				note=killNote(arrow);
+				note=killCurrentNote(arrow);
 				
 		if !Input.is_action_pressed(key):
 			if note!=null:
@@ -65,7 +67,10 @@ func updateArrow(arrow,key):
 				note.onHit();
 				note.pressed=true;
 				if note.duration==0.0:
-					note=killNote(arrow);
+					note=killCurrentNote(arrow);
+				checkGhostNotes=false;
+			else:
+				checkGhostNotes=true;
 			justTap=false;
 		
 		if note!=null:
@@ -80,8 +85,12 @@ func updateArrow(arrow,key):
 					if canMissLongNote && note.missTime>0.13:
 						note.onHeldMiss();
 		
+	removeAvailableGhostNotes(arrow);
+		
 	if Input.is_action_just_pressed(key):
 		arrow.playAnim("confirm" if !justTap else "press");
+		if checkGhostNotes: checkForGhostNotesInRange(arrow);
+		
 		if justTap && !Settings.ghostTap && getProperty("countdownStarted"):
 			setProperty("health",max(getProperty("health")-1,0));
 			setProperty("misses",getProperty("misses")+1);
@@ -116,10 +125,37 @@ func updateBotArrow(arrow):
 			if susMs<=0.0 && note.duration>0.0:
 				note.queue_free();
 				arrow.notes.remove(0);
+	removeAvailableGhostNotes(arrow);
+	
+func checkForGhostNotesInRange(arrow):
+	if !arrow.ghostNotes.empty():
+		var note=arrow.ghostNotes[0];
+		var ms=(note.time+Conductor.waitTime)-Conductor.time;
+		var susMs=(note.time+note.duration+Conductor.waitTime)-Conductor.time;
 		
-func killNote(arrow):
+		var inRange=(ms<=0.13 && ms>-0.13 && note.duration==0.0);
+		var inSusRange=(ms<=0.13 && susMs>0.0 && note.duration>0.0);
+		
+		if inRange || inSusRange:
+			note.onHit();
+			killCurrentGhostNote(arrow);
+
+func removeAvailableGhostNotes(arrow):
+	if !arrow.ghostNotes.empty():
+		var note=arrow.ghostNotes[0];
+		var ms=(note.time+Conductor.waitTime)-Conductor.time;
+		var susMs=(note.time+note.duration+Conductor.waitTime)-Conductor.time;
+		if ms<-0.16 && note.duration==0.0 || ms<-0.16 && susMs>0.0 && note.duration>0.0:
+			killCurrentGhostNote(arrow);
+		
+func killCurrentNote(arrow):
 	arrow.notes[0].queue_free();
 	arrow.notes.remove(0);
+	return null;
+
+func killCurrentGhostNote(arrow):
+	arrow.ghostNotes[0].queue_free();
+	arrow.ghostNotes.remove(0);
 	return null;
 
 func getWidth():

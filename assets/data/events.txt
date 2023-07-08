@@ -1,0 +1,4 @@
+
+camZoom
+camMove
+addBeatZoom

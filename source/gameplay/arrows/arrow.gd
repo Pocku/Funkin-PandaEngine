@@ -5,7 +5,7 @@ onready var anims=$Sprite/Animations;
 onready var path=$Path;
 
 var notes=[];
-var ignoredNotes=[];
+var ghostNotes=[];
 var noteSplash=null;
 var column=0;
 

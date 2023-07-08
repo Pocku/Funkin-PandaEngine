@@ -12,7 +12,7 @@ var data={
 		["low quality","lowQuality"],
 		["shaders","useShaders"],
 		["vsync","vsync"],
-		["fps","fpsCap",[30,240,1]]
+		["fps","fpsCap",[30,240*4,1]]
 	],
 	"gameplay":[
 		["downscroll","downScroll"],
@@ -122,7 +122,7 @@ func _input(ev):
 			onOptionScroll(optionsQueue[mainOpt],dirX);
 		
 		if Game.canChangeScene && ev.scancode in [KEY_ESCAPE] && !ev.echo && ev.pressed && !keyMapping && !confirmed:
-			Game.changeScene("menus/main-menu/main-menu");
+			Game.changeScene("menus/main-menu/main-menu" if !Game.prevScene=="Gameplay" else "gameplay/gameplay");
 			Game.saveGame();
 			Sfx.play("menu-cancel");
 			confirmed=true;

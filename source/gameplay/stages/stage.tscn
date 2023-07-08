@@ -1,20 +1,55 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://source/gameplay/stage.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/stages/stage/ground.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/stages/stage/back.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/stages/stage/curtains.png" type="Texture" id=4]
 
 [node name="Stage" type="Node2D"]
 script = ExtResource( 1 )
+cam = {
+"rotation": 0.0,
+"x": 640,
+"y": 400,
+"zoom": 1.2
+}
+bf = {
+"depth": 4,
+"scale": 1.0,
+"x": 960,
+"y": 720
+}
 dad = {
-"depth": 1,
-"flip": true,
+"depth": 4,
 "scale": 1.0,
 "x": 260,
-"y": 640
+"y": 720
+}
+gf = {
+"depth": 3,
+"scale": 1.0,
+"x": 640,
+"y": 670
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -785.0
-margin_top = -555.0
-margin_right = 2204.0
-margin_bottom = 1209.0
-color = Color( 0.388235, 0.388235, 0.388235, 1 )
+[node name="Front" type="ParallaxBackground" parent="."]
+layer = 1
+
+[node name="0" type="ParallaxLayer" parent="Front"]
+motion_scale = Vector2( 1.1, 1.1 )
+
+[node name="Curtains" type="Sprite" parent="Front/0"]
+position = Vector2( 717.828, 584.969 )
+scale = Vector2( 1.04467, 1.13138 )
+texture = ExtResource( 4 )
+
+[node name="Back" type="Sprite" parent="."]
+position = Vector2( -532, -310 )
+scale = Vector2( 0.969286, 0.969286 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="Ground" type="Sprite" parent="."]
+position = Vector2( 727, 893 )
+scale = Vector2( 1.16792, 1.16792 )
+texture = ExtResource( 2 )

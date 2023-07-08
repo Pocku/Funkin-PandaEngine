@@ -7,12 +7,6 @@ signal noteMiss(data);
 signal noteHeldMiss(data);
 signal playerDied;
 
-var noteTypes=[
-	"","Hurt","Alt"
-]
-var eventType=[
-	"","camZoom","camMove","addBeatZoom"
-]
 var songsData={};
 var weeksData={};
 
@@ -26,8 +20,10 @@ var canChangeScene=true;
 
 var uiSkin="default";
 var scrollScale=1400.0;
+var allowBotMode=false;
 var botMode=false;
 
+var prevScene="";
 var offsyncAllowed=30.0;
 var engineVersion="1.0b";
 
@@ -89,7 +85,7 @@ func deleteSave():
 	
 func changeScene(sceneName,useTrans=true,transTime=0.24,transInMask="vertical",transOutMask="inv-vertical",transSmoothSize=0.4):
 	var path="res://source/%s.tscn"%[sceneName];
-	get_tree().current_scene.set_process_input(false);
+	prevScene=get_tree().current_scene.name;
 	canChangeScene=false;
 	if useTrans:
 		Transition.fadeIn(transTime,transInMask,transSmoothSize);
@@ -153,14 +149,18 @@ func getWeekData(weekId):
 	var data=parse_json(f.get_as_text());
 	f.close();
 	return data;
+	
+func getNoteTypeList():
+	return getFileTxt("assets/data/notes");
+	
+func getEventsList():
+	return getFileTxt("assets/data/events");
+
+func getModes():
+	return getFileTxt("assets/data/modes");
 
 func getWeekList():
-	var list=[];
-	for i in getFileTxt("assets/data/weeks"):
-		var weekName=str(i).replace(".json","");
-		list.append(weekName);
-	print(list)
-	return list;
+	return getFileTxt("assets/data/weeks");
 
 func getGameSaveData():
 	var f:=File.new();

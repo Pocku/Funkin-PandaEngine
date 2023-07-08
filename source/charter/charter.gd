@@ -105,7 +105,7 @@ func _ready():
 			"OptionButton": noteTab[i].connect("item_selected",self,"onNoteOptionChanged",[i]);
 			"SpinBox": noteTab[i].connect("value_changed",self,"onNoteOptionChanged",[i]);
 	
-	for i in ["easy","normal","hard"]: 
+	for i in Game.getModes(): 
 		songTab.mode.add_item(i);
 		
 	for i in Game.getSongList(): 
@@ -118,10 +118,12 @@ func _ready():
 		for c in Game.getCharacterList(): 
 			i.add_item(c);
 	
-	for i in len(Game.noteTypes):
-		noteTab.type.add_item(("%s. %s"%[i,Game.noteTypes[i]]) if i>0 else "");
+	var noteTypes=Game.getNoteTypeList();
+	for i in len(noteTypes):
+		noteTab.type.add_item(("%s. %s"%[i,noteTypes[i]]) if i>0 else "");
 	
-	for i in Game.eventType:
+	var eventList=Game.getEventsList();
+	for i in eventList:
 		eventTab.type.add_item(i);
 	
 	loadSong();
@@ -343,7 +345,7 @@ func selectOptionButtonByName(opt:OptionButton,id):
 
 func placeNote(time,column):
 	var sectStart=getSectionStart(curSection)*1000.0;
-	var noteData=[sectStart+(time*1000.0),column,0.0,Game.noteTypes[noteTab.type.selected]];
+	var noteData=[sectStart+(time*1000.0),column,0.0,Game.getNoteTypeList()[noteTab.type.selected]];
 	chart.notes[curSection].sectionNotes.append(noteData);
 	onNoteSelected(noteData,len(chart.notes[curSection].sectionNotes)-1);
 
@@ -360,9 +362,9 @@ func onNoteSelected(noteData,noteId):
 	noteTab.duration.value=noteData[2];
 	
 	var found=false;
-	for i in len(Game.noteTypes):
-		var typeId=("%s. %s"%[i,Game.noteTypes[i]]) if i>0 else "";
-		if Game.noteTypes[i]==str(noteData[3]):
+	for i in len(Game.getNoteTypeList()):
+		var typeId=("%s. %s"%[i,Game.getNoteTypeList()[i]]) if i>0 else "";
+		if Game.getNoteTypeList()[i]==str(noteData[3]):
 			selectOptionButtonByName(noteTab.type,typeId)
 			return;
 	selectOptionButtonByName(noteTab.type,"");
@@ -455,7 +457,7 @@ func onSongOptionChanged(val,opt):
 func onNoteOptionChanged(val,opt):
 	if curNote!=-1:
 		match opt:
-			"type": chart.notes[curSection].sectionNotes[curNote][3]=Game.noteTypes[val];
+			"type": chart.notes[curSection].sectionNotes[curNote][3]=Game.getNoteTypeList()[val];
 			"time": chart.notes[curSection].sectionNotes[curNote][0]=val;
 			"duration": chart.notes[curSection].sectionNotes[curNote][2]=val;
 
@@ -526,8 +528,8 @@ func getSection(time):
 	return 0;
 
 func getNoteTypeNumber(type):
-	for i in len(Game.noteTypes):
-		if Game.noteTypes[i]==type:
+	for i in len(Game.getNoteTypeList()):
+		if Game.getNoteTypeList()[i]==type:
 			return i;
 	return 0;
 
