@@ -4,6 +4,6 @@
 
 [node name="XMLConverter" type="Node2D"]
 script = ExtResource( 1 )
-path = "res://assets/images/ui-skin/default/note-splashes"
-pathTo = "res://source/gameplay/arrows/splashes/normal"
-sceneName = "Splashes"
+path = "res://assets/images/characters/bf-dead"
+pathTo = "res://source/gameover/characters/bf"
+sceneName = "BF"

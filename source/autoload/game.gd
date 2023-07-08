@@ -24,6 +24,7 @@ var allowBotMode=false;
 var botMode=false;
 
 var prevScene="";
+var tempData={};
 var offsyncAllowed=30.0;
 var engineVersion="1.0b";
 
@@ -33,7 +34,7 @@ func _ready():
 		var data=getWeekData(weekName);
 		weeksData[weekName]=[false];
 		for j in data.songs:
-			songsData[j[0]]=[0,0,"?"];
+			songsData[j[0]]=[0,0,"?",0];
 	
 	if getGameSaveData()==null:
 		saveGame();

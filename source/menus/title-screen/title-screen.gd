@@ -43,6 +43,7 @@ func _process(dt):
 	Conductor.time=min(Conductor.time+dt,music.stream.get_length());
 	if Conductor.time>=music.stream.get_length():
 		Conductor.time=0.0;
+		Conductor.beatTime=0.0;
 		music.seek(Conductor.time);
 	if abs(time-Conductor.time)>(Game.offsyncAllowed/1000.0):
 		music.seek(Conductor.time);

@@ -27,7 +27,7 @@ func reset():
 
 func addBeat():
 	beatCount+=1;
-	emit_signal("beat",beatCount);
+	emit_signal("beat",int(beatCount));
 
 func setBpm(b):
 	bpm=b;

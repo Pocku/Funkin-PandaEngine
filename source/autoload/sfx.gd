@@ -9,7 +9,8 @@ func _ready():
 		addSfx("menu-%s"%[i]);
 	for i in 3:
 		addSfx("type%s"%[i],"wav");
-
+	for i in ["pixel","default"]:
+		addSfx("dies-%s"%[i]);
 	
 func addSfx(id,type="ogg"):
 	var audio=AudioStreamPlayer.new();

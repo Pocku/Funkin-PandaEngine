@@ -31,6 +31,7 @@ var shits=0;
 var sicks=0;
 var misses=0;
 var fc="?";
+var dead=false;
 
 var bf=null;
 var dad=null;
@@ -136,9 +137,13 @@ func _ready():
 	
 func _input(ev):
 	if ev is InputEventKey:
-		if ev.scancode in [KEY_7] && songStarted && !ev.echo && ev.pressed:
-			Game.changeScene("charter/charter");
-	
+		if !ev.echo && ev.pressed:
+			if ev.scancode in [KEY_7] && songStarted:
+				Game.changeScene("charter/charter");
+			
+			if ev.scancode in [KEY_R] && songStarted && !songFinished && !dead:
+				onPlayerDeath();
+		
 func _process(dt):
 	if countdownStarted: Conductor.waitTime=max(Conductor.waitTime-dt,0.0);
 	if songStarted && !songFinished:
@@ -181,6 +186,11 @@ func _physics_process(dt):
 	hpbar.value=lerp(hpbar.value,health,0.32);
 	playerIcons.position.x=601-float(hpbar.value/100.0)*601;
 	sicksLabel.bbcode_text="SICKS: %s \nGOODS: %s \nBADS:  %s \nSHITS: %s"%[sicks,goods,bads,shits];
+	
+	if health<=0.0 && !dead:
+		Game.emit_signal("playerDied");
+		onPlayerDeath();
+		dead=true;
 	
 	if is_instance_valid(sectionTarget):
 		match sectionTarget.getCurAnim():
@@ -300,6 +310,16 @@ func onSectionChanged(sectData):
 		camTarget=sectionTarget.global_position+sectionTarget.camOffset*sectionTarget.scale;
 		tw.interpolate_property(cam,"global_position",cam.global_position,camTarget,camMoveDur,Tween.TRANS_QUART,Tween.EASE_OUT);
 		tw.start();
+
+func onPlayerDeath():
+	Game.tempData={
+		"player":[chart.player1,bf.global_position,bf.scale,bf.rotation],
+		"cam":[cam.global_position,cam.zoom,cam.rotation]
+	}
+	Game.songsData[Game.song][3]+=1;
+	Game.changeScene("gameover/gameover",false);
+	Game.saveGame();
+	print("PLAYER DIED!");
 
 func createNote(nData):
 	var tStrum=null;
