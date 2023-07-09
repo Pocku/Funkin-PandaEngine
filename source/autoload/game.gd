@@ -128,17 +128,21 @@ func isWeekCompleted(weekName):
 	return weeksData[weekName][0]==true;
 	
 func getCharacterList():
-	var rawList=getFileTxt("assets/data/characters")
+	var rawList=getFolderContent("source/gameplay/characters");
 	var list=[];
-	for i in len(rawList): 
-		if !str(rawList[i]).ends_with(".gd"):
-			list.append(str(rawList[i]).replace(".tscn",""));
-	list.push_front("");
+	for i in rawList:
+		var fName=str(i).replace(".tscn","");
+		if !str(fName).ends_with(".gd"):
+			list.append(fName);
 	return list;
 
 func getStageList():
-	var list=getFileTxt("assets/data/stages")
-	for i in len(list): list[i]=str(list[i]).replace(".tscn","");
+	var rawList=getFolderContent("source/gameplay/stages");
+	var list=[];
+	for i in rawList:
+		var fName=str(i).replace(".tscn","");
+		if !str(fName).ends_with(".gd") && !str(fName)=="instances":
+			list.append(fName);
 	return list;
 
 func getSongList():
@@ -177,6 +181,20 @@ func getGameSaveData():
 		data=parse_json(f.get_as_text());
 		f.close();
 	return data;
+
+func getFolderContent(path):
+	var dir:=Directory.new()
+	var files=[];
+	if dir.open("res://"+path)==OK:
+		dir.list_dir_begin()
+		var fName=dir.get_next()
+		while (fName!=""):
+			if !dir.current_is_dir():
+				files.append(fName);
+			fName=dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.");
+	return files
 
 func getFileTxt(path):
 	var f=File.new();

@@ -8,19 +8,19 @@ func onEvent(evId,arg1,arg2):
 		"addBeatZoom":
 			cam.bumpScale-=float(arg1);
 
-		"playAnim":
+		"playCharAnim":
 			var chara=getProperty(arg2);
 			chara.playAnim(arg1);
 		
-		"seekAnim":
+		"seekCharAnim":
 			var chara=getProperty(arg2);
 			chara.seekAnim(float(arg1));
 		
-		"getAnimTime":
+		"getCharAnimTime":
 			var chara=getProperty(arg1);
 			return chara.anims.current_animation_position;
 		
-		"getCurAnim":
+		"getCharCurAnim":
 			var chara=getProperty(arg1);
 			return chara.anims.current_animation;
 	return null;

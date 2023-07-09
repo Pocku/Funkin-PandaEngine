@@ -219,10 +219,8 @@ func _process(dt):
 	strumlineY=getStrumY(Conductor.time-sectStart);
 	cam.position.y=strumlineY;
 
-	noteTab.root.visible=curNote!=-1;
-	eventTab.root.visible=curEvent!=-1;
-	
-	timeLabel.text=str("TIME: %s / %s \nSECTION: %s / %s\n\n'ESC' - PLAYTEST\n'ENTER' - EXIT EDITOR"%[str(stepify(Conductor.time,0.01)).pad_decimals(2),str(stepify(inst.stream.get_length(),0.01)).pad_decimals(2),curSection,len(chart.notes)]);
+
+	timeLabel.text=str("%s/%s \nSECTION:%s/%s"%[str(stepify(Conductor.time,0.01)).pad_decimals(2),str(stepify(inst.stream.get_length(),0.01)).pad_decimals(2),curSection,len(chart.notes)]);
 	update();
 	
 func _draw():

@@ -66,16 +66,16 @@ func onHit():
 		callFunc("popUpScore",[time,column,duration,type,isPlayer]);
 		callFunc("unMuffleSong");
 		
-	triggerEvent("playAnim","sing%s"%["Left","Down","Up","Right"][column],["dad","bf"][int(isPlayer)] if !gfNote else "gf");
-	triggerEvent("seekAnim",0.0,getCharacter());
+	triggerEvent("playCharAnim","sing%s"%["Left","Down","Up","Right"][column],["dad","bf"][int(isPlayer)] if !gfNote else "gf");
+	triggerEvent("seekCharAnim",0.0,getCharacter());
 	
 	Game.emit_signal("noteHit",getData());
 	
 func onHeld():
 	if isPlayer: setProperty("health",min(getProperty("health")+0.015,100));
-	triggerEvent("playAnim","sing%s"%["Left","Down","Up","Right"][column],getCharacter());
-	if float(triggerEvent("getAnimTime",getCharacter()))>0.2:
-		triggerEvent("seekAnim",0.0,getCharacter());
+	triggerEvent("playCharAnim","sing%s"%["Left","Down","Up","Right"][column],getCharacter());
+	if float(triggerEvent("getCharAnimTime",getCharacter()))>0.2:
+		triggerEvent("seekCharAnim",0.0,getCharacter());
 	Game.emit_signal("noteHeld",getData());
 	
 func onMiss():
@@ -86,14 +86,14 @@ func onMiss():
 		setProperty("misses",getProperty("misses")+1);
 		callFunc("updateScoreLabel");
 		callFunc("muffleSong");
-	triggerEvent("playAnim","miss%s"%["Left","Down","Up","Right"][column],getCharacter());
-	triggerEvent("seekAnim",0.0,getCharacter());
+	triggerEvent("playCharAnim","miss%s"%["Left","Down","Up","Right"][column],getCharacter());
+	triggerEvent("seekCharAnim",0.0,getCharacter());
 	Game.emit_signal("noteMiss",getData());
 	
 func onHeldMiss():
 	if isPlayer: setProperty("health",max(getProperty("health")-0.15,0));
-	triggerEvent("playAnim","miss%s"%["Left","Down","Up","Right"][column],getCharacter());
-	triggerEvent("seekAnim",0.0,getCharacter());
+	triggerEvent("playCharAnim","miss%s"%["Left","Down","Up","Right"][column],getCharacter());
+	triggerEvent("seekCharAnim",0.0,getCharacter());
 	Game.emit_signal("noteHeldMiss",getData());
 	
 	

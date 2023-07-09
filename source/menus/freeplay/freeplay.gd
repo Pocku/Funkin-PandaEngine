@@ -73,6 +73,15 @@ func _input(ev):
 			Sfx.play("menu-cancel");
 			confirmed=true;
 		
+		if Game.canChangeScene && ev.scancode in [KEY_7] && !confirmed:
+			Game.storyMode=false;
+			Game.song=songsQueue[mainOpt][0];
+			Game.mode=modesQueue[modeOpt];
+			Game.changeScene("charter/charter");
+			Sfx.play("menu-ok");
+			Music.stopAll();
+			confirmed=true;
+		
 		if Game.canChangeScene && ev.scancode in [KEY_ENTER] && !confirmed:
 			Game.storyMode=false;
 			Game.song=songsQueue[mainOpt][0];

@@ -2,7 +2,7 @@
 camZoom
 camMove
 addBeatZoom
-playAnim
-seekAnim
-getAnimTime
-getCurAnim
+playCharAnim
+seekCharAnim
+getCharAnimTime
+getCharCurAnim
