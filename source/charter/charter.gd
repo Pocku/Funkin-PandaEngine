@@ -1,57 +1,64 @@
 extends Node2D
 
 onready var inst=$Inst;
-onready var timeLabel=$UI/TimeLabel;
-onready var timeScroll=$UI/Tabs/TimeScroll;
+onready var timeLabel=$UI/Control/TimeLabel;
+onready var timeScroll=$UI/Control/TimeScroll;
+onready var sectionTitleLabel=$UI/Control/Section/Title;
 onready var voices=$Voices;
 onready var cam=$Cam;
 
 onready var songTab={
-	"song":$UI/Tabs/Song/Song/Song,
-	"mode":$UI/Tabs/Song/Song/Mode,
-	"stage":$UI/Tabs/Song/Song/Stage,
-	"bpm":$UI/Tabs/Song/Timing/Bpm,
-	"speed":$UI/Tabs/Song/Timing/Speed,
-	"player1":$UI/Tabs/Song/Players/Player1,
-	"player2":$UI/Tabs/Song/Players/Player2,
-	"player3":$UI/Tabs/Song/Players/Player3,
-	"uiSkin":$UI/Tabs/Song/Song/UISkin,
-	"cutscene":$UI/Tabs/Song/Song/Cutscene,
-	"save":$UI/Tabs/Song/Options/Save,
-	"load":$UI/Tabs/Song/Options/Load,
-	"reload":$UI/Tabs/Song/Options/Reload
+	"song":$UI/Control/Tabs/Song/Song/Song,
+	"mode":$UI/Control/Tabs/Song/Song/Mode,
+	"stage":$UI/Control/Tabs/Song/Song/Stage,
+	"bpm":$UI/Control/Tabs/Song/Timing/Bpm,
+	"speed":$UI/Control/Tabs/Song/Timing/Speed,
+	"player1":$UI/Control/Tabs/Song/Players/Player1,
+	"player2":$UI/Control/Tabs/Song/Players/Player2,
+	"player3":$UI/Control/Tabs/Song/Players/Player3,
+	"uiSkin":$UI/Control/Tabs/Song/Song/UISkin,
+	"cutscene":$UI/Control/Tabs/Song/Song/Cutscene,
+	"save":$UI/Control/Tabs/Song/Options/Save,
+	"load":$UI/Control/Tabs/Song/Options/Load,
+	"reload":$UI/Control/Tabs/Song/Options/Reload
 }
 onready var sectionTab={
-	"mustHitSection":$UI/Tabs/Section/MustHit,
-	"altAnim":$UI/Tabs/Section/AltAnim,
-	"gfSection":$UI/Tabs/Section/GfSection,
-	"changeBPM":$UI/Tabs/Section/ChangeBPM,
-	"bpm":$UI/Tabs/Section/Bpm,
-	"sectionBeats":$UI/Tabs/Section/Beats,
-	"clear":$UI/Tabs/Section/Clear
+	"mustHitSection":$UI/Control/Section/MustHit,
+	"altAnim":$UI/Control/Section/AltAnim,
+	"gfSection":$UI/Control/Section/GfSection,
+	"changeBPM":$UI/Control/Section/ChangeBPM,
+	"bpm":$UI/Control/Section/Bpm,
+	"sectionBeats":$UI/Control/Section/Beats,
+	"clear":$UI/Control/Section/Clear,
+	"swap":$UI/Control/Section/Swap,
+	"duet":$UI/Control/Section/Duet,
+	"copy":$UI/Control/Section/Copy,
+	"copyLast":$UI/Control/Section/CopyLast,
+	"paste":$UI/Control/Section/Paste
 }
 onready var noteTab={
-	"root":$UI/Tabs/Note,
-	"type":$UI/Tabs/Note/Type,
-	"time":$UI/Tabs/Note/Timing/Time,
-	"duration":$UI/Tabs/Note/Timing/Duration
+	"root":$UI/Control/Tabs/Note,
+	"type":$UI/Control/Tabs/Note/Type,
+	"time":$UI/Control/Tabs/Note/Timing/Time,
+	"duration":$UI/Control/Tabs/Note/Timing/Duration
 }
 onready var eventTab={
-	"root":$UI/Tabs/Event,
-	"type":$UI/Tabs/Event/Type,
-	"arg1":$UI/Tabs/Event/Args/Arg1,
-	"arg2":$UI/Tabs/Event/Args/Arg2,
-	"add":$UI/Tabs/Event/Add,
-	"sub":$UI/Tabs/Event/Sub,
-	"next":$UI/Tabs/Event/Next,
-	"prev":$UI/Tabs/Event/Prev,
-	"pageLabel":$UI/Tabs/Event/PageLabel
+	"root":$UI/Control/Tabs/Event,
+	"type":$UI/Control/Tabs/Event/Type,
+	"arg1":$UI/Control/Tabs/Event/Args/Arg1,
+	"arg2":$UI/Control/Tabs/Event/Args/Arg2,
+	"add":$UI/Control/Tabs/Event/Add,
+	"sub":$UI/Control/Tabs/Event/Sub,
+	"next":$UI/Control/Tabs/Event/Next,
+	"prev":$UI/Control/Tabs/Event/Prev,
+	"pageLabel":$UI/Control/Tabs/Event/PageLabel
 }
 var eventIcon=preload("res://assets/images/misc/event-icon.png");
 var font=DynamicFont.new();
 
 var chart={};
 var noteAtlas=[];
+var copiedSection={};
 
 var curEvent=-1;
 var curNote=-1;
@@ -90,19 +97,25 @@ func _ready():
 		match songTab[i].get_class():
 			"OptionButton": songTab[i].connect("item_selected",self,"onSongOptionChanged",[i]);
 			"SpinBox": songTab[i].connect("value_changed",self,"onSongOptionChanged",[i]);
-			"Button": songTab[i].connect("pressed",self,"onSongOptionChanged",[true,i]);
+			"Button": 
+				songTab[i].connect("pressed",self,"onSongOptionChanged",[true,i]);
+				songTab[i].enabled_focus_mode=Button.FOCUS_NONE;
 	
 	for i in eventTab.keys():
 		match eventTab[i].get_class():
 			"OptionButton": eventTab[i].connect("item_selected",self,"onEventOptionChanged",[i]);
 			"LineEdit": eventTab[i].connect("text_changed",self,"onEventOptionChanged",[i]);
-			"Button": eventTab[i].connect("pressed",self,"onEventOptionChanged",[true,i]);
+			"Button": 
+				eventTab[i].connect("pressed",self,"onEventOptionChanged",[true,i]);
+				eventTab[i].enabled_focus_mode=Button.FOCUS_NONE;
 			
 	for i in sectionTab.keys():
 		match sectionTab[i].get_class():
 			"CheckBox": sectionTab[i].connect("toggled",self,"onSectionOptionChanged",[i]);
 			"SpinBox": sectionTab[i].connect("value_changed",self,"onSectionOptionChanged",[i]);
-			"Button": sectionTab[i].connect("pressed",self,"onSectionOptionChanged",[true,i]);
+			"Button": 
+				sectionTab[i].connect("pressed",self,"onSectionOptionChanged",[true,i]);
+				sectionTab[i].enabled_focus_mode=Button.FOCUS_NONE;
 	
 	for i in noteTab.keys():
 		match noteTab[i].get_class():
@@ -219,7 +232,7 @@ func _process(dt):
 	strumlineY=getStrumY(Conductor.time-sectStart);
 	cam.position.y=strumlineY;
 
-
+	sectionTitleLabel.text="Section [%s] Settings"%[curSection]
 	timeLabel.text=str("%s/%s \nSECTION:%s/%s"%[str(stepify(Conductor.time,0.01)).pad_decimals(2),str(stepify(inst.stream.get_length(),0.01)).pad_decimals(2),curSection,len(chart.notes)]);
 	update();
 	
@@ -271,8 +284,7 @@ func drawSection(tSect,offsetY,isMain=false):
 		draw_texture_rect(tex,Rect2(pos+Vector2(0,offsetY),Vector2.ONE*gridSize),false,color);
 		
 		if curNote!=-1 && curNote==i && isMain:
-			draw_rect(Rect2(pos+Vector2(0,offsetY),Vector2.ONE*gridSize),Color.red,false,2);
-				
+			draw_rect(Rect2(pos+Vector2(0,offsetY),Vector2.ONE*gridSize),Color("#8d69e8"),false,2);	
 		
 		if getNoteTypeNumber(n[3])>0:
 			var txSize=font.get_string_size(str(getNoteTypeNumber(n[3])));
@@ -291,7 +303,7 @@ func drawEvents():
 		draw_texture_rect(eventIcon,Rect2(pos,Vector2.ONE*gridSize),false,color);
 		
 		if curEvent!=-1 && curEvent==i:
-			draw_rect(Rect2(pos,Vector2.ONE*gridSize),Color.red,false,2);
+			draw_rect(Rect2(pos,Vector2.ONE*gridSize),Color("#8d69e8"),false,2);
 		
 		var txSize=font.get_string_size(str(len(e[1])));
 		if len(e[1])>1:
@@ -413,9 +425,46 @@ func onSectionOptionChanged(val,opt):
 	chart.notes[curSection][opt]=val;
 	if opt=="bpm" && chart.notes[curSection]["changeBPM"] || opt=="changeBPM":
 		Conductor.setBpm(getLastBpm(curSection));
+		
 	if opt=="clear":
 		chart.notes[curSection].sectionNotes.clear();
+		
+	if opt=="swap":
+		for i in len(chart.notes[curSection].sectionNotes):
+			var curColumn=chart.notes[curSection].sectionNotes[i][1]
+			chart.notes[curSection].sectionNotes[i][1]=int(curColumn+4)%8;
+			curNote=-1;
+			
+	if opt=="duet":
+		var leftNotes=[];
+		for i in chart.notes[curSection].sectionNotes:
+			if i[1]<4: leftNotes.append(i);
+		chart.notes[curSection].sectionNotes.clear();
+		for i in leftNotes:
+			var rightNote=i.duplicate(true);
+			rightNote[1]=int(rightNote[1]+4);
+			chart.notes[curSection].sectionNotes.append(i);
+			chart.notes[curSection].sectionNotes.append(rightNote);
 	
+	if opt=="copy":
+		var sectStart=getSectionStart(curSection)*1000.0;
+		var sectData=chart.notes[curSection].duplicate(true);
+		copiedSection=sectData;
+		copiedSection.sectionStart=sectStart;
+		
+	if opt=="paste":
+		if !copiedSection.empty():
+			var sectStart=getSectionStart(curSection)*1000.0;
+			chart.notes[curSection]=copiedSection.duplicate(true);
+			chart.notes[curSection].sectionNotes.clear();
+			var fNotes=copiedSection.sectionNotes.duplicate(true);
+			for i in fNotes:
+				var fNote=i;
+				fNote[0]=(i[0]-copiedSection.sectionStart)+sectStart;
+				chart.notes[curSection].sectionNotes.append(fNote);
+			chart.notes[curSection].erase("sectionStart");
+		
+
 func onEventOptionChanged(val,opt):
 	var evId=eventTab.type.get_item_text(eventTab.type.selected);
 	if curEvent!=-1:

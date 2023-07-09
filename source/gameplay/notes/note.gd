@@ -15,11 +15,14 @@ var column=0;
 var length=0.0;
 var duration=0.0;
 
+var isPlayer=false;
 var pressed=false;
 var held=false;
 var missed=false;
+
+var character="";
+var altAnim="";
 var gfNote=false;
-var isPlayer=false;
 var strumline=null;
 
 func _ready():
@@ -65,17 +68,19 @@ func onHit():
 		setProperty("comboTotal",getProperty("comboTotal")+1);
 		callFunc("popUpScore",[time,column,duration,type,isPlayer]);
 		callFunc("unMuffleSong");
-		
-	triggerEvent("playCharAnim","sing%s"%["Left","Down","Up","Right"][column],["dad","bf"][int(isPlayer)] if !gfNote else "gf");
-	triggerEvent("seekCharAnim",0.0,getCharacter());
+	
+	triggerEvent("charSetAltAnim",altAnim,character);
+	triggerEvent("playCharAnim","sing%s"%["Left","Down","Up","Right"][column],character);
+	triggerEvent("seekCharAnim",0.0,character);
 	
 	Game.emit_signal("noteHit",getData());
 	
 func onHeld():
 	if isPlayer: setProperty("health",min(getProperty("health")+0.015,100));
-	triggerEvent("playCharAnim","sing%s"%["Left","Down","Up","Right"][column],getCharacter());
-	if float(triggerEvent("getCharAnimTime",getCharacter()))>0.2:
-		triggerEvent("seekCharAnim",0.0,getCharacter());
+	triggerEvent("charSetAltAnim",altAnim,character);
+	triggerEvent("playCharAnim","sing%s"%["Left","Down","Up","Right"][column],character);
+	if float(triggerEvent("getCharAnimTime",character))>0.2:
+		triggerEvent("seekCharAnim",0.0,character);
 	Game.emit_signal("noteHeld",getData());
 	
 func onMiss():
@@ -86,14 +91,16 @@ func onMiss():
 		setProperty("misses",getProperty("misses")+1);
 		callFunc("updateScoreLabel");
 		callFunc("muffleSong");
-	triggerEvent("playCharAnim","miss%s"%["Left","Down","Up","Right"][column],getCharacter());
-	triggerEvent("seekCharAnim",0.0,getCharacter());
+	triggerEvent("charSetAltAnim",altAnim,character);
+	triggerEvent("playCharAnim","miss%s"%["Left","Down","Up","Right"][column],character);
+	triggerEvent("seekCharAnim",0.0,character);
 	Game.emit_signal("noteMiss",getData());
 	
 func onHeldMiss():
 	if isPlayer: setProperty("health",max(getProperty("health")-0.15,0));
-	triggerEvent("playCharAnim","miss%s"%["Left","Down","Up","Right"][column],getCharacter());
-	triggerEvent("seekCharAnim",0.0,getCharacter());
+	triggerEvent("charSetAltAnim",altAnim,character);
+	triggerEvent("playCharAnim","miss%s"%["Left","Down","Up","Right"][column],character);
+	triggerEvent("seekCharAnim",0.0,character);
 	Game.emit_signal("noteHeldMiss",getData());
 	
 	
@@ -111,9 +118,6 @@ func setProperty(id,val):
 
 func getProperty(id):
 	return get_tree().current_scene.get(id);
-
-func getCharacter():
-	return ["dad","bf"][int(isPlayer)] if !gfNote else "gf"
 
 func getData():
 	return {

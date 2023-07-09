@@ -6,3 +6,4 @@ playCharAnim
 seekCharAnim
 getCharAnimTime
 getCharCurAnim
+charSetAltAnim

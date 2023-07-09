@@ -361,10 +361,16 @@ func createNote(nData):
 		tStrum=strums.get_child(0);
 	
 	var path="note";
+	var altAnimPath="";
+	
+	if nData.altAnim: # Default alt animation by the section
+		altAnimPath="-alt";
+	
 	match nData.type:
 		"hurt": path="hurt";
+		"alt": altAnimPath="-alt";
 		_: path="note";
-			
+	
 	var note=load("res://source/gameplay/notes/%s.tscn"%[path]).instance();
 	var fColumn=int(nData.column)%4;
 	note.type=nData.type;
@@ -376,6 +382,8 @@ func createNote(nData):
 	note.isPlayer=isPlayer;
 	note.gfNote=nData.gfNote;
 	note.strumline=tStrum;
+	note.character=["dad","bf"][int(isPlayer)] if !nData.gfNote else "gf";
+	note.altAnim=altAnimPath;
 	
 	var arrow=tStrum.get_child(fColumn);
 	arrow.path.add_child(note);
@@ -421,6 +429,7 @@ func loadSong():
 			var rawData=chart.notes[i].sectionNotes[n];
 			if rawData[1]>-1:
 				var mustHit=chart.notes[i].mustHitSection;
+				var altAnim=chart.notes[i].altAnim;
 				var isGfNote=false;
 				
 				if mustHit && rawData[1]<4 && chart.notes[i].gfSection || !mustHit && rawData[1]<4 && chart.notes[i].gfSection:
@@ -432,7 +441,7 @@ func loadSong():
 					"length":float(rawData[2])/1000.0,
 					"type":rawData[3],
 					"mustHit":mustHit,
-					"altAnim":chart.notes[i].altAnim,
+					"altAnim":altAnim,
 					"gfNote":isGfNote
 				}
 				notesQueue.append(nData);

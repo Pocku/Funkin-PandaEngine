@@ -8,6 +8,7 @@ export var healthColor:Color;
 export var camOffset=Vector2.ZERO;
 export var flipped=false;
 export var beatMult=1;
+export var altAnim="";
 
 func _ready():
 	Conductor.connect("beat",self,"onBeat");
@@ -15,13 +16,14 @@ func _ready():
 func onBeat(beat):
 	if int(beat)%beatMult==0:
 		if getCurAnim()=="":
-			playAnim("idle");
-		elif getCurAnim()=="idle":
+			playAnim(str("idle",altAnim));
+		elif getCurAnim()==str("idle",altAnim):
 			seekAnim(0.0);
 
 func playAnim(id):
-	if anims.has_animation(id):
-		anims.play(id);
+	printt(id,altAnim)
+	if anims.has_animation(str(id,altAnim)):
+		anims.play(str(id,altAnim));
 
 func seekAnim(time):
 	return anims.seek(time);
