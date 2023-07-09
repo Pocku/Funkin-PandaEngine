@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var ui=$UI;
+onready var uiCanvasMod=$UI/CanvasMod;
 onready var pause=$Pause;
 onready var countdown=$UI/Countdown;
 onready var hpbar=$UI/HpBar;
@@ -59,6 +60,7 @@ func _ready():
 	loadSong();
 	
 	Game.scrollScale=1000.0*chart.speed;
+	uiCanvasMod.color.a=1.0;
 	
 	if false:
 		Conductor.time=inst.stream.get_length()-6.0;
@@ -83,7 +85,7 @@ func _ready():
 	
 	cam.position=Vector2(stage.cam.x,stage.cam.y);
 	cam.rotation=deg2rad(stage.cam.rotation);
-	tw.interpolate_property(cam,"baseZoom",0.2,stage.cam.zoom,1.0,Tween.TRANS_QUART,Tween.EASE_OUT);
+	tw.interpolate_property(cam,"baseZoom",stage.cam.zoom*0.25,stage.cam.zoom,1.0,Tween.TRANS_QUART,Tween.EASE_OUT);
 	tw.start();
 	
 	combo.scale*=0.64;
@@ -128,14 +130,9 @@ func _ready():
 	
 	if Game.storyMode:
 		var cutscenePath="dialogue";
-		match Game.song:
-			"tutorial":
-				Game.cutscene=Game.song;
-			"test":
-				Game.cutscene="zap";
+		match Game.cutscene:
+			"zap":
 				cutscenePath="video";
-			_:
-				Game.emit_signal("cutsceneFinished");
 		var cutscene=load("res://source/cutscenes/%s.tscn"%[cutscenePath]).instance();
 		add_child(cutscene);
 	else:
@@ -250,6 +247,13 @@ func startCountdown():
 	var countdownScale=1.0;
 	countdownStarted=true;
 	songScript.call("onCountdownStarted");
+	
+	for i in strums.get_child_count():
+		var strumline=strums.get_child(i);
+		strumline.revealArrows();
+		
+	#tw.interpolate_property(uiCanvasMod,"color:a",0.0,1.0,0.4,Tween.TRANS_CUBIC,Tween.EASE_OUT);
+	#tw.start();
 	
 	match Game.uiSkin:
 		"pixel": countdownScale=8.0;
@@ -393,7 +397,13 @@ func loadSong():
 	if !chart.has("cutscene"): chart["cutscene"]="";
 	if !chart.has("stage"): chart["stage"]="stage";
 	if !chart.has("events"): chart["events"]=[];
+	if !chart.has("uiSkin"): chart["uiSkin"]="default";
+	if !chart.has("cutscene"): chart["cutscene"]="";
+	if !chart.has("events"): chart["events"]=[];
 	if !chart.stage in Game.getStageList(): chart.stage="stage";
+	
+	Game.cutscene=chart.cutscene;
+	Game.uiSkin=chart.uiSkin;
 	
 	for i in len(chart.notes):
 		if !chart.notes[i].has("gfSection"): chart.notes[i]["gfSection"]=false;

@@ -4,21 +4,21 @@ var isPlayer=false;
 var character=null;
 
 func _ready():
-	Game.connect("noteHit",self,"onNoteHit");
-	
+	var totalWidth=0.0;
 	scale*=0.75;
-	var w=0.0;
 	for i in 4:
 		var arrowPath="arrow";
 		match Game.uiSkin:
 			"pixel": arrowPath="arrow-pixel";
 		var arrow=load("res://source/gameplay/arrows/%s.tscn"%[arrowPath]).instance();
-		arrow.position.x=w;
+		arrow.position.x=totalWidth;
 		arrow.column=i;
 		add_child(arrow);
-		w+=161;
+		arrow.modulate.a=0.0;
+		arrow.position.y=-24*i;
+		totalWidth+=161;
 		if !isPlayer && Settings.midScroll:
-			if i==1: w+=161*4.32
+			if i==1: totalWidth+=161*4.32
 
 func _process(dt):
 	for i in get_child_count():
@@ -135,9 +135,6 @@ func updateBotArrow(arrow):
 				arrow.notes.remove(0);
 	removeAvailableGhostNotes(arrow);
 
-func onNoteHit(data):
-	pass
-
 func checkForGhostNotesInRange(arrow):
 	if !arrow.ghostNotes.empty():
 		var note=arrow.ghostNotes[0];
@@ -168,6 +165,15 @@ func killCurrentGhostNote(arrow):
 	arrow.ghostNotes[0].queue_free();
 	arrow.ghostNotes.remove(0);
 	return null;
+
+func revealArrows():
+	var tw=getProperty("tw");
+	for i in get_child_count():
+		var arrow=get_child(i);
+		tw.interpolate_property(arrow,"modulate:a",-4.0,1.0,0.4+(0.1*i),Tween.TRANS_CUBIC,Tween.EASE_OUT);
+		tw.interpolate_property(arrow,"position:y",arrow.position.y,0.0,0.4+(0.1*i),Tween.TRANS_CUBIC,Tween.EASE_OUT);
+	tw.start();
+	pass
 
 func getWidth():
 	return (get_child_count()-1)*161*scale.x;

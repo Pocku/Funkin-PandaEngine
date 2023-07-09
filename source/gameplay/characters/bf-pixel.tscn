@@ -260,7 +260,7 @@ tracks/1/keys = {
 script = ExtResource( 2 )
 icon = ExtResource( 3 )
 healthColor = Color( 0.482353, 0.839216, 0.964706, 1 )
-camOffset = Vector2( 0, -20 )
+camOffset = Vector2( 0, -30 )
 beatMult = 2
 
 [node name="Sprite" type="Sprite" parent="."]

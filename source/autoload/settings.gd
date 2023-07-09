@@ -13,6 +13,6 @@ var hideHud=false;
 var notesOffset=0.0;
 var fpsCap=120;
 var volume=1.0;
-var vsync=false;
+var vsync=true;
 
 var noteKeys=[KEY_LEFT,KEY_DOWN,KEY_UP,KEY_RIGHT];

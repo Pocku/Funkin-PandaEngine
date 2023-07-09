@@ -1,8 +1,8 @@
 extends SongScript
 
 func _ready():
-	bf.scale*=6.0;
-	dad.scale*=6.0;
-	gf.scale*=6.0;
+	bf.scale*=4.0;
+	dad.scale*=4.0;
+	gf.scale*=4.0;
 	
 	pass

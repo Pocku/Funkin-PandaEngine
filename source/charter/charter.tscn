@@ -34,11 +34,12 @@ text = "Song"
 align = 1
 valign = 1
 
-[node name="Song" type="HBoxContainer" parent="UI/Tabs/Song"]
+[node name="Song" type="GridContainer" parent="UI/Tabs/Song"]
 margin_left = 8.0
 margin_top = 30.0
 margin_right = 283.0
 margin_bottom = 50.0
+columns = 3
 
 [node name="Song" type="OptionButton" parent="UI/Tabs/Song/Song"]
 margin_right = 89.0
@@ -57,11 +58,24 @@ margin_right = 275.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 
+[node name="Cutscene" type="OptionButton" parent="UI/Tabs/Song/Song"]
+margin_top = 24.0
+margin_right = 89.0
+margin_bottom = 44.0
+size_flags_horizontal = 3
+
+[node name="UISkin" type="OptionButton" parent="UI/Tabs/Song/Song"]
+margin_left = 93.0
+margin_top = 24.0
+margin_right = 182.0
+margin_bottom = 44.0
+size_flags_horizontal = 3
+
 [node name="Timing" type="GridContainer" parent="UI/Tabs/Song"]
-margin_left = 11.0
-margin_top = 67.0
-margin_right = 144.0
-margin_bottom = 119.0
+margin_left = 10.0
+margin_top = 78.0
+margin_right = 143.0
+margin_bottom = 130.0
 columns = 2
 
 [node name="Label" type="Label" parent="UI/Tabs/Song/Timing"]
@@ -139,10 +153,10 @@ margin_bottom = 68.0
 size_flags_horizontal = 3
 
 [node name="Options" type="VBoxContainer" parent="UI/Tabs/Song"]
-margin_left = 194.0
-margin_top = 67.0
-margin_right = 268.0
-margin_bottom = 135.0
+margin_left = 209.0
+margin_top = 142.0
+margin_right = 283.0
+margin_bottom = 210.0
 
 [node name="Save" type="Button" parent="UI/Tabs/Song/Options"]
 margin_right = 74.0

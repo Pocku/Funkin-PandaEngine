@@ -75,6 +75,8 @@ bbcode_text = "N/A"
 text = "N/A"
 scroll_active = false
 
+[node name="CanvasMod" type="CanvasModulate" parent="UI"]
+
 [node name="Pause" parent="." instance=ExtResource( 9 )]
 layer = 11
 

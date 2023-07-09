@@ -1,0 +1,159 @@
+[gd_scene load_steps=29 format=2]
+
+[ext_resource path="res://source/gameplay/stage.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/stages/school/sky.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/stages/school/street.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/stages/school/school.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/stages/school/trees.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/stages/school/backTrees.png" type="Texture" id=6]
+[ext_resource path="res://source/gameplay/stages/instances/school-freaks.tscn" type="PackedScene" id=7]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 5 )
+region = Rect2( 513, 0, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 5 )
+region = Rect2( 1026, 0, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 5 )
+region = Rect2( 1539, 0, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 5 )
+region = Rect2( 2052, 0, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 5 )
+region = Rect2( 2565, 0, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 5 )
+region = Rect2( 3078, 0, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 512, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 5 )
+region = Rect2( 513, 512, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 5 )
+region = Rect2( 1026, 512, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 5 )
+region = Rect2( 1539, 512, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 5 )
+region = Rect2( 2052, 512, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 5 )
+region = Rect2( 2565, 512, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 5 )
+region = Rect2( 3078, 512, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 1024, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 5 )
+region = Rect2( 513, 1024, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 5 )
+region = Rect2( 1026, 1024, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 5 )
+region = Rect2( 1539, 1024, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 5 )
+region = Rect2( 2052, 1024, 513, 512 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 5 )
+region = Rect2( 2565, 1024, 513, 512 )
+
+[sub_resource type="SpriteFrames" id=21]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Stage" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+cam = {
+"rotation": 0.0,
+"x": 640,
+"y": 360,
+"zoom": 0.6
+}
+bf = {
+"depth": 7,
+"scale": 1.0,
+"x": 840,
+"y": 540
+}
+dad = {
+"depth": 7,
+"scale": 1.0,
+"x": 414,
+"y": 540
+}
+gf = {
+"depth": 6,
+"scale": 1.0,
+"x": 640,
+"y": 540
+}
+
+[node name="Back" type="Sprite" parent="."]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="School" type="Sprite" parent="."]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="Ground" type="Sprite" parent="."]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="BackTrees" type="Sprite" parent="."]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="Trees" type="AnimatedSprite" parent="."]
+position = Vector2( -404, -712 )
+scale = Vector2( 4, 4 )
+frames = SubResource( 21 )
+frame = 3
+playing = true
+centered = false
+
+[node name="Freaks" parent="." instance=ExtResource( 7 )]
+position = Vector2( -218, 111 )
+scale = Vector2( 4, 4 )

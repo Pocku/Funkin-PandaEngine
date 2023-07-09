@@ -44,7 +44,7 @@ scale = Vector2( 1.04467, 1.13138 )
 texture = ExtResource( 4 )
 
 [node name="Back" type="Sprite" parent="."]
-position = Vector2( -532, -310 )
+position = Vector2( -524, -310 )
 scale = Vector2( 0.969286, 0.969286 )
 texture = ExtResource( 3 )
 centered = false

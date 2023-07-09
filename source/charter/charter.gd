@@ -15,6 +15,8 @@ onready var songTab={
 	"player1":$UI/Tabs/Song/Players/Player1,
 	"player2":$UI/Tabs/Song/Players/Player2,
 	"player3":$UI/Tabs/Song/Players/Player3,
+	"uiSkin":$UI/Tabs/Song/Song/UISkin,
+	"cutscene":$UI/Tabs/Song/Song/Cutscene,
 	"save":$UI/Tabs/Song/Options/Save,
 	"load":$UI/Tabs/Song/Options/Load,
 	"reload":$UI/Tabs/Song/Options/Reload
@@ -107,6 +109,9 @@ func _ready():
 			"OptionButton": noteTab[i].connect("item_selected",self,"onNoteOptionChanged",[i]);
 			"SpinBox": noteTab[i].connect("value_changed",self,"onNoteOptionChanged",[i]);
 	
+	for i in Game.getUISkinList(): 
+		songTab.uiSkin.add_item(i);
+	
 	for i in Game.getModes(): 
 		songTab.mode.add_item(i);
 		
@@ -115,7 +120,10 @@ func _ready():
 		
 	for i in Game.getStageList(): 
 		songTab.stage.add_item(i);
-		
+	
+	for i in Game.getCutsceneList(): 
+		songTab.cutscene.add_item(i);
+	
 	for i in [songTab.player1,songTab.player2,songTab.player3]:
 		for c in Game.getCharacterList(): 
 			i.add_item(c);
@@ -305,6 +313,8 @@ func loadSong():
 	if !chart.has("player3"): chart["player3"]="gf";
 	if !chart.has("cutscene"): chart["cutscene"]="";
 	if !chart.has("stage"): chart["stage"]="stage";
+	if !chart.has("uiSkin"): chart["uiSkin"]="default";
+	if !chart.has("cutscene"): chart["cutscene"]="";
 	if !chart.has("events"): chart["events"]=[];
 	
 	if !chart.stage in Game.getStageList(): chart.stage="stage";
@@ -330,6 +340,8 @@ func loadSong():
 	selectOptionButtonByName(songTab.stage,chart.stage);
 	selectOptionButtonByName(songTab.player1,chart.player1);
 	selectOptionButtonByName(songTab.player3,chart.player3);
+	selectOptionButtonByName(songTab.cutscene,chart.cutscene);
+	selectOptionButtonByName(songTab.uiSkin,chart.uiSkin);
 	if !selectOptionButtonByName(songTab.player2,chart.player2):
 		selectOptionButtonByName(songTab.player2,"dad");
 	

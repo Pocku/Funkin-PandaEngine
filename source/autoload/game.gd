@@ -18,7 +18,7 @@ var songsQueue=[];
 var storyMode=false;
 var canChangeScene=true;
 
-var uiSkin="pixel";
+var uiSkin="default";
 var scrollScale=1400.0;
 var allowBotMode=false;
 var botMode=false;
@@ -162,6 +162,12 @@ func getModes():
 
 func getWeekList():
 	return getFileTxt("assets/data/weeks");
+
+func getUISkinList():
+	return getFileTxt("assets/data/ui-skins");
+
+func getCutsceneList():
+	return getFileTxt("assets/data/cutscenes");
 
 func getGameSaveData():
 	var f:=File.new();
