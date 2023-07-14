@@ -2,6 +2,7 @@
 
 ## Friday Night Funkin' - Panda Engine
 A recreation of the newest popular rhythm game, [Friday Night Funkin'](https://ninja-muffin24.itch.io/funkin) made in [Godot-engine](https://godotengine.org).
+The same engine used for [Bear5 Retake](https://gamebanana.com/mods/449693),[Gorefield: End of abuse](https://gamebanana.com/mods/446536) mods.
 ( with a ton of performance improvements to run on lowendpcs, and 10x faster to compile and export a build/mod )
 
 ## Disclaimer
