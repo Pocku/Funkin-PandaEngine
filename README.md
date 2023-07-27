@@ -10,6 +10,7 @@ This is a fangame engine, a full recreation of the original source material from
 What you create by using this engine is called a 'fangame', since it's not a modification of the original game.
 
 ## Tutorials
+Maybe sometime soon. (07/27/23)
 
 ## Credits
 #### Remake Help
