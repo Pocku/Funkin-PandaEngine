@@ -1,4 +1,5 @@
-![github panda banner](https://github.com/Pocku/Funkin-PandaEngine/assets/89349204/c444d485-e1f4-424d-aa5c-9ad12c367dd6)
+![github panda banner](https://github.com/Pocku/Funkin-PandaEngine/assets/89349204/64eed7b6-c5f7-42a5-899d-007edf646979)
+
 
 ## Friday Night Funkin' - Panda Engine
 A recreation of the newest popular rhythm game, [Friday Night Funkin'](https://ninja-muffin24.itch.io/funkin) made in [Godot-engine](https://godotengine.org).
@@ -7,6 +8,9 @@ The same engine used for [Bear5 Retake](https://gamebanana.com/mods/449693),[Gor
 
 ## Disclaimer
 This is a fangame engine, a full recreation of the original source material from scratch on [Godot-engine](https://godotengine.org).
+
+
+
 What you create by using this engine is called a 'fangame', since it's not a modification of the original game.
 
 ## Tutorials
