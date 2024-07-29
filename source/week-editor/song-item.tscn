@@ -1,0 +1,71 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://source/week-editor/song-item.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=4806]
+bg_color = Color( 0.0117647, 0.0117647, 0.0117647, 1 )
+
+[node name="SongItem" type="HBoxContainer"]
+margin_right = 468.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_top = 4.0
+margin_right = 30.0
+margin_bottom = 18.0
+text = "Song"
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 34.0
+margin_right = 145.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+custom_styles/read_only = SubResource( 4806 )
+custom_styles/focus = SubResource( 4806 )
+custom_styles/normal = SubResource( 4806 )
+text = "Song"
+placeholder_text = "week.json"
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 149.0
+margin_top = 4.0
+margin_right = 182.0
+margin_bottom = 18.0
+text = "Color"
+
+[node name="LineEdit2" type="LineEdit" parent="."]
+margin_left = 186.0
+margin_right = 297.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+custom_styles/read_only = SubResource( 4806 )
+custom_styles/focus = SubResource( 4806 )
+custom_styles/normal = SubResource( 4806 )
+text = "#151515"
+placeholder_text = "#151515"
+
+[node name="Label3" type="Label" parent="."]
+margin_left = 301.0
+margin_top = 4.0
+margin_right = 329.0
+margin_bottom = 18.0
+text = "Icon"
+
+[node name="LineEdit3" type="LineEdit" parent="."]
+margin_left = 333.0
+margin_right = 444.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+custom_styles/read_only = SubResource( 4806 )
+custom_styles/focus = SubResource( 4806 )
+custom_styles/normal = SubResource( 4806 )
+text = "dad"
+placeholder_text = "#151515"
+
+[node name="Button" type="Button" parent="."]
+margin_left = 448.0
+margin_right = 468.0
+margin_bottom = 22.0
+text = "X"

@@ -51,3 +51,5 @@ text = "BLUE-BALLED: 0"
 align = 2
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]

@@ -7,6 +7,21 @@ signal noteMiss(data);
 signal noteHeldMiss(data);
 signal playerDied;
 
+
+var SCENES = {
+	"Boot": "boot",
+	"Gameplay": "gameplay/gameplay",
+	"Gameover": "gameover/gameover",
+	"Charter": "charter/charter",
+	"CreditsMenu": "menus/credits/credits",
+	"Freeplay": "menus/freeplay/freeplay",
+	"MainMenu": "menus/main-menu/main-menu",
+	"StoryMode": "menus/storymode/storymode",
+	"TitleScreen": "menus/title-screen/title-screen",
+	"Options": "menus/options/options"
+}
+
+
 var songsData={};
 var weeksData={};
 

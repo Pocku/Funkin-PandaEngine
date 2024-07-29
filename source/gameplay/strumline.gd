@@ -13,6 +13,7 @@ func _ready():
 		var arrow=load("res://source/gameplay/arrows/%s.tscn"%[arrowPath]).instance();
 		arrow.position.x=totalWidth;
 		arrow.column=i;
+		arrow.isPlayer = isPlayer
 		add_child(arrow);
 		arrow.modulate.a=0.0;
 		arrow.position.y=-24*i;
@@ -21,11 +22,7 @@ func _ready():
 			if i==1: totalWidth+=161*4.32
 
 func _process(dt):
-	for i in get_child_count():
-		var arrow=get_child(i);
-		var key="note%s"%(["Left","Down","Up","Right"][i]);
-		if isPlayer && !Game.botMode: updateArrow(arrow,key);
-		else: updateBotArrow(arrow);
+	pass
 
 func updateArrow(arrow,key):
 	var justTap=true;
@@ -46,7 +43,7 @@ func updateArrow(arrow,key):
 			note=killCurrentNote(arrow);
 		
 		if note!=null:
-			if totalMs<=0.0 && note.duration>0.0:
+			if totalMs<=-0.16 && note.duration>0.0:
 				if !note.pressed:
 					note.onMiss();
 					note.missed=true;
@@ -188,4 +185,3 @@ func setProperty(id,val):
 
 func getProperty(id):
 	return get_tree().current_scene.get(id);
-

@@ -17,7 +17,7 @@ var duration=0.0;
 
 var isPlayer=false;
 var pressed=false;
-var held=false;
+var holding=false;
 var missed=false;
 
 var character="";
@@ -50,8 +50,14 @@ func _process(dt):
 	var ms=(time+Conductor.waitTime)-Conductor.time;
 	position.y=ms*(Game.scrollScale*([1,-1][int(Settings.downScroll)])/scrollMult) if !pressed else 0.0;
 	length=max(length-dt,0.0) if ms<=0.0 else length;
+	
+	if duration > 0.0:
+		var lightColor = Color(1.0, 1.0, 1.0, 0.8)
+		var darkColor = Color(0.8, 0.8, 0.8, 0.5)
+		line.modulate = lerp(line.modulate, lightColor if holding else darkColor, 16.0*dt)
+	
 	if ms<=0.0 && duration>0.0 && pressed: updateLine();
-	if ms<=0.0 && duration>0.0 && !held: missTime+=dt;
+	if ms<=0.0 && duration>0.0 && !holding: missTime+=dt;
 	
 func updateLine():
 	var posY=(length*Game.scrollScale/scrollMult)-endHeight;
@@ -60,6 +66,9 @@ func updateLine():
 	end.scale.y=1.0-(abs(posY)/endHeight) if posY<=0.0 else 1.0;
 
 func onHit():
+	pressed = true
+	holding = true
+	
 	if duration>0.0:
 		texture=null;
 		updateLine();
@@ -76,14 +85,19 @@ func onHit():
 	Game.emit_signal("noteHit",getData());
 	
 func onHeld():
+	holding = true
+	missTime = 0.0
+	
 	if isPlayer: setProperty("health",min(getProperty("health")+0.015,100));
 	triggerEvent("charSetAltAnim",altAnim,character);
 	triggerEvent("playCharAnim","sing%s"%["Left","Down","Up","Right"][column],character);
-	if float(triggerEvent("getCharAnimTime",character))>0.2:
+	if float(triggerEvent("getCharAnimTime",character))>0.08:
 		triggerEvent("seekCharAnim",0.0,character);
 	Game.emit_signal("noteHeld",getData());
 	
 func onMiss():
+	missed = true
+	
 	if isPlayer: 
 		setProperty("health",max(getProperty("health")-5,0));
 		setProperty("score",getProperty("score")-100);
@@ -97,6 +111,8 @@ func onMiss():
 	Game.emit_signal("noteMiss",getData());
 	
 func onHeldMiss():
+	holding = false
+	
 	if isPlayer: setProperty("health",max(getProperty("health")-0.15,0));
 	triggerEvent("charSetAltAnim",altAnim,character);
 	triggerEvent("playCharAnim","miss%s"%["Left","Down","Up","Right"][column],character);
